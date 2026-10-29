@@ -1,0 +1,10 @@
+# Independent continuous VLX preview. Existing YOLO configurations are retained.
+camera_config: config/toy_guitar_live_v3.yaml
+vlx_config: config/vlx_seek_trial.yaml
+# Start with no targets. Select targets in the preview text field.
+runtime_root: D:/project/RetailVisionDev/runtime/toy-guitar-vlx-live
+max_input_age_seconds: 2
+max_result_age_seconds: 15
+window_width: 1280
+tracking_history_seconds: 8
+tracking_ttl_seconds: 8

@@ -1,0 +1,22 @@
+{
+  "camera_id": "cam02",
+  "frame_size": [1280, 720],
+  "sample_fps": 5.0,
+  "motion_window_frames": 5,
+  "motion_enter_displacement_pixels": 12.0,
+  "motion_exit_displacement_pixels": 6.0,
+  "motion_enter_stable_frames": 2,
+  "motion_exit_stable_frames": 3,
+  "pickup_confirm_frames": 2,
+  "putdown_confirm_frames": 3,
+  "stable_baseline_min_frames": 5,
+  "holding_actor_grace_seconds": 1.5,
+  "minimum_holding_seconds": 1.0,
+  "surface_evidence_enabled": true,
+  "pickup_surface_drop_pixels_equivalent": 0.12,
+  "held_recovery_putdown_surface_overlap_min": 0.95,
+  "held_recovery_putdown_confirm_frames": 3,
+  "recovery_motion_guard_frames": 5,
+  "minimum_pickup_confidence": 0.80,
+  "minimum_putdown_confidence": 0.60
+}

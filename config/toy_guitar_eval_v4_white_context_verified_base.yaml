@@ -1,0 +1,95 @@
+dataset:
+  base: data/toy_guitar_dataset_v4_handheld_scale_20261022
+  output: data/toy_guitar_dataset_v4_white_context_20261022
+  names:
+    0: toy
+    1: white_guitar
+  min_box_pixels: 4
+  sources:
+  - id: relocation_precision_white_context
+    annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_22_precision_white_context
+    selections:
+      train:
+      - - 3
+        - 3
+      - - 4
+        - 4
+      - - 5
+        - 5
+      - - 6
+        - 6
+      - - 7
+        - 7
+      - - 8
+        - 8
+      - - 9
+        - 9
+      - - 10
+        - 10
+      - - 11
+        - 11
+      - - 12
+        - 12
+      - - 13
+        - 13
+      - - 14
+        - 14
+      - - 15
+        - 15
+      - - 16
+        - 16
+      - - 17
+        - 17
+      val:
+      - - 18
+        - 18
+      - - 19
+        - 19
+      test:
+      - - 1
+        - 1
+      - - 2
+        - 2
+      - - 20
+        - 20
+      - - 21
+        - 21
+training:
+  model: runs/toy_guitar/precision_v4_handheld_scale_20261022/weights/best.pt
+  task: detect
+  imgsz: 960
+  epochs: 100
+  patience: 100
+  batch: 16
+  seed: 42
+  device: '0'
+  project: runs/toy_guitar
+  name: precision_v4_white_context_20261022
+  workers: 2
+  optimizer: AdamW
+  amp: true
+  save: true
+  plots: true
+  val: true
+  degrees: 25
+  translate: 0.2
+  scale: 0.35
+  fliplr: 0.5
+  mosaic: 0.0
+  close_mosaic: 0
+  lr0: 0.0002
+  lrf: 0.1
+  warmup_epochs: 1.0
+  cos_lr: true
+evaluation:
+  confidence: 0.5
+  iou: 0.7
+  match_iou: 0.5
+  baseline: runs/toy_guitar/precision_v4_handheld_scale_20261022/weights/best.pt
+  fallback_imgsz: 640
+  fallback_classes:
+  - 1
+  verification_weights: D:\project\RealtimeEntryPipeline-master\runs\toy_guitar\precision_v4_white_context_20261022\weights\best.pt
+  verification_classes:
+  - 1
+  verification_match_iou: 0.4

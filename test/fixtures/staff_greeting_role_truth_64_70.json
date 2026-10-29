@@ -1,0 +1,56 @@
+{
+  "schema_version": "staff_greeting_role_manual_truth_v1",
+  "source": {
+    "path": "D:/GJJ/work/video/2026_08_29_21_47_28_1min15s.mp4",
+    "sha256": "7a6b195ae7c912a74a829e8067923bfeaf1b608d063304f77917d5e5621c6541"
+  },
+  "diagnostic_window_seconds": {
+    "start": 64.0,
+    "end": 70.0
+  },
+  "track_scope": "baseline run only; track ids are not real identities",
+  "subjects": [
+    {
+      "subject": "black_shirt_customer",
+      "role": "customer",
+      "baseline_track_ids": [23],
+      "invariants": [
+        "must_not_receive_confirmed_staff_role",
+        "must_not_accumulate_blue_vest_evidence"
+      ]
+    },
+    {
+      "subject": "blue_vest_employee",
+      "role": "staff",
+      "baseline_track_ids": [20, 42],
+      "track20_last_observation": {
+        "source_seq": 1242,
+        "pts_seconds": 52.350664
+      },
+      "track42_first_observation": {
+        "source_seq": 1286,
+        "pts_seconds": 54.134403
+      },
+      "lost_reacquired_gap_seconds": 1.783739
+    },
+    {
+      "subject": "flower_shirt_customer",
+      "role": "customer",
+      "baseline_track_ids": [42, 57],
+      "track57_first_observation": {
+        "source_seq": 1598,
+        "pts_seconds": 66.620575
+      },
+      "track42_first_staff_vest_assignment_after_overlap": {
+        "source_seq": 1600,
+        "pts_seconds": 66.662058
+      },
+      "transition_note": "Track42 is a mixed/impure bbox during the overlap; Track57 begins carrying the flower-shirt customer while Track42 begins carrying staff vest evidence."
+    }
+  ],
+  "acceptance": {
+    "black_shirt_customer_staff_frames": 0,
+    "blue_vest_employee_has_stable_staff_track": true,
+    "one_vest_must_not_drive_multiple_tracks_per_frame": true
+  }
+}

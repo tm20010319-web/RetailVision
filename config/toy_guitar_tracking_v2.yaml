@@ -1,0 +1,26 @@
+# Original SAM3.1 / Stage7C / Stage8 / Stage9 / Stage10 integration.
+live_config: config/toy_guitar_live_v2.yaml
+runtime_root: D:/project/RetailVisionDev/runtime/toy-guitar-tracking-camera1
+sam_python: D:/project/RetailVisionDev/envs/sam3/python.exe
+yolo_python: D:/project/RetailVisionDev/envs/agents-py311/python.exe
+sam_runtime_root: D:/project/RetailVisionDev/external/sam3
+checkpoint: D:/project/RetailVisionDev/weights/huggingface/hub/models--facebook--sam3.1/snapshots/daa63191845a41281374e725f4c9e51c7a824460/sam3.1_multiplex.pt
+association_config: person_product_association.cam02.stage8.json
+interaction_config: product_interaction.cam02.stage9.json
+camera_id: behavior-detection-1
+store_id: store-1
+frame_size: [1280, 720]
+sample_fps: 5.0
+queue_size: 12
+segment_seconds: 10
+max_recording_gap_seconds: 0.6
+products:
+  0: yellow_bee_toy
+  1: white_guitar
+# Same verified cam02/behavior-detection-1 table geometry. Initialization gate
+# only; existing tracks can move off the table under the original contracts.
+display_surface:
+  - [0.49921875, 0.4708333333333333]
+  - [0.6546875, 0.46944444444444444]
+  - [0.71796875, 0.9611111111111111]
+  - [0.48125, 0.9652777777777778]

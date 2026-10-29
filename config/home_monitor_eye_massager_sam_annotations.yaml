@@ -1,0 +1,75 @@
+source_video: D:/surveillance_video_raw/2026_10_28_18_30_15.mp4
+output: D:/project/RetailVisionDev/runtime/annotations/2026_10_28_home_monitor_eye_massager_sam_work
+annotation_output: D:/project/RetailVisionDev/runtime/annotations/2026_10_28_home_monitor_eye_massager_vlx_sam_reviewed
+sam_fps: 5.0
+chunk_size: 150
+chunk_overlap: 50
+initialization_iou: 0.20
+sam_detection_threshold: 0.30
+sparse_interval_seconds: 1.0
+dense_after_seconds: 158.0
+require_all_targets: false
+tracker_start_seconds: 158.0
+objects_visible_until_seconds: 168.42
+sam_repository: D:/project/RetailVisionDev/external/sam3/sam3
+sam_checkpoint: D:/project/RetailVisionDev/weights/huggingface/hub/models--facebook--sam3.1/snapshots/daa63191845a41281374e725f4c9e51c7a824460/sam3.1_multiplex.pt
+vlx_evidence:
+  config: D:/project/RealtimeEntryPipeline-master/config/vlx_new_items_probe.yaml
+  accepted_preview: D:/project/RetailVisionDev/runtime/vlx-new-items/probe_20261028_183015/vlx_identified.jpg
+  home_monitor_result: D:/project/RetailVisionDev/runtime/vlx-new-items/probe_20261028_183015/separate_validation/at_000s_query_0.json
+  eye_massager_result: D:/project/RetailVisionDev/runtime/vlx-new-items/probe_20261028_183015/separate_validation/at_000s_query_1.json
+targets:
+  - class_id: 0
+    key: home_monitor
+    label_zh: 家庭监控
+    sam_prompt: camera
+    prefer_sam: true
+    vlx_seed_bbox_xyxy: [444.0003, 365.9622, 469.4391, 394.3440]
+  - class_id: 1
+    key: ai_eye_massager
+    label_zh: AI眼睛按摩仪
+    sam_prompt: goggles
+    initialization_mode: box
+    vlx_seed_bbox_xyxy: [436.4189, 405.4967, 486.0182, 444.5372]
+
+# Pixel xyxy boxes reviewed against the original 800x448 frames. A null value
+# means that the instance is too occluded to identify reliably in that frame.
+manual_overrides:
+  '166.02':
+    '1': [416, 313, 461, 351]
+  '166.22':
+    '0': [336, 294, 363, 325]
+    '1': [376, 275, 408, 328]
+  '166.42':
+    '0': null
+    '1': [306, 245, 342, 289]
+  '166.62':
+    '0': null
+    '1': [240, 243, 279, 291]
+  '166.82':
+    '0': null
+    '1': [156, 263, 193, 304]
+  '167.02':
+    '0': [173, 335, 195, 364]
+    '1': [154, 264, 191, 305]
+  '167.22':
+    '0': [137, 328, 160, 360]
+    '1': [125, 274, 160, 313]
+  '167.42':
+    '0': [113, 332, 137, 367]
+    '1': [95, 300, 129, 341]
+  '167.62':
+    '0': [100, 354, 125, 390]
+    '1': [69, 334, 106, 384]
+  '167.82':
+    '0': [78, 371, 103, 408]
+    '1': [39, 368, 75, 417]
+  '168.02':
+    '0': [47, 392, 73, 431]
+    '1': [13, 397, 52, 448]
+  '168.22':
+    '0': [66, 371, 99, 429]
+    '1': [0, 360, 44, 428]
+  '168.42':
+    '0': null
+    '1': [0, 393, 31, 448]

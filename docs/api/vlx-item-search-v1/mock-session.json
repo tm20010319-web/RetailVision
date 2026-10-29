@@ -1,0 +1,31 @@
+{
+  "session_id": "ses_demo_001",
+  "revision": 1,
+  "query": "小吉他",
+  "state": "active",
+  "camera_ids": [
+    "behavior-detection-1",
+    "behavior-detection-3"
+  ],
+  "preview_fps": 10,
+  "targets": [
+    {
+      "target_id": "small_guitar",
+      "label": "小吉他",
+      "validation_status": "scene_checked",
+      "color": "#FF99DD"
+    }
+  ],
+  "results": [
+    {
+      "target_id": "small_guitar",
+      "status": "found",
+      "winner_camera_id": "behavior-detection-1",
+      "view_score": 90.0,
+      "confirmed_at": "2026-10-23T08:00:03.000Z"
+    }
+  ],
+  "created_at": "2026-10-23T08:00:00.000Z",
+  "expires_at": "2026-10-23T08:30:04.000Z",
+  "stream_path": "/ws/v1/item-search/sessions/ses_demo_001"
+}

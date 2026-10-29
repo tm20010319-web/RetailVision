@@ -1,0 +1,52 @@
+dataset:
+  base: data/toy_guitar_dataset_v3_final_20261022
+  output: data/toy_guitar_dataset_v3_chair_20261022
+  names:
+    0: toy
+    1: white_guitar
+  min_box_pixels: 4
+  sources:
+  - id: relocation_live_chair
+    annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_22_live_chair_guitar
+    selections:
+      train:
+      - - 1
+        - 14
+      val:
+      - - 22
+        - 24
+      test:
+      - - 32
+        - 36
+training:
+  model: runs/toy_guitar/relocation_v3_final_20261022/weights/best.pt
+  task: detect
+  imgsz: 640
+  epochs: 100
+  patience: 100
+  batch: 16
+  seed: 42
+  device: '0'
+  project: runs/toy_guitar
+  name: relocation_v3_chair_20261022
+  workers: 4
+  optimizer: AdamW
+  amp: true
+  save: true
+  plots: true
+  val: true
+  degrees: 25
+  translate: 0.2
+  scale: 0.35
+  fliplr: 0.5
+  mosaic: 0.3
+  close_mosaic: 15
+  lr0: 0.0002
+  lrf: 0.1
+  warmup_epochs: 1.0
+  cos_lr: true
+evaluation:
+  confidence: 0.25
+  iou: 0.7
+  match_iou: 0.5
+  baseline: runs/toy_guitar/multipose_v2_20261021/weights/best.pt

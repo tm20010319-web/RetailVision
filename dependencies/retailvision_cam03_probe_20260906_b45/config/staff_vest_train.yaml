@@ -1,0 +1,12 @@
+model: yolo11n.pt
+task: detect
+imgsz: 640
+epochs: 80
+patience: 20
+seed: 42
+project: runs/staff_vest
+name: baseline_v1
+save: true
+plots: true
+val: true
+workers: 4

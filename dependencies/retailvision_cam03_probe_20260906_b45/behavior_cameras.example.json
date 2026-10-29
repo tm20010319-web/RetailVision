@@ -1,0 +1,121 @@
+{
+  "greeting_profiles": {
+    "controlled_demo": {
+      "greeting_window_seconds": 30.0,
+      "greeting_staff_travel_metres": 0.25,
+      "greeting_duration_seconds": 1.0,
+      "greeting_distance_metres": 1.2,
+      "minimum_distance_reduction_metres": 0.35,
+      "greeting_area_exit_grace_seconds": 0.8,
+      "greeting_area_enter_stable_frames": 3,
+      "greeting_area_exit_stable_frames": 5
+    },
+    "demo_relaxed": {
+      "greeting_window_seconds": 30.0,
+      "greeting_staff_travel_metres": 0.10,
+      "greeting_staff_toward_customer_metres": 0.05,
+      "greeting_duration_seconds": 0.5,
+      "greeting_distance_metres": 2.0,
+      "minimum_distance_reduction_metres": 0.05,
+      "greeting_trend_window_samples": 5,
+      "greeting_trend_minimum_samples": 5,
+      "greeting_trend_minimum_reduction_metres": 0.05,
+      "greeting_trend_decreasing_ratio": 0.5,
+      "confirmed_confidence": 0.5,
+      "greeting_area_exit_grace_seconds": 0.8,
+      "greeting_area_enter_stable_frames": 3,
+      "greeting_area_exit_stable_frames": 5
+    },
+    "production_candidate": {
+      "greeting_staff_travel_metres": 0.40,
+      "greeting_duration_seconds": 1.5,
+      "greeting_distance_metres": 1.2,
+      "minimum_distance_reduction_metres": 0.40,
+      "greeting_area_exit_grace_seconds": 0.5
+    }
+  },
+  "cameras": [
+    {
+      "camera_id": "entrance-1",
+      "camera_role": "reception_entry",
+      "store_id": "store-1",
+      "source": "rtsp://replace-with-entrance-source",
+      "staff_vest_enabled": true,
+      "entry_trigger": {
+        "area_id": "front-entry-trigger",
+        "points": [
+          [0.06640625, 0.5625],
+          [0.546875, 0.5625],
+          [0.546875, 0.72916667],
+          [0.06640625, 0.72916667]
+        ]
+      },
+      "greeting_area": {
+        "area_id": "front-greeting-area",
+        "points": [
+          [0.0703125, 0.72916667],
+          [0.5859375, 0.72916667],
+          [0.5859375, 0.96458333],
+          [0.0703125, 0.96458333]
+        ]
+      },
+      "entrance": {
+        "outside_stable_frames": 3,
+        "inside_stable_frames": 3,
+        "crossing_timeout_seconds": 3.0,
+        "rearm_outside_frames": 5,
+        "minimum_crossing_displacement": 0.15
+      },
+      "greeting": {
+        "profile": "controlled_demo"
+      },
+      "calibration_status": "provisional",
+      "calibration_image_size": [2560, 1440],
+      "interaction_areas": [],
+      "display_areas": [],
+      "ground_homography": [
+        7.7008130081, 0.0, -0.5113821138,
+        0.0, 6.0, -3.375,
+        0.0, 0.0, 1.0
+      ]
+    },
+    {
+      "camera_id": "display-hardware-1",
+      "camera_role": "customer_behavior",
+      "store_id": "store-1",
+      "source": "rtsp://replace-with-hardware-display-source",
+      "staff_vest_enabled": false,
+      "interaction_areas": [
+        {
+          "area_id": "hardware-interaction",
+          "points": [[0.20, 0.20], [0.80, 0.20], [0.80, 0.90], [0.20, 0.90]]
+        }
+      ],
+      "display_areas": [
+        {
+          "area_id": "hardware-display",
+          "points": [[0.30, 0.15], [0.70, 0.15], [0.70, 0.55], [0.30, 0.55]]
+        }
+      ]
+    },
+    {
+      "camera_id": "display-cabin-1",
+      "camera_role": "smart_cabin",
+      "store_id": "store-1",
+      "source": "rtsp://replace-with-cabin-display-source",
+      "staff_vest_enabled": false,
+      "interaction_areas": [
+        {
+          "area_id": "cabin-interaction",
+          "points": [[0.20, 0.20], [0.80, 0.20], [0.80, 0.90], [0.20, 0.90]]
+        }
+      ],
+      "display_areas": [
+        {
+          "area_id": "cabin-display",
+          "points": [[0.30, 0.15], [0.70, 0.15], [0.70, 0.55], [0.30, 0.55]]
+        }
+      ]
+    }
+  ]
+}

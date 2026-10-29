@@ -1,0 +1,914 @@
+openapi: 3.0.3
+info:
+  title: VLX 监控物品搜索 API（联调服务）
+  version: 1.1.0
+  description: 独立联调服务已启动并经 Funnel 提供 HTTPS/WSS。其他物品查询效果未验证。WebSocket 协议见 README.md。
+    双路连续视觉跟踪的模型源帧有效期为16秒，空结果不刷新确认时间。
+servers:
+- url: https://desktop-qaer92d.tail173be1.ts.net/api/v1/item-search
+  description: 当前 Funnel 联调入口
+security:
+- bearerAuth: []
+paths:
+  /catalog:
+    get:
+      operationId: getItemSearchCatalog
+      summary: 目标目录与能力
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Catalog'
+              example:
+                items:
+                - target_id: bee_plush
+                  label: 小蜜蜂
+                  validation_status: scene_checked
+                  color: '#FFD54A'
+                  aliases:
+                  - 小蜜蜂
+                  - 蜜蜂
+                  - 蜜蜂玩偶
+                  - 黄色小蜜蜂玩偶
+                - target_id: large_guitar
+                  label: 大吉他
+                  validation_status: scene_checked
+                  color: '#48D7FF'
+                  aliases:
+                  - 大吉他
+                  - 大电吉他
+                - target_id: small_guitar
+                  label: 小吉他
+                  validation_status: scene_checked
+                  color: '#FF99DD'
+                  aliases:
+                  - 小吉他
+                groups:
+                - aliases:
+                  - 吉他
+                  - 电吉他
+                  - 白色吉他
+                  - 白色电吉他
+                  target_ids:
+                  - large_guitar
+                  - small_guitar
+                general_queries: enabled_unverified
+                max_targets: 3
+                max_active_searches: 1
+                default_preview_fps: 10
+                recognition_interval_target_ms: 3000
+        '401':
+          description: Token 无效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 无访问权限
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 请求限流
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          headers:
+            Retry-After:
+              description: 重试等待秒数
+              schema:
+                type: integer
+                minimum: 1
+        '503':
+          description: 模型未就绪
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          headers:
+            Retry-After:
+              description: 重试等待秒数
+              schema:
+                type: integer
+                minimum: 1
+  /cameras:
+    get:
+      operationId: listItemSearchCameras
+      summary: 授权摄像头及状态
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cameras'
+              example:
+                cameras:
+                - camera_id: behavior-detection-1
+                  name: 行为检测-1
+                  status: online
+                  width: 800
+                  height: 448
+                - camera_id: behavior-detection-3
+                  name: 行为检测-3
+                  status: online
+                  width: 800
+                  height: 448
+        '401':
+          description: Token 无效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 无访问权限
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 请求限流
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          headers:
+            Retry-After:
+              description: 重试等待秒数
+              schema:
+                type: integer
+                minimum: 1
+  /sessions:
+    post:
+      operationId: createItemSearchSession
+      summary: 创建空或非空搜索会话
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSession'
+            example:
+              query: ''
+              camera_ids: &id001
+              - behavior-detection-1
+              - behavior-detection-3
+              preview_fps: 10
+      responses:
+        '201':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+              example:
+                session_id: ses_demo_001
+                revision: 0
+                query: ''
+                state: idle
+                camera_ids: *id001
+                preview_fps: 10
+                targets: []
+                results: []
+                created_at: '2026-10-23T08:00:00.000Z'
+                expires_at: '2026-10-23T08:30:04.000Z'
+                stream_path: /ws/v1/item-search/sessions/ses_demo_001
+        '401':
+          description: Token 无效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 无访问权限
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '400':
+          description: 请求格式或参数范围错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: 版本冲突或识别名额已占用
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 查询暂不支持或目标过多
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example: &id004
+                error:
+                  code: QUERY_UNSUPPORTED
+                  message: 当前服务尚未启用其他物品查询
+                  request_id: req_demo_001
+                  details: {}
+        '429':
+          description: 请求限流
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          headers:
+            Retry-After:
+              description: 重试等待秒数
+              schema:
+                type: integer
+                minimum: 1
+        '503':
+          description: 模型未就绪
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          headers:
+            Retry-After:
+              description: 重试等待秒数
+              schema:
+                type: integer
+                minimum: 1
+  /sessions/{session_id}:
+    parameters:
+    - &id002
+      name: session_id
+      in: path
+      required: true
+      schema: &id005
+        type: string
+        minLength: 1
+    get:
+      operationId: getItemSearchSession
+      summary: 搜索摘要，不用于逐帧画框
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+              example:
+                session_id: ses_demo_001
+                revision: 1
+                query: 小吉他
+                state: active
+                camera_ids: *id001
+                preview_fps: 10
+                targets: &id003
+                - target_id: small_guitar
+                  label: 小吉他
+                  validation_status: scene_checked
+                  color: '#FF99DD'
+                results:
+                - target_id: small_guitar
+                  status: found
+                  winner_camera_id: behavior-detection-1
+                  view_score: 90.0
+                  confirmed_at: '2026-10-23T08:00:03.000Z'
+                created_at: '2026-10-23T08:00:00.000Z'
+                expires_at: '2026-10-23T08:30:04.000Z'
+                stream_path: /ws/v1/item-search/sessions/ses_demo_001
+        '401':
+          description: Token 无效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 无访问权限
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 会话不存在或已过期
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 请求限流
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          headers:
+            Retry-After:
+              description: 重试等待秒数
+              schema:
+                type: integer
+                minimum: 1
+    delete:
+      operationId: deleteItemSearchSession
+      summary: 结束会话
+      responses:
+        '204':
+          description: 已结束，无响应体
+        '401':
+          description: Token 无效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 无访问权限
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 会话不存在或已过期
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 请求限流
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          headers:
+            Retry-After:
+              description: 重试等待秒数
+              schema:
+                type: integer
+                minimum: 1
+  /sessions/{session_id}/query:
+    parameters:
+    - *id002
+    put:
+      operationId: setItemSearchQuery
+      summary: 开始、切换或清空查询
+      description: 空 query 停止标注并保留视频；expected_revision 不匹配返回 409。异步识别，HTTP 不等待结果。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetQuery'
+            example:
+              query: 小吉他
+              expected_revision: 0
+      responses:
+        '200':
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+              example:
+                session_id: ses_demo_001
+                revision: 1
+                query: 小吉他
+                state: searching
+                camera_ids: *id001
+                preview_fps: 10
+                targets: *id003
+                results:
+                - target_id: small_guitar
+                  status: searching
+                created_at: '2026-10-23T08:00:00.000Z'
+                expires_at: '2026-10-23T08:30:04.000Z'
+                stream_path: /ws/v1/item-search/sessions/ses_demo_001
+        '401':
+          description: Token 无效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 无访问权限
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '400':
+          description: 请求格式或参数范围错误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 会话不存在或已过期
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '409':
+          description: 版本冲突或识别名额已占用
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 查询暂不支持或目标过多
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+              example: *id004
+        '429':
+          description: 请求限流
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          headers:
+            Retry-After:
+              description: 重试等待秒数
+              schema:
+                type: integer
+                minimum: 1
+        '503':
+          description: 模型未就绪
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+          headers:
+            Retry-After:
+              description: 重试等待秒数
+              schema:
+                type: integer
+                minimum: 1
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 原 Java 登录系统签发的 JWT；HS256、exp、type=front、uid/sub 校验。不接受旧独立联调 Token。
+  schemas:
+    Target:
+      type: object
+      properties:
+        target_id: *id005
+        label: &id006
+          type: string
+        validation_status: &id007
+          type: string
+          enum:
+          - scene_checked
+          - unverified
+        color: &id008
+          type: string
+          pattern: ^#[0-9A-Fa-f]{6}$
+      required:
+      - target_id
+      - label
+      - validation_status
+      - color
+    CatalogTarget:
+      type: object
+      properties:
+        target_id: *id005
+        label: *id006
+        validation_status: *id007
+        color: *id008
+        aliases:
+          type: array
+          items: *id006
+      required:
+      - target_id
+      - label
+      - validation_status
+      - color
+      - aliases
+    TargetGroup:
+      type: object
+      properties:
+        aliases:
+          type: array
+          items: *id006
+        target_ids:
+          type: array
+          items: *id005
+      required:
+      - aliases
+      - target_ids
+    Catalog:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogTarget'
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetGroup'
+        general_queries:
+          type: string
+          enum:
+          - disabled
+          - enabled_unverified
+        max_targets:
+          type: integer
+          enum:
+          - 3
+        max_active_searches:
+          type: integer
+          enum:
+          - 1
+        default_preview_fps: &id009
+          type: integer
+          minimum: 1
+          maximum: 15
+          default: 10
+        recognition_interval_target_ms:
+          type: integer
+          minimum: 1
+      required:
+      - items
+      - groups
+      - general_queries
+      - max_targets
+      - max_active_searches
+      - default_preview_fps
+      - recognition_interval_target_ms
+    Camera:
+      type: object
+      properties:
+        camera_id: *id005
+        name: *id006
+        status:
+          type: string
+          enum:
+          - connecting
+          - online
+          - stale
+          - offline
+        width:
+          type: integer
+          minimum: 1
+        height:
+          type: integer
+          minimum: 1
+      required:
+      - camera_id
+      - name
+      - status
+    Cameras:
+      type: object
+      properties:
+        cameras:
+          type: array
+          items:
+            $ref: '#/components/schemas/Camera'
+      required:
+      - cameras
+    CreateSession:
+      type: object
+      properties:
+        query:
+          type: string
+          maxLength: 80
+          description: 完整物品名称；中文顿号分隔多个目标，空格不分词。空字符串清空。
+          default: ''
+        camera_ids: &id012
+          type: array
+          items: *id005
+          minItems: 1
+          maxItems: 2
+          uniqueItems: true
+        preview_fps: *id009
+      required:
+      - camera_ids
+      additionalProperties: false
+    SetQuery:
+      type: object
+      properties:
+        query: &id011
+          type: string
+          maxLength: 80
+          description: 完整物品名称；中文顿号分隔多个目标，空格不分词。空字符串清空。
+        expected_revision: &id010
+          type: integer
+          minimum: 0
+      required:
+      - query
+      - expected_revision
+      additionalProperties: false
+    Result:
+      type: object
+      properties:
+        target_id: *id005
+        status:
+          type: string
+          enum:
+          - searching
+          - found
+          - not_found
+          - ambiguous
+          - unavailable
+        winner_camera_id: *id005
+        view_score: &id014
+          type: number
+          minimum: 0
+          maximum: 100
+          description: 视角质量评分，非识别概率。
+        confirmed_at: &id013
+          type: string
+          format: date-time
+      required:
+      - target_id
+      - status
+      description: found 时必须有 winner_camera_id、view_score、confirmed_at；其他状态省略这三个字段。
+    Session:
+      type: object
+      properties:
+        session_id: *id005
+        revision: *id010
+        query: *id011
+        state:
+          type: string
+          enum:
+          - idle
+          - searching
+          - active
+          - degraded
+          - failed
+        camera_ids: *id012
+        preview_fps: *id009
+        targets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Target'
+          maxItems: 3
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Result'
+          maxItems: 3
+        created_at: *id013
+        expires_at: *id013
+        stream_path:
+          type: string
+          pattern: ^/ws/v1/item-search/sessions/
+      required:
+      - session_id
+      - revision
+      - query
+      - state
+      - camera_ids
+      - preview_fps
+      - targets
+      - results
+      - created_at
+      - expires_at
+      - stream_path
+    ApiError:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code: *id005
+            message: *id006
+            request_id: *id005
+            details:
+              type: object
+              additionalProperties: true
+          required:
+          - code
+          - message
+          - request_id
+      required:
+      - error
+    Annotation:
+      type: object
+      properties:
+        target_id: *id005
+        label: *id006
+        validation_status: *id007
+        color: *id008
+        bbox:
+          type: array
+          items:
+            type: number
+            minimum: 0
+            maximum: 1
+          minItems: 4
+          maxItems: 4
+        view_score: *id014
+        position_source:
+          type: string
+          enum:
+          - vlx
+          - optical_flow
+        model_frame_id: *id010
+        confirmed_at: *id013
+      required:
+      - target_id
+      - label
+      - validation_status
+      - color
+      - bbox
+      - view_score
+      - position_source
+      - model_frame_id
+      - confirmed_at
+    Metrics:
+      type: object
+      properties:
+        preview_fps:
+          type: number
+          minimum: 0
+        inference_ms:
+          type: number
+          minimum: 0
+        confirmation_interval_ms:
+          type: number
+          minimum: 0
+      required: []
+    WsAuthenticate:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - authenticate
+        access_token: *id005
+      required:
+      - type
+      - access_token
+    WsReady:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - ready
+        stream_id: *id005
+        event_id: *id010
+        session_id: *id005
+        revision: *id010
+        server_time: *id013
+        heartbeat_interval_ms:
+          type: integer
+          enum:
+          - 10000
+      required:
+      - type
+      - stream_id
+      - event_id
+      - session_id
+      - revision
+      - server_time
+      - heartbeat_interval_ms
+    WsState:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - state
+        stream_id: *id005
+        event_id: *id010
+        session_id: *id005
+        revision: *id010
+        server_time: *id013
+        session:
+          $ref: '#/components/schemas/Session'
+        cameras:
+          type: array
+          items:
+            $ref: '#/components/schemas/Camera'
+      required:
+      - type
+      - stream_id
+      - event_id
+      - session_id
+      - revision
+      - server_time
+      - session
+      - cameras
+    WsHeartbeat:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - heartbeat
+        stream_id: *id005
+        event_id: *id010
+        session_id: *id005
+        revision: *id010
+        server_time: *id013
+      required:
+      - type
+      - stream_id
+      - event_id
+      - session_id
+      - revision
+      - server_time
+    WsError:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - error
+        stream_id: *id005
+        event_id: *id010
+        session_id: *id005
+        revision: *id010
+        server_time: *id013
+        error:
+          type: object
+          properties:
+            code: *id005
+            message: *id006
+            request_id: *id005
+          required:
+          - code
+          - message
+          - request_id
+      required:
+      - type
+      - stream_id
+      - event_id
+      - session_id
+      - revision
+      - server_time
+      - error
+    WsFrame:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - frame
+        stream_id: *id005
+        event_id: *id010
+        session_id: *id005
+        revision: *id010
+        server_time: *id013
+        camera_id: *id005
+        camera_name: *id006
+        camera_status:
+          type: string
+          enum:
+          - online
+        frame_id: *id010
+        frame_received_at: *id013
+        width:
+          type: integer
+          minimum: 1
+        height:
+          type: integer
+          minimum: 1
+        mime_type:
+          type: string
+          enum:
+          - image/jpeg
+        jpeg_base64:
+          type: string
+          format: byte
+        annotations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Annotation'
+          maxItems: 3
+        metrics:
+          $ref: '#/components/schemas/Metrics'
+      required:
+      - type
+      - stream_id
+      - event_id
+      - session_id
+      - revision
+      - server_time
+      - camera_id
+      - camera_name
+      - camera_status
+      - frame_id
+      - frame_received_at
+      - width
+      - height
+      - mime_type
+      - jpeg_base64
+      - annotations
+      - metrics
+x-websocket:
+  url: wss://desktop-qaer92d.tail173be1.ts.net/ws/v1/item-search/sessions/{session_id}
+  description: 已实现；5秒内发送 authenticate，按 README 的同帧、版本和清框规则消费消息。
+  clientMessage:
+    $ref: '#/components/schemas/WsAuthenticate'
+  serverMessages:
+    oneOf:
+    - $ref: '#/components/schemas/WsReady'
+    - $ref: '#/components/schemas/WsState'
+    - $ref: '#/components/schemas/WsHeartbeat'
+    - $ref: '#/components/schemas/WsError'
+    - $ref: '#/components/schemas/WsFrame'

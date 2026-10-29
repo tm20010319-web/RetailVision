@@ -1,0 +1,50 @@
+# Separate multi-pose experiment. V1 and staff-vest settings stay unchanged.
+dataset:
+  output: data/toy_guitar_dataset_v2_20261021
+  names: {0: toy, 1: white_guitar}
+  min_box_pixels: 8
+  sources:
+    - id: original
+      annotations: D:/RetailVisionDev/runtime/annotations/2026_10_21_16_56_05_3s
+      preserve_split_manifest: data/toy_guitar_dataset_20261021/split_manifest.json
+    - id: multipose
+      annotations: D:/RetailVisionDev/runtime/annotations/2026_10_21_22_12_09_3s
+      split_blocks:
+        - [1, 32, train]
+        - [33, 40, val]
+        - [41, 48, test]
+        - [49, 65, train]
+        - [66, 103, train]
+        - [104, 112, val]
+        - [113, 121, test]
+      split_overrides: {52: test, 55: val, 56: test, 57: val, 59: test}
+training:
+  model: data/models/yolo11n.pt
+  task: detect
+  imgsz: 640
+  epochs: 100
+  patience: 25
+  batch: 16
+  seed: 42
+  device: '0'
+  project: runs/toy_guitar
+  name: multipose_v2_20261021
+  workers: 4
+  optimizer: auto
+  amp: true
+  save: true
+  plots: true
+  val: true
+  degrees: 45
+  translate: 0.15
+  scale: 0.5
+  fliplr: 0.5
+  mosaic: 1.0
+  close_mosaic: 15
+evaluation:
+  confidence: 0.25
+  iou: 0.70
+  match_iou: 0.50
+  baseline: runs/toy_guitar/baseline_v1_20261021/weights/best.pt
+  regression_image: D:/RetailVisionDev/runtime/toy-guitar-live-camera1/diagnostics/bee_moved_20261021/source.png
+  regression_bbox: [425, 246, 474, 310]

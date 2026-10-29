@@ -1,0 +1,38 @@
+# Independent same-video baseline; no existing live model is replaced.
+dataset:
+  annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_28_home_monitor_eye_massager_vlx_sam_reviewed
+  output: data/home_monitor_eye_massager_dataset_20261028_action_spread
+  names:
+    0: home_monitor
+    1: ai_eye_massager
+  split_ratios:
+    train: 0.70
+    val: 0.15
+    test: 0.15
+  min_box_pixels: 8
+  stratification_windows:
+    - name: pickup_and_carry
+      start_seconds: 164.8
+      end_seconds: 168.42
+
+training:
+  model: data/models/yolo11n.pt
+  task: detect
+  imgsz: 640
+  epochs: 80
+  patience: 20
+  batch: 16
+  seed: 42
+  device: '0'
+  project: runs/home_monitor_eye_massager
+  name: baseline_v3_action_spread_20261028
+  workers: 4
+  optimizer: auto
+  amp: true
+  save: true
+  plots: true
+  val: true
+
+evaluation:
+  confidence: 0.25
+  iou: 0.70

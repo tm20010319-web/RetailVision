@@ -1,0 +1,12 @@
+# Supply JAVA_FRONT_JWT_SECRET outside source control. Existing Java login issuer is required.
+host: 127.0.0.1
+port: 8787
+dual_config: config/toy_guitar_vlx_dual.local.yaml
+runtime_root: runtime/vlx-item-search-api
+auth_mode: java_jwt
+java_front_jwt_secret_file: ''
+allowed_origins:
+- http://localhost:5173
+- http://127.0.0.1:5173
+- http://localhost:3000
+- http://127.0.0.1:3000

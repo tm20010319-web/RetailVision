@@ -1,0 +1,13 @@
+$kind: http-request
+name: Untitled Request
+description: ""
+url: ""
+method: GET
+headers:
+  Content-Type: application/xml
+  "": ""
+auth:
+  type: basic
+  credentials:
+    username: admin
+order: 1784172211465

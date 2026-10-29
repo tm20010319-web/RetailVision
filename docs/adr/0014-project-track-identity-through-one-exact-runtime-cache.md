@@ -1,0 +1,3 @@
+# Project Track Identity Through One Exact Runtime Cache
+
+Each Store Runtime uses one shared CameraTrackIdentityCache as the ephemeral projection of Active Confirmed Durable Bindings for Finalization, heartbeat, and behavior identity resolution. Every bind, resolve, invalidate, Track-lost observation, and Runtime cleanup operation is scoped by the complete Store, camera, Runtime instance, Track ID, and Track token as applicable; the Cache never decides probable or conflict outcomes, and contradictory Binding provenance is removed fail-closed and reported instead of selecting a winner or falling back to another scope.

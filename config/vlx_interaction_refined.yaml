@@ -1,0 +1,7 @@
+# Separate processes release GPU memory between VLX grounding and SAM tracking.
+vlx_python: D:/project/RetailVisionDev/envs/vlx-interaction-py311/Scripts/python.exe
+sam_python: D:/project/RetailVisionDev/envs/sam3/python.exe
+sam_repository: D:/project/RetailVisionDev/external/sam3/sam3
+sam_checkpoint: D:/project/RetailVisionDev/weights/huggingface/hub/models--facebook--sam3.1/snapshots/daa63191845a41281374e725f4c9e51c7a824460/sam3.1_multiplex.pt
+interaction_config: config/vlx_interaction_video.yaml
+user_missing_grace_seconds: 4.0

@@ -1,0 +1,49 @@
+# Additional current-camera rear-guitar placement; all V2/V3 splits frozen.
+dataset:
+  base: data/toy_guitar_dataset_v3_20261022
+  output: data/toy_guitar_dataset_v3_refined_20261022
+  names:
+    0: toy
+    1: white_guitar
+  min_box_pixels: 4
+  sources:
+  - id: relocation_live
+    annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_22_live_rear_guitar
+    selections:
+      train:
+      - - 1
+        - 18
+      val:
+      - - 28
+        - 31
+      test:
+      - - 40
+        - 45
+training:
+  model: runs/toy_guitar/relocation_v3_20261022/weights/best.pt
+  task: detect
+  imgsz: 640
+  epochs: 100
+  patience: 25
+  batch: 16
+  seed: 42
+  device: '0'
+  project: runs/toy_guitar
+  name: relocation_v3_refined_20261022
+  workers: 4
+  optimizer: auto
+  amp: true
+  save: true
+  plots: true
+  val: true
+  degrees: 45
+  translate: 0.2
+  scale: 0.5
+  fliplr: 0.5
+  mosaic: 1.0
+  close_mosaic: 15
+evaluation:
+  confidence: 0.25
+  iou: 0.7
+  match_iou: 0.5
+  baseline: runs/toy_guitar/multipose_v2_20261021/weights/best.pt

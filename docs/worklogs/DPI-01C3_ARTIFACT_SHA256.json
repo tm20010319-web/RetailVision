@@ -1,0 +1,15 @@
+{
+  "camera_id": "cam03",
+  "source_video_sha256": "18b9b727a8a8276cb07a6f5ad6c91e6b8af3976ade52bd4cd1f1352252eb5ad6",
+  "artifacts": {
+    "initialization_frame.jpg": {"path": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_init\\initialization_frame.jpg", "sha256": "99532E7CEA17121E398564110D66AFD88DA64FD6EEFFEB59AC41E3F9B8A833E4"},
+    "multi_product_mask_overlay.jpg": {"path": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_init\\multi_product_mask_overlay.jpg", "sha256": "F4E769123262A693FC34E7FF2E88AF5783DF6A118D49EB40F4FD490624EBAEBE"},
+    "mask_ai_electric_guitar.png": {"path": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_init\\mask_ai_electric_guitar.png", "sha256": "AB9A1F8D427443FFA19C845D728E7032A9F2521D9CC9ED63A6507C462B5A208C"},
+    "mask_ai_guitar.png": {"path": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_init\\mask_ai_guitar.png", "sha256": "D56D62C519314D7F7C3274FED7024835B163D14EAF907E4BEF8CFAE002337E2B"},
+    "real_propagation_overlay.mp4": {"path": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_propagation\\real_propagation_overlay.mp4", "sha256": "897DAFA4872A7735CF2E29C95ACB120B580828B19569CB9A0DA3848EC8F50E83"},
+    "action_window_diagnostic.json": {"path": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_propagation\\action_window_diagnostic.json", "sha256": "1AA45AD0A85B5016E30FDA9638F79AA2E396585EB34ED40119FD71FA60609082"},
+    "surface_evidence.json": {"path": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_propagation\\surface_evidence.json", "sha256": "C3B1604942422A977B7C958061FCF9FB5547511E6F2EEB75D9A05C0B9BD80107"},
+    "real_propagation_summary.json": {"path": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_propagation\\real_propagation_summary.json", "sha256": "9BB80DD48AA34F0F8AAE7351DD84DF6C6ECC720AD8A13000011462B377C89A49"},
+    "operator_confirmation.json": {"path": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_propagation\\operator_confirmation.json", "sha256": "1A04A4E16F450BD16100E4A4C8C981442A035418D0CAFAD22FCA14500B0E7A48", "statuses": {"ai_electric_guitar": "required", "ai_guitar": "required"}}
+  }
+}

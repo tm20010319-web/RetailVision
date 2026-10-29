@@ -1,0 +1,31 @@
+{
+  "cameras": [
+    {
+      "camera_id": "cam02",
+      "camera_role": "customer_behavior",
+      "store_id": "store-1",
+      "source": "csv-replay://cam02",
+      "staff_vest_enabled": false,
+      "calibration_image_size": [1280, 720],
+      "zone_runtime": {
+        "zone_enter_stable_frames": 2,
+        "zone_exit_stable_frames": 2,
+        "zone_track_lost_seconds": 2.0,
+        "dwell_minimum_seconds": 3.0
+      },
+      "interaction_areas": [
+        {
+          "area_id": "display_island",
+          "points": [
+            [0.4078125, 0.29305555555555557],
+            [0.49765625, 0.2972222222222222],
+            [0.471875, 0.9388888888888889],
+            [0.23984375, 0.9],
+            [0.37734375, 0.3375]
+          ]
+        }
+      ],
+      "display_areas": []
+    }
+  ]
+}

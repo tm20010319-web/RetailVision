@@ -1,0 +1,3 @@
+# Fail-stop Store Runtime on Persistent Finalization Invariants
+
+A persistent contradiction among Finalization Job, Evaluation, Durable Binding, Canonical Visit, recognition provenance, or Track lifecycle facts is preserved as a sanitized error on the still-claimed workflow state and raises a dedicated fatal exception. The new-mode Store Runtime stops and joins every identity-mutating worker, then clears only its own Runtime Cache scope; it does not repair, release, skip, conflict, or retry the uncertain application as ordinary work. Claim expiry permits recovery only after explicit repair and full invariant revalidation on restart, while transient database, Cache, and Backfill failures retain their normal retry behavior.

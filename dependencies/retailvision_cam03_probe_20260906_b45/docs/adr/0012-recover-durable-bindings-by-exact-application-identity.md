@@ -1,0 +1,3 @@
+# Recover Durable Bindings by Exact Application Identity
+
+Track Association Finalization recovers an applied Binding only through the Job's exact Binding reference, and a pending Job may defensively reuse a persisted application only when exactly one Binding has the same Evaluation, recognition, canonical Visit, complete Track scope, and immutable identity provenance. Lifecycle changes do not create a different application identity but can never be reversed by idempotency; missing or contradictory references and duplicate application facts are persistent invariant violations rather than domain conflicts, so Finalization fails fast instead of selecting, repairing, or reviving a Binding automatically.

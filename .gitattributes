@@ -1,0 +1,2 @@
+# Store reviewed source/static assets directly; no LFS dependency.
+* -text

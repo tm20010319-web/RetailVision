@@ -1,0 +1,3 @@
+# Project Finalization Terminal Outcomes onto Recognition Inbox
+
+Recognition Inbox uses `finalization_pending` only while the Finalization workflow lacks a safely committed terminal projection. Applied completion projects canonical `confirmed` plus the exact Binding reference, skipped completion restores the immutable Evaluation's canonical assessment without a Binding reference, and completed conflict projects `track_conflict` only after required Cache invalidation. Job and Inbox terminal changes commit atomically, while transient work and persistent invariant failure retain `finalization_pending`; application reasons remain on the Job and never overwrite Track Association diagnostics or other Inbox state axes.

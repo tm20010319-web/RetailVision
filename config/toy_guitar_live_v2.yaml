@@ -1,0 +1,33 @@
+# V2 multi-pose live test for behavior-detection-1; V1 configuration retained.
+camera:
+  id: behavior-detection-1
+  name: 行为检测-1
+  host: 192.0.2.6
+  http_port: 80
+  rtsp_port: 554
+  rtsp_path: /live/0/SUB
+  expected_p2p_prefix: REPLACE_WITH_DEVICE_P2P_PREFIX
+  username: admin
+  password_env: TOY_GUITAR_CAMERA_PASSWORD
+  allow_empty_password: true  # Confirmed from this camera's existing EasyVMS record.
+
+model:
+  weights: runs/toy_guitar/multipose_v2_20261021/weights/best.pt
+  expected_names:
+    0: toy
+    1: white_guitar
+  display_names:
+    0: 黄色小蜜蜂玩偶
+    1: 白色吉他
+  semantic_names:
+    0: yellow_bee_toy
+    1: white_guitar
+  imgsz: 640
+  confidence: 0.25
+  device: '0'
+
+preview:
+  inference_fps: 10
+  max_frame_age_seconds: 2
+  window_width: 1280
+  runtime_dir: D:/project/RetailVisionDev/runtime/toy-guitar-live-camera1-v2

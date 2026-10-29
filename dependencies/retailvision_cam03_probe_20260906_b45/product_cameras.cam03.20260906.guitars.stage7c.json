@@ -1,0 +1,37 @@
+{
+  "config_version": "dpi01d.cam03-video-20260906-191100-pending-v1",
+  "camera_id": "cam03",
+  "frame_size": [1280, 720],
+  "selected_product_keys": ["ai_electric_guitar", "ai_guitar"],
+  "products": {
+    "ai_electric_guitar": {"product_name": "AI电吉他", "product_type": "electric_guitar", "tracking_product_type": "smart_guitar"},
+    "ai_guitar": {"product_name": "AI吉他", "product_type": "guitar", "tracking_product_type": "smart_guitar"}
+  },
+  "product_display_surface": {
+    "area_id": "product_display_surface",
+    "area_type": "display",
+    "calibration_status": "PENDING_OPERATOR_CONFIRMATION",
+    "display_evidence_mode": "fixed_support_contact",
+    "support_contact_tolerance": 0.08,
+    "pixel_points": [[515, 300], [980, 300], [980, 545], [515, 545]],
+    "points": [[0.40234375, 0.4166666666666667], [0.765625, 0.4166666666666667], [0.765625, 0.7569444444444444], [0.40234375, 0.7569444444444444]],
+    "support_contact_points": {"ai_electric_guitar": [793, 520], "ai_guitar": [880, 528]}
+  },
+  "initialization_policy": {
+    "batch_scope": "two_guitars_only_robot_deferred",
+    "frame_index": 0,
+    "same_initialization_frame": true,
+    "same_sam_session": true,
+    "require_operator_mask_confirmation": true,
+    "candidate_reuse": "FAIL_CLOSED",
+    "mask_multi_instance": "FAIL_CLOSED",
+    "pairwise_mask_conflict": "FAIL_CLOSED",
+    "surface_gate": "product_display_surface_only",
+    "track_creation": "atomic_batch_after_all_confirmed_masks",
+    "short_window_count": 2,
+    "minimum_target_count": 2,
+    "maximum_target_count": 2
+  },
+  "sam3": {"runtime_root": "D:\\GJJ\\work\\sam3"},
+  "source_video": {"path": "D:\\GJJ\\work\\video\\2026_09_06_19_16_00.mp4", "sha256": "48c1cdbb5d4e5da2c77add261859f5304b8517a302abf3b23f23422fd976051d", "source_size": [2560, 1440], "coordinate_size": [1280, 720], "coordinate_transform": "full_frame_resize_2560x1440_to_1280x720_v1"}
+}

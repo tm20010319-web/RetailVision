@@ -1,0 +1,48 @@
+# Relocation supplement; preserve every V2 image, label and split.
+dataset:
+  base: data/toy_guitar_dataset_v2_20261021
+  output: data/toy_guitar_dataset_v3_20261022
+  names: {0: toy, 1: white_guitar}
+  min_box_pixels: 4
+  sources:
+    - id: relocation
+      annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_22_16_11_17_3s
+      # Unselected frames are temporal buffers, not additional training data.
+      selections:
+        train: [[1, 10], [26, 28], [31, 33], [37, 58], [101, 103]]
+        val: [[16, 18], [35, 35], [68, 72]]
+        test: [[23, 25], [30, 30], [36, 36], [88, 94]]
+    - id: relocation_motion
+      annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_22_16_11_17_motion
+      selections:
+        train: [[2, 2], [5, 6], [9, 10], [12, 12], [15, 16]]
+        val: []
+        test: []
+training:
+  model: runs/toy_guitar/multipose_v2_20261021/weights/best.pt
+  task: detect
+  imgsz: 640
+  epochs: 100
+  patience: 25
+  batch: 16
+  seed: 42
+  device: '0'
+  project: runs/toy_guitar
+  name: relocation_v3_20261022
+  workers: 4
+  optimizer: auto
+  amp: true
+  save: true
+  plots: true
+  val: true
+  degrees: 45
+  translate: 0.20
+  scale: 0.5
+  fliplr: 0.5
+  mosaic: 1.0
+  close_mosaic: 15
+evaluation:
+  confidence: 0.25
+  iou: 0.70
+  match_iou: 0.50
+  baseline: runs/toy_guitar/multipose_v2_20261021/weights/best.pt

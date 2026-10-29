@@ -1,0 +1,3 @@
+# Fence Unterminated Confirmed Bindings by Exact Track Token
+
+SQLite enforces at most one unterminated confirmed Durable Binding per complete Track token with a stable partial unique index on `track_token` where `status='confirmed'` and `valid_to IS NULL`. This persistence fence is deliberately stronger than the time-dependent Active Confirmed Binding predicate: ordinary expiry does not release or repair the token, because V1 forbids Track ID reuse within one Runtime instance. Expired fence collisions, duplicate rows, and malformed token lifecycles are persistent invariant violations requiring explicit audited repair rather than Finalizer mutation or domain conflict classification.

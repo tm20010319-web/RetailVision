@@ -1,0 +1,39 @@
+{
+  "camera_id": "cam02",
+  "frame_size": [1280, 720],
+  "grounding_surface_overlap_min": 0.50,
+  "surface_overlap_min": 0.50,
+  "product_track_lost_after_windows": 3,
+  "association_overlap_iou_min": 0.05,
+  "association_geometry_distance_max": 0.20,
+  "association_ambiguity_margin": 0.05,
+  "selected_product_keys": ["smart_toy_a", "smart_toy_b"],
+  "product_display_surface": {
+    "area_id": "product_display_surface",
+    "area_type": "display",
+    "calibration_image_size": [1280, 720],
+    "calibration_reference": "D:\\GJJ\\work\\stage7c2_bbox_prompt_ab\\pinned_12_frames\\00000.jpg",
+    "pixel_points": [
+      [639, 339],
+      [838, 338],
+      [919, 692],
+      [616, 695]
+    ],
+    "points": [
+      [0.49921875, 0.4708333333333333],
+      [0.6546875, 0.46944444444444444],
+      [0.71796875, 0.9611111111111111],
+      [0.48125, 0.9652777777777778]
+    ]
+  },
+  "grounding_groups": {
+    "smart_toy": {
+      "text_prompt": "plush toy",
+      "product_keys": ["smart_toy_a", "smart_toy_b"]
+    }
+  },
+  "products": {
+    "smart_toy_a": {"product_type": "smart_toy"},
+    "smart_toy_b": {"product_type": "smart_toy"}
+  }
+}

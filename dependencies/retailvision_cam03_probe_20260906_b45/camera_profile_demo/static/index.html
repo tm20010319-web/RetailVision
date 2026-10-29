@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>门店顾客画像</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">STORE VISION / LIVE</p>
+        <h1>门店顾客画像</h1>
+      </div>
+      <div class="health" aria-live="polite">
+        <span id="cameraStatus" class="status-pill">摄像头连接中</span>
+        <span id="modelStatus" class="status-pill">模型待命</span>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="visitor-panel" aria-label="最近访客">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">RECENT 5</p>
+            <h2>最近访客</h2>
+          </div>
+          <span id="visitorCount" class="counter">0</span>
+        </div>
+        <div id="visitorList" class="visitor-list">
+          <div class="empty-list">等待真实摄像头抓拍</div>
+        </div>
+      </aside>
+
+      <section id="detailPanel" class="detail-panel" aria-live="polite">
+        <div class="empty-detail">
+          <div class="empty-mark">AI</div>
+          <h2>等待大模型画像</h2>
+          <p>稳定 Track 生成后，真实抓拍与画像状态会显示在这里。</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

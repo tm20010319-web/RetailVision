@@ -1,0 +1,8 @@
+# Diagnostic-only candidate for crowded greeting-area tracking.
+tracker_type: bytetrack
+track_high_thresh: 0.35
+track_low_thresh: 0.10
+new_track_thresh: 0.35
+track_buffer: 60
+match_thresh: 0.70
+fuse_score: true

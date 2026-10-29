@@ -1,0 +1,3 @@
+# Project Durable Binding Provenance onto Behaviour Events
+
+Behavior Identity Backfill runs only after its Durable Track Identity Binding commits and projects that exact Binding onto eligible Behaviour Events from the same Store, camera, Runtime instance, full Track token, and closed 30-second business-time window. It never infers entry evidence or changes Visit, Arrival, Binding, Cache, or Runtime activity; existing incompatible identity provenance is retained as a per-row domain conflict, while zero rows, identical replay, and safely handled conflicts are successful idempotent completion rather than retryable failure.

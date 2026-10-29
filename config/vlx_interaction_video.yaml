@@ -1,0 +1,31 @@
+# Independent uploaded-video experiment; does not enable a production gate.
+vlx_config: config/vlx_seek_trial.yaml
+pose_weights: D:/project/RetailVisionDev/weights/yolo/yolo11n-pose.pt
+pose_device: cpu
+pose_image_size: 1280
+pose_confidence: 0.4
+wrist_confidence: 0.45
+sample_fps: 5.0
+recognition_interval_seconds: 0.8
+# Pixel-verified tracks may bridge missed VLX confirmations; missing pixels
+# still use the separate 2s interaction grace. Model age is never renewed by flow.
+tracking_ttl_seconds: 6.0
+appearance_tracking: csrt
+max_new_tokens: 256
+preview_fps: 5.0
+font_path: C:/Windows/Fonts/msyh.ttc
+runtime_root: D:/project/RetailVisionDev/runtime/vlx-interaction-video
+interaction:
+  baseline_seconds: 0.6
+  pickup_confirm_seconds: 0.4
+  putdown_confirm_seconds: 0.8
+  stable_radius: 0.008
+  pickup_distance: 0.018
+  wrist_motion_distance: 0.004
+  hand_margin: 0.018
+  missing_grace_seconds: 2.0
+  # Applies only to a shrinking target occluded inside its still-visible owner.
+  # Such recovered intervals remain explicitly marked as occlusion estimates.
+  occluded_hold_grace_seconds: 15.0
+  max_observation_gap_seconds: 0.75
+  rest_pose_memory_seconds: 30.0

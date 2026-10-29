@@ -1,0 +1,26 @@
+# Zero-shot VLX probe for the two user-confirmed stationary training targets.
+# WeDetect supplies automatic proposals; no manual boxes are passed to VLX.
+external_repository: D:/project/RetailVisionDev/external/VLX-Seek
+repository_commit: f30eff457ed3620cb7074ea8f8d8d7ed0be7096f
+model_path: D:/project/RetailVisionDev/weights/VLX-Seek-1.5-10B
+model_revision: 6d1925f932ee6f0a8790b15420f403ee8f8e8f6a
+detector_checkpoint: D:/project/RetailVisionDev/weights/WeDetect/wedetect_base_uni.pth
+detector_revision: 3b9d0670cbf300d0b48f900ae87a6c4785d88939
+python: D:/project/RetailVisionDev/envs/vlx-seek-py311/Scripts/python.exe
+runtime_root: D:/project/RetailVisionDev/runtime/vlx-new-items
+precision: nf4_language_bf16_vision_sdpa
+max_new_tokens: 128
+queries:
+  # Query separately: the combined query intermittently omitted the smaller
+  # eye massager even though WeDetect proposed the correct region.
+  - small home security camera
+  - wearable eye massager
+cases:
+  - id: at_000s
+    image: D:/project/RetailVisionDev/runtime/vlx-new-items/probe_20261028_183015/frame_01.jpg
+  - id: at_045s
+    image: D:/project/RetailVisionDev/runtime/vlx-new-items/probe_20261028_183015/frame_02.jpg
+  - id: at_090s
+    image: D:/project/RetailVisionDev/runtime/vlx-new-items/probe_20261028_183015/frame_03.jpg
+  - id: at_135s
+    image: D:/project/RetailVisionDev/runtime/vlx-new-items/probe_20261028_183015/frame_04.jpg

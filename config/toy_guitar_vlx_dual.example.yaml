@@ -1,0 +1,30 @@
+vlx_config: config/vlx_seek_trial.local.yaml
+runtime_root: runtime/toy-guitar-vlx-dual
+window_width: 1600
+mean_confirmation_target_seconds: 3
+max_input_age_seconds: 2
+tracking_history_seconds: 8
+tracking_ttl_seconds: 16
+switch_margin: 8
+switch_hold_seconds: 0.8
+cameras:
+- id: behavior-detection-1
+  name: 行为检测-1
+  host: 192.0.2.1
+  http_port: 80
+  rtsp_port: 554
+  rtsp_path: /live/0/SUB
+  username: REPLACE_WITH_CAMERA_USER
+  password_env: TOY_GUITAR_CAMERA_PASSWORD
+  allow_empty_password: false
+  expected_p2p_prefix: REPLACE_WITH_CAMERA_1_P2P_PREFIX
+- id: behavior-detection-3
+  name: 行为检测-3
+  host: 192.0.2.2
+  http_port: 80
+  rtsp_port: 554
+  rtsp_path: /live/0/SUB
+  username: REPLACE_WITH_CAMERA_USER
+  password_env: TOY_GUITAR_CAMERA3_PASSWORD
+  allow_empty_password: false
+  expected_p2p_prefix: REPLACE_WITH_CAMERA_2_P2P_PREFIX

@@ -1,0 +1,9 @@
+# Example only: replace model/Python/font locations before use. No credentials.
+repository_commit: f30eff457ed3620cb7074ea8f8d8d7ed0be7096f
+model_revision: 6d1925f932ee6f0a8790b15420f403ee8f8e8f6a
+detector_revision: 3b9d0670cbf300d0b48f900ae87a6c4785d88939
+precision: nf4_language_bf16_vision_sdpa
+max_new_tokens: 128
+external_repository: /path/to/VLX-Seek
+model_path: /path/to/VLX-Seek-1.5-10B
+detector_checkpoint: /path/to/wedetect_base_uni.pth

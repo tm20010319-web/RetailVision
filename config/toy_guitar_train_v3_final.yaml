@@ -1,0 +1,99 @@
+# Corrected new train-only motion box and reviewed current rear-guitar placement.
+dataset:
+  base: data/toy_guitar_dataset_v2_20261021
+  output: data/toy_guitar_dataset_v3_final_20261022
+  names:
+    0: toy
+    1: white_guitar
+  min_box_pixels: 4
+  sources:
+  - id: relocation
+    annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_22_16_11_17_3s
+    selections:
+      train:
+      - - 1
+        - 10
+      - - 26
+        - 28
+      - - 31
+        - 33
+      - - 37
+        - 58
+      - - 101
+        - 103
+      val:
+      - - 16
+        - 18
+      - - 35
+        - 35
+      - - 68
+        - 72
+      test:
+      - - 23
+        - 25
+      - - 30
+        - 30
+      - - 36
+        - 36
+      - - 88
+        - 94
+  - id: relocation_motion
+    annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_22_16_11_17_motion
+    selections:
+      train:
+      - - 2
+        - 2
+      - - 5
+        - 6
+      - - 9
+        - 10
+      - - 12
+        - 12
+      - - 15
+        - 16
+      val: []
+      test: []
+  - id: relocation_live
+    annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_22_live_rear_guitar
+    selections:
+      train:
+      - - 1
+        - 18
+      val:
+      - - 28
+        - 31
+      test:
+      - - 40
+        - 45
+training:
+  model: runs/toy_guitar/relocation_v3_20261022/weights/best.pt
+  task: detect
+  imgsz: 640
+  epochs: 100
+  patience: 100
+  batch: 16
+  seed: 42
+  device: '0'
+  project: runs/toy_guitar
+  name: relocation_v3_final_20261022
+  workers: 4
+  optimizer: AdamW
+  amp: true
+  save: true
+  plots: true
+  val: true
+  degrees: 25
+  translate: 0.2
+  scale: 0.35
+  fliplr: 0.5
+  mosaic: 0.3
+  close_mosaic: 15
+  lr0: 0.0002
+  lrf: 0.1
+  warmup_epochs: 1.0
+  cos_lr: true
+evaluation:
+  confidence: 0.25
+  iou: 0.7
+  match_iou: 0.5
+  baseline: runs/toy_guitar/multipose_v2_20261021/weights/best.pt

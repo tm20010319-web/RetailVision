@@ -1,0 +1,84 @@
+dataset:
+  base: data/toy_guitar_dataset_v4_precision_context_20261022
+  output: data/toy_guitar_dataset_v4_upright_20261022
+  names:
+    0: toy
+    1: white_guitar
+  min_box_pixels: 4
+  sources:
+  - id: relocation_precision_upright
+    annotations: D:/project/RetailVisionDev/runtime/annotations/2026_10_22_precision_upright
+    selections:
+      train:
+      - - 77
+        - 77
+      - - 78
+        - 78
+      - - 79
+        - 79
+      - - 80
+        - 80
+      - - 81
+        - 81
+      - - 82
+        - 82
+      - - 83
+        - 83
+      - - 84
+        - 84
+      - - 85
+        - 85
+      - - 86
+        - 86
+      - - 88
+        - 88
+      val:
+      - - 96
+        - 96
+      - - 97
+        - 97
+      - - 98
+        - 98
+      test:
+      - - 106
+        - 106
+      - - 107
+        - 107
+      - - 108
+        - 108
+      - - 109
+        - 109
+      - - 110
+        - 110
+training:
+  model: runs/toy_guitar/precision_v4_context_20261022/weights/best.pt
+  task: detect
+  imgsz: 640
+  epochs: 100
+  patience: 100
+  batch: 16
+  seed: 42
+  device: '0'
+  project: runs/toy_guitar
+  name: precision_v4_upright_20261022
+  workers: 2
+  optimizer: AdamW
+  amp: true
+  save: true
+  plots: true
+  val: true
+  degrees: 25
+  translate: 0.2
+  scale: 0.35
+  fliplr: 0.5
+  mosaic: 0.0
+  close_mosaic: 0
+  lr0: 0.0002
+  lrf: 0.1
+  warmup_epochs: 1.0
+  cos_lr: true
+evaluation:
+  confidence: 0.5
+  iou: 0.7
+  match_iou: 0.5
+  baseline: runs/toy_guitar/precision_v4_context_20261022/weights/best.pt

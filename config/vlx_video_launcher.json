@@ -1,0 +1,6 @@
+{
+  "vlx_python": "D:/project/RetailVisionDev/envs/vlx-interaction-py311/Scripts/python.exe",
+  "refinement_config": "config/vlx_interaction_refined.yaml",
+  "ffmpeg_directory": "D:/project/RetailVisionDev/tools/ffmpeg/bin",
+  "tracking_chunk_size": 150
+}

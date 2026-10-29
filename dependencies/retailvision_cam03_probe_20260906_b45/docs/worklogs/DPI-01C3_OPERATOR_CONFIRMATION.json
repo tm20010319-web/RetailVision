@@ -1,0 +1,15 @@
+{
+  "schema_version": "dpi-01c3.operator-confirmation.v1",
+  "camera_id": "cam03",
+  "frame_sha256": "492d22e4f9a9fb693052636a242eaa8242a9d251afe299556a67e3d3914b1f2c",
+  "surface_config_version": "dpi01c.dpi01b-action-cam03-20260905",
+  "calibration_status": "CONFIRMED",
+  "display_evidence_mode": "fixed_support_contact",
+  "support_contact_tolerance": 0.08,
+  "support_contact_points_pixels": {"ai_electric_guitar": [793, 520], "ai_guitar": [880, 528]},
+  "confirmations": {
+    "ai_electric_guitar": {"product_name": "AI电吉他", "candidate_id": 0, "mask_sha256": "1a80f0fe0700abdab46be4d5356bdb908dd198bb2c9b32f12e1741a78875dafb", "status": "confirmed"},
+    "ai_guitar": {"product_name": "AI吉他", "candidate_id": 2, "mask_sha256": "53a5eefea6dd5df88c35bcc63f75f7dec2e9e80f29dc1e83acc2aade681a6a66", "status": "confirmed"}
+  },
+  "operator_confirmation": "confirmed after visual review of multi_product_mask_overlay.jpg"
+}

@@ -1,0 +1,79 @@
+{
+  "config_version": "dpi01c.dpi01b-action-cam03-20260905",
+  "camera_id": "cam03",
+  "frame_size": [1280, 720],
+  "selected_product_keys": [
+    "ai_electric_guitar",
+    "ai_guitar"
+  ],
+  "product_track_lost_after_windows": 16,
+  "products": {
+    "ai_electric_guitar": {
+      "product_name": "AI电吉他",
+      "product_type": "electric_guitar",
+      "tracking_product_type": "smart_guitar"
+    },
+    "ai_guitar": {
+      "product_name": "AI吉他",
+      "product_type": "guitar",
+      "tracking_product_type": "smart_guitar"
+    }
+  },
+  "product_display_surface": {
+    "area_id": "product_display_surface",
+    "area_type": "display",
+    "calibration_status": "CONFIRMED",
+    "display_evidence_mode": "fixed_support_contact",
+    "support_contact_tolerance": 0.08,
+    "calibration_reference": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_init\\initialization_frame.jpg",
+    "surface_overlay": "D:\\GJJ\\work\\dpi01c3_cam03_dpi01b_action_init\\multi_product_mask_overlay.jpg",
+    "source_frame": {
+      "source_seq": 1700,
+      "source_pts": 896512,
+      "time_base": {"num": 1, "den": 12800},
+      "frame_sha256": "492d22e4f9a9fb693052636a242eaa8242a9d251afe299556a67e3d3914b1f2c"
+    },
+    "pixel_points": [
+      [515, 300],
+      [980, 300],
+      [980, 545],
+      [515, 545]
+    ],
+    "support_contact_points": {
+      "ai_electric_guitar": [793, 520],
+      "ai_guitar": [880, 528]
+    },
+    "points": [
+      [0.40234375, 0.4166666666666667],
+      [0.765625, 0.4166666666666667],
+      [0.765625, 0.7569444444444444],
+      [0.40234375, 0.7569444444444444]
+    ]
+  },
+  "initialization_policy": {
+    "batch_scope": "two_guitars_only_robot_deferred",
+    "frame_index": 0,
+    "same_initialization_frame": true,
+    "same_sam_session": true,
+    "require_operator_mask_confirmation": true,
+    "candidate_reuse": "FAIL_CLOSED",
+    "mask_multi_instance": "FAIL_CLOSED",
+    "pairwise_mask_conflict": "FAIL_CLOSED",
+    "surface_gate": "product_display_surface_only",
+    "track_creation": "atomic_batch_after_all_confirmed_masks",
+    "short_window_count": 2,
+    "minimum_target_count": 2,
+    "maximum_target_count": 2
+  },
+  "sam3": {
+    "runtime_root": "D:\\GJJ\\work\\sam3",
+    "checkpoint_path": "C:\\Users\\Administrator\\.cache\\huggingface\\hub\\models--facebook--sam3.1\\snapshots\\daa63191845a41281374e725f4c9e51c7a824460\\sam3.1_multiplex.pt"
+  },
+  "source_video": {
+    "path": "D:\\GJJ\\work\\video\\dpi01b_2026_09_04_16_43_24_1280x720.mp4",
+    "sha256": "18b9b727a8a8276cb07a6f5ad6c91e6b8af3976ade52bd4cd1f1352252eb5ad6",
+    "source_size": [1280, 720],
+    "coordinate_size": [1280, 720],
+    "coordinate_transform": "identity_1280x720_v1"
+  }
+}

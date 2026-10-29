@@ -1,0 +1,7 @@
+# Example only: replace model/Python/font locations before use. No credentials.
+vlx_python: /path/to/vlx-python
+sam_python: /path/to/sam-python
+sam_repository: /path/to/sam3
+sam_checkpoint: /path/to/sam3.1_multiplex.pt
+interaction_config: config/vlx_interaction_video.local.yaml
+user_missing_grace_seconds: 4.0

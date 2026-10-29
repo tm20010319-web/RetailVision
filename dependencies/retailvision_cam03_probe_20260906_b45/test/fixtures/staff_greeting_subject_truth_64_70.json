@@ -1,0 +1,136 @@
+{
+  "schema_version": "staff_greeting_subject_truth_v1",
+  "coordinate_mode": "pixel_xyxy",
+  "source_sha256": "7a6b195ae7c912a74a829e8067923bfeaf1b608d063304f77917d5e5621c6541",
+  "source_frame_size": [
+    2560,
+    1440
+  ],
+  "window": {
+    "start": 64.0,
+    "end": 70.0
+  },
+  "scope": "manual subject truth for the supplied MP4 only; track IDs are deliberately absent and are not identity",
+  "frames": [
+    {
+      "pts_seconds": 66.9939159292035,
+      "subjects": [
+        {
+          "subject": "black_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [1145, 480, 1475, 1170]
+        },
+        {
+          "subject": "blue_vest_employee",
+          "expected_role": "staff",
+          "bbox": [1370, 830, 1888, 1420]
+        },
+        {
+          "subject": "flower_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [1688, 1145, 2080, 1435]
+        }
+      ]
+    },
+    {
+      "pts_seconds": 67.491703539823,
+      "subjects": [
+        {
+          "subject": "black_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [1045, 465, 1385, 1115]
+        },
+        {
+          "subject": "blue_vest_employee",
+          "expected_role": "staff",
+          "bbox": [1235, 765, 1630, 1380]
+        },
+        {
+          "subject": "flower_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [1665, 1130, 2102, 1435]
+        }
+      ]
+    },
+    {
+      "pts_seconds": 67.9894911504425,
+      "subjects": [
+        {
+          "subject": "black_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [955, 445, 1255, 1130]
+        },
+        {
+          "subject": "blue_vest_employee",
+          "expected_role": "staff",
+          "bbox": [1085, 758, 1413, 1355]
+        },
+        {
+          "subject": "flower_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [1662, 1113, 2095, 1435]
+        }
+      ]
+    },
+    {
+      "pts_seconds": 68.1554203539823,
+      "subjects": [
+        {
+          "subject": "black_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [930, 445, 1210, 1138]
+        },
+        {
+          "subject": "blue_vest_employee",
+          "expected_role": "staff",
+          "bbox": [1003, 753, 1330, 1352]
+        },
+        {
+          "subject": "flower_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [1662, 1112, 2092, 1435]
+        }
+      ]
+    },
+    {
+      "pts_seconds": 68.6946902654867,
+      "subjects": [
+        {
+          "subject": "black_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [905, 448, 1082, 850]
+        },
+        {
+          "subject": "blue_vest_employee",
+          "expected_role": "staff",
+          "bbox": [870, 708, 1152, 1324]
+        },
+        {
+          "subject": "flower_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [1670, 1112, 2087, 1435]
+        }
+      ]
+    },
+    {
+      "pts_seconds": 69.0265486725664,
+      "subjects": [
+        {
+          "subject": "black_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [818, 423, 1112, 1092]
+        },
+        {
+          "subject": "blue_vest_employee",
+          "expected_role": "staff",
+          "bbox": [772, 722, 1060, 1358]
+        },
+        {
+          "subject": "flower_shirt_customer",
+          "expected_role": "customer",
+          "bbox": [1674, 1112, 2087, 1435]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-29",
+  "public_snapshot_tests": {
+    "passed": 123,
+    "failed": 0,
+    "warning": "pre-existing SQLAlchemy deprecation"
+  },
+  "python_parse_files": 881,
+  "known_credential_and_artifact_scan": "passed",
+  "credential_pattern_review": "only documented placeholders and synthetic test fixtures",
+  "production_database_accessed": false,
+  "full_business_suite_rerun": false,
+  "clean_machine_installation_verified": false,
+  "real_pipeline_smoke": "3-second fresh three-toy run passed in original workspace; not accuracy qualification",
+  "known_missing_original_assets": {
+    "path": "demo-frontend/public/customer-display/models/miaoxiang-robot-elephant.glb",
+    "copies": 2,
+    "status": "missing original LFS binaries; pointers recorded in .glb.unavailable.md notices for public GitHub compatibility",
+    "affects": "3D frontend display; not VLX pipeline"
+  }
+}

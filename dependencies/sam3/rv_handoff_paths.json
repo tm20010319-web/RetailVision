@@ -1,0 +1,10 @@
+{
+  "code_root": "D:\\project\\RealtimeEntryPipeline-master",
+  "install_root": "D:\\RetailVisionDev",
+  "agents_python": "D:\\RetailVisionDev\\envs\\agents-py311\\python.exe",
+  "sam_python": "D:\\RetailVisionDev\\envs\\sam3\\python.exe",
+  "sam_runtime_root": "D:\\RetailVisionDev\\external\\sam3",
+  "analyzer_root": "D:\\RetailVisionDev\\external\\retailvision_cam03_probe_20260906_b45",
+  "runtime_output": "D:\\RetailVisionDev\\runtime\\output",
+  "hf_home": "D:\\RetailVisionDev\\weights\\huggingface"
+}
