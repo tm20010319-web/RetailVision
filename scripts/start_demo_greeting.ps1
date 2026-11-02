@@ -7,7 +7,7 @@ $projectRoot = Split-Path -Parent $PSScriptRoot
 Set-Location $projectRoot
 
 if (-not $env:DATABASE_URL) {
-    $databasePath = (Join-Path $projectRoot "demo_flow.db").Replace("\", "/")
+    $databasePath = (Join-Path $projectRoot "runtime/databases/demo_flow.db").Replace("\", "/")
     $env:DATABASE_URL = "sqlite:///$databasePath"
 }
 if (-not $Source) {
@@ -18,4 +18,4 @@ $env:DEMO_GREETING_VIDEO_SOURCE = $Source
 $env:DEMO_GREETING_CAMERA_ID = if ($env:DEMO_GREETING_CAMERA_ID) { $env:DEMO_GREETING_CAMERA_ID } else { "entrance-1" }
 $env:DEMO_GREETING_STORE_ID = if ($env:DEMO_GREETING_STORE_ID) { $env:DEMO_GREETING_STORE_ID } else { "store-1" }
 
-& $Python -m demo_greeting
+& $Python -m demo.greeting

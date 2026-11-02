@@ -1,0 +1,22 @@
+[
+  {
+    "prompt": "最近哪些商品最受欢迎？",
+    "expected_tools": ["rank_products"],
+    "required_keywords": ["互动", "停留"]
+  },
+  {
+    "prompt": "帮我分析一下智能熊这个商品最近表现",
+    "expected_tools": ["get_product_behavior_summary"],
+    "required_output_fields": [
+      "interaction_count",
+      "pickup_count",
+      "holding_duration",
+      "recommendation"
+    ]
+  },
+  {
+    "prompt": "智能熊和智能象哪个商品更值得重点推荐？",
+    "expected_tools": ["compare_product_behavior"],
+    "required_output_fields": ["comparison", "reason", "recommendation"]
+  }
+]

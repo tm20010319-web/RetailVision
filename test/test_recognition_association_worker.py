@@ -12,10 +12,10 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from agent.db import configure_sqlite_foreign_keys
-from agent.identity_runtime_lease import IdentityAssociationRuntimeLeaseService
+from agent.platform.identity_runtime_lease import IdentityAssociationRuntimeLeaseService
 from agent.models import DeviceRecognitionInbox, Member, MemberArrival, Visit
-from agent.recognition_association_worker import RecognitionAssociationWorker, TrackAssociationCandidate
-from agent.reusable_visit_resolver import ReusableVisitResolver
+from agent.identity.recognition_association_worker import RecognitionAssociationWorker, TrackAssociationCandidate
+from agent.visits.reusable_visit_resolver import ReusableVisitResolver
 from agent.schema_evolution import evolve_schema
 
 

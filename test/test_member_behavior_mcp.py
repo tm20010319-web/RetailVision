@@ -8,8 +8,8 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.member_behavior import MemberBehaviorError  # noqa: E402
-from agent.member_behavior_mcp import MemberBehaviorMCPTools  # noqa: E402
+from agent.analytics.member_behavior import MemberBehaviorError  # noqa: E402
+from agent.analytics.member_behavior_mcp import MemberBehaviorMCPTools  # noqa: E402
 from agent.store_context import StoreContext  # noqa: E402
 
 
@@ -25,6 +25,10 @@ class RecordingMemberBehaviorService:
         self.calls.append(("timeline", kwargs))
         return {"status": "ok", "kind": "timeline"}
 
+    def list_recent_member_behaviors(self, **kwargs):
+        self.calls.append(("recent", kwargs))
+        return {"status": "ok", "kind": "recent"}
+
 
 class MemberBehaviorMCPToolsTests(unittest.TestCase):
     def setUp(self) -> None:
@@ -34,10 +38,14 @@ class MemberBehaviorMCPToolsTests(unittest.TestCase):
     def test_tool_schemas_are_fixed_and_do_not_accept_internal_fields(self) -> None:
         tools = self.tools.list_tools()
         self.assertEqual(
-            ["get_member_behavior_summary", "list_member_behavior_timeline"],
+            [
+                "get_member_behavior_summary",
+                "list_member_behavior_timeline",
+                "list_recent_member_behaviors",
+            ],
             [item["name"] for item in tools],
         )
-        for tool in tools:
+        for tool in tools[:2]:
             schema = tool["inputSchema"]
             self.assertFalse(schema["additionalProperties"])
             self.assertEqual(["member_ref"], schema["required"])
@@ -48,6 +56,11 @@ class MemberBehaviorMCPToolsTests(unittest.TestCase):
                 self.assertNotIn(forbidden, schema["properties"])
         self.assertNotIn("limit", tools[0]["inputSchema"]["properties"])
         self.assertEqual(50, tools[1]["inputSchema"]["properties"]["limit"]["maximum"])
+        recent_schema = tools[2]["inputSchema"]
+        self.assertEqual([], recent_schema["required"])
+        self.assertNotIn("member_ref", recent_schema["properties"])
+        self.assertEqual(100, recent_schema["properties"]["limit"]["default"])
+        self.assertEqual(200, recent_schema["properties"]["limit"]["maximum"])
 
     def test_summary_parses_local_naive_time_and_trims_product_name(self) -> None:
         result = self.tools.call("get_member_behavior_summary", {

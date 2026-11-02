@@ -17,9 +17,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.behavior_monitor import BehaviorMonitor
-from agent.staff_greeting_evaluation import StaffGreetingEvaluation
-from agent.behavior_vision import (
+from agent.behavior.behavior_monitor import BehaviorMonitor
+from agent.behavior.staff_greeting_evaluation import StaffGreetingEvaluation
+from agent.behavior.behavior_vision import (
     BehaviorVisionAdapter,
     draw_behavior_area_overlay,
     load_behavior_camera_configs,
@@ -30,20 +30,20 @@ def _arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument(
-        "--config", type=Path, default=PROJECT_ROOT / "behavior_cameras.example.json"
+        "--config", type=Path, default=PROJECT_ROOT / "configs/examples/behavior_cameras.example.json"
     )
     parser.add_argument(
-        "--person-model", type=Path, default=PROJECT_ROOT / "outputs/models/yolo11n.pt"
+        "--person-model", type=Path, default=PROJECT_ROOT / "data/models/yolo11n.pt"
     )
     parser.add_argument(
         "--vest-model",
         type=Path,
-        default=PROJECT_ROOT / "runs/staff_vest/baseline_v1/weights/best.pt",
+        default=PROJECT_ROOT / "data/models/staff_vest.pt",
     )
     parser.add_argument(
         "--pose-model",
         type=Path,
-        default=PROJECT_ROOT / "outputs/models/yolo11n-pose.pt",
+        default=PROJECT_ROOT / "data/models/yolo11n-pose.pt",
     )
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--start-seconds", type=float, default=25.0)

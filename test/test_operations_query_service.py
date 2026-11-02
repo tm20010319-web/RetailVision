@@ -14,7 +14,7 @@ from agent.models import (
     Member,
     MemberEntryEvent,
 )
-from agent.operations_query_service import OperationsQueryService
+from agent.api.operations_query_service import OperationsQueryService
 
 
 class OperationsQueryServiceTests(unittest.TestCase):

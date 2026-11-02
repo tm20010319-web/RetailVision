@@ -11,7 +11,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.offline_artifacts import (  # noqa: E402
+from agent.offline.offline_artifacts import (  # noqa: E402
     ArtifactStorageSecurityValidator,
     OfflineArtifactError,
     OfflineRunArtifactStore,
@@ -155,7 +155,7 @@ class OfflineArtifactContractTests(unittest.TestCase):
             store = self._store(Path(root))
             writer = store.begin(analysis_job_id="job", analysis_run_id="run")
             self._write_required(writer)
-            from agent import offline_artifacts
+            from agent.offline import offline_artifacts
 
             real_replace = offline_artifacts.os.replace
             calls = 0
@@ -167,7 +167,7 @@ class OfflineArtifactContractTests(unittest.TestCase):
                     raise PermissionError("transient scanner handle")
                 return real_replace(source, destination)
 
-            with patch("agent.offline_artifacts.os.replace", side_effect=transient_replace):
+            with patch("agent.offline.offline_artifacts.os.replace", side_effect=transient_replace):
                 sealed = writer.seal(
                     source_video_id="video",
                     source_content_sha256="a" * 64,

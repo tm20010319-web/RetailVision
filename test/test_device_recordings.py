@@ -14,10 +14,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from agent.behavior_events import EvidenceClipStore
-from agent.camera_face_api import CameraApiProtocolError
+from agent.behavior.behavior_events import EvidenceClipStore
+from agent.platform.camera_face_api import CameraApiProtocolError
 from agent.schema_evolution import evolve_schema
-from agent.device_recordings import (
+from agent.evidence.device_recordings import (
     DeviceRecordingClient,
     EvidenceClipProcessor,
     RecordingCoverageError,

@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 import numpy as np
 
-from agent.sam31_product_tracking import MultiProductTrackRuntime, ProductCandidate, ProductDisplaySurface, ProductDisplayState
+from agent.behavior.sam31_product_tracking import MultiProductTrackRuntime, ProductCandidate, ProductDisplaySurface, ProductDisplayState
 
 
 class UprightSupportTests(unittest.TestCase):

@@ -18,27 +18,27 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.behavior_monitor import BehaviorMonitor
-from agent.behavior_events import BehaviorEventStore
-from agent.behavior_vision import (
+from agent.behavior.behavior_monitor import BehaviorMonitor
+from agent.behavior.behavior_events import BehaviorEventStore
+from agent.behavior.behavior_vision import (
     GREETING_PROFILES,
     BehaviorVisionAdapter,
     load_behavior_camera_configs,
 )
 from agent.schema_evolution import evolve_schema
-from agent.customer_entry_visit import CustomerEntryVisit
-from agent.staff_greeting_evaluation import StaffGreetingEvaluation
-from agent.staff_greeting_shadow_query import StaffGreetingShadowQuery
+from agent.visits.customer_entry_visit import CustomerEntryVisit
+from agent.behavior.staff_greeting_evaluation import StaffGreetingEvaluation
+from agent.api.staff_greeting_shadow_query import StaffGreetingShadowQuery
 from pipelines.behavior_runtime import BehaviorCameraRuntime
 
 
 def arguments() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path, required=True)
-    parser.add_argument("--config", type=Path, default=PROJECT_ROOT / "behavior_cameras.example.json")
-    parser.add_argument("--person-model", type=Path, default=PROJECT_ROOT / "outputs/models/yolo11n.pt")
-    parser.add_argument("--vest-model", type=Path, default=PROJECT_ROOT / "runs/staff_vest/baseline_v1/weights/best.pt")
-    parser.add_argument("--pose-model", type=Path, default=PROJECT_ROOT / "outputs/models/yolo11n-pose.pt")
+    parser.add_argument("--config", type=Path, default=PROJECT_ROOT / "configs/examples/behavior_cameras.example.json")
+    parser.add_argument("--person-model", type=Path, default=PROJECT_ROOT / "data/models/yolo11n.pt")
+    parser.add_argument("--vest-model", type=Path, default=PROJECT_ROOT / "data/models/staff_vest.pt")
+    parser.add_argument("--pose-model", type=Path, default=PROJECT_ROOT / "data/models/yolo11n-pose.pt")
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument("--start-seconds", type=float, default=0.0)
     parser.add_argument("--end-seconds", type=float, default=None)

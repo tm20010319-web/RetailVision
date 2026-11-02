@@ -11,7 +11,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.offline_media import (  # noqa: E402
+from agent.offline.offline_media import (  # noqa: E402
     AuthoritativePresentationTimeSampler,
     ClockSkewDiagnostics,
     ClockSkewSample,
@@ -32,7 +32,7 @@ from agent.offline_media import (  # noqa: E402
     assess_guarded_interior_event_time,
     segment_owns_event_time,
 )
-from agent.offline_source import (  # noqa: E402
+from agent.offline.offline_source import (  # noqa: E402
     HistoricalRegistrationInterval,
     P6SRecordingSource,
     RegistrationScopeValidator,

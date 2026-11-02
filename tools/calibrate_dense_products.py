@@ -29,7 +29,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.product_first_frame_initialization import (  # noqa: E402
+from agent.behavior.product_first_frame_initialization import (  # noqa: E402
     DenseInitializationPolicy,
     DenseProductInitializationError,
     InitializationFrameRef,
@@ -41,7 +41,7 @@ from agent.product_first_frame_initialization import (  # noqa: E402
     proposal_diagnostic_payload,
     result_mapping_payload,
 )
-from agent.sam31_product_tracking import (  # noqa: E402
+from agent.behavior.sam31_product_tracking import (  # noqa: E402
     MultiProductTrackRuntime,
     ProductDisplaySurface,
 )

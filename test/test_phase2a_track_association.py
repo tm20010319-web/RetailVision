@@ -10,13 +10,13 @@ from sqlalchemy import create_engine
 from sqlalchemy import inspect, text
 from sqlalchemy.orm import sessionmaker
 
-from agent.camera_runtime_registry import CameraRuntimeRegistry
-from agent.camera_track_identity import FaceSpatialEvidence, TrackSnapshot, TrackSnapshotBuffer, StoreTrackCandidateProvider
-from agent.device_camera_registration import DeviceCameraRegistrationService
+from agent.identity.camera_runtime_registry import CameraRuntimeRegistry
+from agent.identity.camera_track_identity import FaceSpatialEvidence, TrackSnapshot, TrackSnapshotBuffer, StoreTrackCandidateProvider
+from agent.identity.device_camera_registration import DeviceCameraRegistrationService
 from agent.models import DeviceCameraRegistration, DeviceRecognitionInbox, Member, TrackAssociationEvaluation
-from agent.recognition_association_worker import RecognitionAssociationWorker, TrackAssociationCandidate
+from agent.identity.recognition_association_worker import RecognitionAssociationWorker, TrackAssociationCandidate
 from agent.schema_evolution import evolve_schema
-from agent.track_association_policy import TrackAssociationAuditService
+from agent.identity.track_association_policy import TrackAssociationAuditService
 
 
 class Phase2ATrackAssociationTests(unittest.TestCase):

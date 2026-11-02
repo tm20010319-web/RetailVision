@@ -16,21 +16,21 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from agent.models import Base, BehaviorEvent, EvidenceClip, OfflineBehaviorPublication  # noqa: E402
-from agent.offline_artifacts import (  # noqa: E402
+from agent.offline.offline_artifacts import (  # noqa: E402
     OfflineRunArtifactStore,
     StaticArtifactStorageSecurityAdapter,
 )
-from agent.offline_behavior import (  # noqa: E402
+from agent.offline.offline_behavior import (  # noqa: E402
     OfflineBehaviorEventCandidate,
     PreparedOfflineBehaviorPublication,
 )
-from agent.offline_publication import (  # noqa: E402
+from agent.offline.offline_publication import (  # noqa: E402
     OfflineBehaviorPublisher,
     OfflineBehaviorTimeAuthority,
     TrustedOfflinePublicationGate,
 )
-from agent.offline_publication_sql import SqlAlchemyOfflinePublicationRepository  # noqa: E402
-from agent.behavior_events import BehaviorEventStore  # noqa: E402
+from agent.offline.offline_publication_sql import SqlAlchemyOfflinePublicationRepository  # noqa: E402
+from agent.behavior.behavior_events import BehaviorEventStore  # noqa: E402
 from agent.schema_evolution import evolve_schema  # noqa: E402
 
 

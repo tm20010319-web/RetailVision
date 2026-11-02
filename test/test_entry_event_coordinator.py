@@ -5,8 +5,8 @@ install_runtime_stubs()
 import unittest
 from datetime import datetime, timedelta
 
-from agent.device_identity import DeviceRecognitionEvent, StableTrackEvent
-from agent.entry_event_coordinator import EntryEventCoordinator
+from agent.identity.device_identity import DeviceRecognitionEvent, StableTrackEvent
+from agent.legacy.entry_event_coordinator import EntryEventCoordinator
 
 
 BASE = datetime(2026, 7, 14, 12, 0, 0)

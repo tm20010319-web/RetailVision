@@ -12,8 +12,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.stage10_live_acceptance import evaluate_stage10_3_artifacts
-from agent.stage10_showcase import extract_video_keyframes
+from tools.acceptance.stage10_live_acceptance import evaluate_stage10_3_artifacts
+from tools.acceptance.stage10_showcase import extract_video_keyframes
 
 
 def main(argv: list[str] | None = None) -> int:

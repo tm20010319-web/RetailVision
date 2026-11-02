@@ -7,7 +7,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.behavior_monitor import (
+from agent.behavior.behavior_monitor import (
     BehaviorMonitor,
     BehaviorMonitorConfig,
     PolygonArea,
@@ -16,7 +16,7 @@ from agent.behavior_monitor import (
     ZoneState,
     ZoneTransitionType,
 )
-from agent.staff_greeting_evaluation import StaffGreetingEvaluation
+from agent.behavior.staff_greeting_evaluation import StaffGreetingEvaluation
 
 
 ENTRANCE = PolygonArea(

@@ -20,13 +20,13 @@ from tools.harness.product_analytics.tool_calling import (
     OllamaRetailToolCallingModel,
     ToolCallingNotSupportedError,
 )
-from agent.product_interaction_mcp import build_default_product_analytics_mcp_tools
-from agent.product_interaction_agent_tools import PRODUCT_ANALYTICS_AGENT_TOOLS
+from agent.analytics.product_interaction_mcp import build_default_product_analytics_mcp_tools
+from tools.harness.product_analytics.descriptions import PRODUCT_ANALYTICS_AGENT_TOOLS
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--camera-config", type=Path, default=Path("behavior_cameras.cam02.stage6a.json"))
+    parser.add_argument("--camera-config", type=Path, default=Path("configs/cam02/behavior_cameras.cam02.stage6a.json"))
     parser.add_argument("--camera-id", default="cam02")
     parser.add_argument("--start-at", default="2026-08-20T21:07:00")
     parser.add_argument("--end-at", default="2026-08-20T21:09:00")

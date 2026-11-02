@@ -6,9 +6,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from agent.member_priority import alert_level, normalize_tier, sql_tier_rank, tier_rank
+from agent.member.member_priority import alert_level, normalize_tier, sql_tier_rank, tier_rank
 from agent.models import Base, BusinessJob, Member
-from agent.profile_jobs import ProfileJobWorker
+from agent.profile.profile_jobs import ProfileJobWorker
 
 
 class MemberPriorityTests(unittest.TestCase):

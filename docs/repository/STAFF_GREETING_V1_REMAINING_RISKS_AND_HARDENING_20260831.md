@@ -27,7 +27,7 @@ not be used to reopen the resolved P0/P1 failures for this Demo.
 - Formal Offline entrypoint exists at
   [`scripts/run_staff_greeting_offline.py`](../../scripts/run_staff_greeting_offline.py).
 - The runner performs verified PTS, every-frame MP4 replay and artifact-only
-  finalization through [`agent/staff_greeting_offline.py`](../../agent/staff_greeting_offline.py).
+  finalization through [`agent/behavior/staff_greeting_offline.py`](../../agent/behavior/staff_greeting_offline.py).
   It does not publish Offline Greeting results to `BehaviorEventStore`, Member,
   Visit, or another formal business table.
 - Staff/Customer Role Integrity passed. The merged-person-bbox failure that

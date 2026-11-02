@@ -24,7 +24,7 @@ from agent.models import (
     Visit,
 )
 from agent.schema_evolution import evolve_schema
-from agent.visit_merge_service import VisitMergeService
+from agent.visits.visit_merge_service import VisitMergeService
 
 
 class VisitMergeServiceTests(unittest.TestCase):

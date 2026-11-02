@@ -1,0 +1,61 @@
+{
+  "greeting_profiles": {
+    "controlled_demo": {
+      "greeting_window_seconds": 30.0,
+      "greeting_staff_travel_metres": 0.25,
+      "greeting_duration_seconds": 1.0,
+      "greeting_distance_metres": 1.2,
+      "minimum_distance_reduction_metres": 0.35,
+      "greeting_area_exit_grace_seconds": 0.8,
+      "greeting_area_enter_stable_frames": 3,
+      "greeting_area_exit_stable_frames": 5
+    }
+  },
+  "cameras": [
+    {
+      "camera_id": "entrance-1",
+      "camera_role": "reception_entry",
+      "store_id": "store-1",
+      "source": "rtsp://admin:@192.0.2.2:554/live/0/MAIN",
+      "face_transform_status": "unverified",
+      "staff_vest_enabled": true,
+      "entry_trigger": {
+        "area_id": "front-entry-trigger",
+        "points": [
+          [0.06640625, 0.5625],
+          [0.546875, 0.5625],
+          [0.546875, 0.72916667],
+          [0.06640625, 0.72916667]
+        ]
+      },
+      "greeting_area": {
+        "area_id": "front-greeting-area",
+        "points": [
+          [0.0703125, 0.72916667],
+          [0.5859375, 0.72916667],
+          [0.5859375, 0.96458333],
+          [0.0703125, 0.96458333]
+        ]
+      },
+      "entrance": {
+        "outside_stable_frames": 3,
+        "inside_stable_frames": 3,
+        "crossing_timeout_seconds": 3.0,
+        "rearm_outside_frames": 5,
+        "minimum_crossing_displacement": 0.15
+      },
+      "greeting": {
+        "profile": "controlled_demo"
+      },
+      "calibration_status": "provisional",
+      "calibration_image_size": [2560, 1440],
+      "interaction_areas": [],
+      "display_areas": [],
+      "ground_homography": [
+        7.7008130081, 0.0, -0.5113821138,
+        0.0, 6.0, -3.375,
+        0.0, 0.0, 1.0
+      ]
+    }
+  ]
+}

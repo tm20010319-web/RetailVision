@@ -10,9 +10,9 @@ from pathlib import Path
 from types import SimpleNamespace
 from typing import Iterable, Optional
 
-from agent.behavior_monitor import BehaviorMonitor
-from agent.behavior_vision import load_behavior_camera_configs
-from agent.sam31_behavior_adapter import Sam31BehaviorAdapter, Sam31BehaviorReplayRecord
+from agent.behavior.behavior_monitor import BehaviorMonitor
+from agent.behavior.behavior_vision import load_behavior_camera_configs
+from agent.behavior.sam31_behavior_adapter import Sam31BehaviorAdapter, Sam31BehaviorReplayRecord
 from pipelines.behavior_runtime import BehaviorCameraRuntime
 
 

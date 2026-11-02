@@ -10,7 +10,7 @@ FACT_LABELS = (
 )
 
 HARD_GROUNDING_BOUNDARY = (
-    "Hard grounding boundary: Never infer or restate purchase, sale, sales volume, "
+    "Hard grounding boundary (anonymous visual Product Analytics results only): Never infer or restate purchase, sale, sales volume, "
     "revenue, conversion, order, purchase intent, subjective interest, "
     "attractiveness, customer/member/visitor counts, footfall, or physical "
     "placement. Never treat pickup, put-down, or holding as a commerce outcome. "

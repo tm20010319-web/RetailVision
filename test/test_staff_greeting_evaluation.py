@@ -12,13 +12,13 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from agent.behavior_events import BehaviorEventInput, BehaviorEventStore, EntryEventInput
-from agent.behavior_monitor import BehaviorMonitorConfig, PolygonArea, TrackObservation
-from agent.customer_entry_visit import CustomerEntryObservation, CustomerEntryVisit
+from agent.behavior.behavior_events import BehaviorEventInput, BehaviorEventStore, EntryEventInput
+from agent.behavior.behavior_monitor import BehaviorMonitorConfig, PolygonArea, TrackObservation
+from agent.visits.customer_entry_visit import CustomerEntryObservation, CustomerEntryVisit
 from agent.schema_evolution import evolve_schema
 from agent.models import GreetingCycle, GreetingEvaluation
 from agent.models import BehaviorEvent
-from agent.staff_greeting_evaluation import GreetingShadowConfig, StaffGreetingEvaluation
+from agent.behavior.staff_greeting_evaluation import GreetingShadowConfig, StaffGreetingEvaluation
 from pipelines.behavior_runtime import BehaviorCameraRuntime
 
 
@@ -172,7 +172,7 @@ class StaffGreetingEvaluationTests(unittest.TestCase):
             side_effect=RuntimeError("secret database details")
         )
 
-        with self.assertLogs("agent.staff_greeting_evaluation", level="ERROR") as logs:
+        with self.assertLogs("agent.behavior.staff_greeting_evaluation", level="ERROR") as logs:
             result = evaluation.observe(self.now, ())
 
         self.assertEqual((), result)

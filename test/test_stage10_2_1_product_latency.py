@@ -16,8 +16,8 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.sam31_product_tracking import ProductCandidate, ProductDisplaySurface  # noqa: E402
-from agent.sam31_realtime_providers import (  # noqa: E402
+from agent.behavior.sam31_product_tracking import ProductCandidate, ProductDisplaySurface  # noqa: E402
+from agent.behavior.sam31_realtime_providers import (  # noqa: E402
     FRESH_FRAMES,
     OVERLAP_FRAMES,
     WINDOW_FRAMES,
@@ -25,8 +25,8 @@ from agent.sam31_realtime_providers import (  # noqa: E402
     Sam31RealtimeProviderBundle,
     _validate_frozen_runtime,
 )
-from agent.stage10_demo import RealtimeFrameContext, Stage10PerformanceRecorder  # noqa: E402
-from agent.stage10_product_profile import (  # noqa: E402
+from agent.runtime.stage10_demo import RealtimeFrameContext, Stage10PerformanceRecorder  # noqa: E402
+from agent.runtime.stage10_product_profile import (  # noqa: E402
     PRODUCT_PROFILE_FIELDS,
     ProductLatencyProfileRecorder,
     classify_product_bottleneck,
@@ -322,7 +322,7 @@ class Stage1021ProductLatencyTests(unittest.TestCase):
         self.assertFalse(bundle.dual_predictor_vram_probe)
 
     def test_cli_probe_flags_default_to_false(self):
-        with patch.object(sys, "argv", ["run_stage10_demo.py", "--rtsp", "rtsp://redacted"]):
+        with patch.object(sys, "argv", ["run_stage10_demo/legacy_cli.py", "--rtsp", "rtsp://redacted"]):
             args = parse_args()
         self.assertFalse(args.sam_warmup_probe)
         self.assertFalse(args.gpu_timing_probe)

@@ -10,7 +10,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.offline_behavior import (  # noqa: E402
+from agent.offline.offline_behavior import (  # noqa: E402
     CustomerOrdinalObservation,
     MemberProfileEnrichment,
     OfflineBehaviorCanonicalizerV1,
@@ -22,7 +22,7 @@ from agent.offline_behavior import (  # noqa: E402
     PreparedOfflineBehaviorPublication,
     Stage9BehaviorFactAdapter,
 )
-from agent.offline_identity import OfflineTrackIdentityAssociation  # noqa: E402
+from agent.offline.offline_identity import OfflineTrackIdentityAssociation  # noqa: E402
 
 
 class OfflineBehaviorContractTests(unittest.TestCase):

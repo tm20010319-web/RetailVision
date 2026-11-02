@@ -11,12 +11,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from agent.db import configure_sqlite_foreign_keys
-from agent.member_arrival_repair import MemberArrivalRepairService
-from agent.member_statistics import MemberStatisticsRecalculator
+from agent.visits.member_arrival_repair import MemberArrivalRepairService
+from agent.member.member_statistics import MemberStatisticsRecalculator
 from agent.models import Visit
 from agent.schema_evolution import evolve_schema
-from agent.store_resolution import StoreResolutionService
-from agent.visit_merge_service import VisitMergeService
+from agent.identity.store_resolution import StoreResolutionService
+from agent.visits.visit_merge_service import VisitMergeService
 
 
 def build_parser() -> argparse.ArgumentParser:

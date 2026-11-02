@@ -1,0 +1,22 @@
+[
+  {
+    "prompt": "最近哪些商品值得推荐？",
+    "expected_tools": ["recommend_hot_products"],
+    "required_output_fields": ["product_key", "recommendation_score"]
+  },
+  {
+    "prompt": "这个商品最近趋势怎么样？",
+    "expected_tools": ["analyze_product_trend"],
+    "required_output_fields": ["interaction_trend", "pickup_change", "holding_change", "recommendation"]
+  },
+  {
+    "prompt": "哪些商品关注高但是表现异常？",
+    "expected_tools": ["detect_product_anomaly"],
+    "required_output_fields": ["anomaly_type", "severity", "recommendation"]
+  },
+  {
+    "prompt": "哪些商品应该重点展示？",
+    "expected_tools": ["suggest_product_display"],
+    "required_output_fields": ["display_priority", "recommendation", "reasons"]
+  }
+]

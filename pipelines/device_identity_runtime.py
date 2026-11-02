@@ -8,23 +8,23 @@ from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Callable, Dict, Optional
 
-from agent.device_identity import (
+from agent.identity.device_identity import (
     DeviceIdentityRepository,
     DeviceRecognitionEvent,
     RecognitionRecordPoller,
 )
-from agent.device_recognition_intake import DeviceRecognitionIntake
-from agent.device_event_worker import DeviceRecognitionInboxWorker
-from agent.member_entry_service import MemberEntryService
-from agent.identity_runtime_lease import IdentityAssociationRuntimeLeaseService
-from agent.identity_runtime_lease import RuntimeLease, RuntimeLeaseUnavailable
-from agent.recognition_association_worker import RecognitionAssociationWorker, TrackAssociationCandidate
-from agent.reusable_visit_resolver import ReusableVisitResolver
-from agent.association_projection import AssociationOutcomeProjectionWorker
-from agent.device_health import DeviceHealthStore
-from agent.entry_event_coordinator import EntryEventCoordinator
-from pipelines.member_business_runtime import MemberBusinessRuntime
-from pipelines.realtime_entry_pipeline import (
+from agent.identity.device_recognition_intake import DeviceRecognitionIntake
+from agent.identity.device_event_worker import DeviceRecognitionInboxWorker
+from agent.legacy.member_entry_service import MemberEntryService
+from agent.platform.identity_runtime_lease import IdentityAssociationRuntimeLeaseService
+from agent.platform.identity_runtime_lease import RuntimeLease, RuntimeLeaseUnavailable
+from agent.identity.recognition_association_worker import RecognitionAssociationWorker, TrackAssociationCandidate
+from agent.visits.reusable_visit_resolver import ReusableVisitResolver
+from agent.visits.association_projection import AssociationOutcomeProjectionWorker
+from agent.identity.device_health import DeviceHealthStore
+from agent.legacy.entry_event_coordinator import EntryEventCoordinator
+from pipelines.legacy.member_business_runtime import MemberBusinessRuntime
+from pipelines.legacy.realtime_entry_pipeline import (
     AnonymousVisitCallback,
     IdentityUnknownCallback,
     MemberEntryCallback,

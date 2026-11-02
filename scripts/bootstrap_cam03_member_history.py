@@ -19,10 +19,10 @@ sys.path.insert(0, str(ROOT))
 
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
-from agent.camera_face_api import CameraFaceApiClient
-from agent.device_identity import SqlAlchemyDeviceIdentityRepository
+from agent.platform.camera_face_api import CameraFaceApiClient
+from agent.identity.device_identity import SqlAlchemyDeviceIdentityRepository
 from agent.models import DeviceMemberMapping, DeviceMemberIdentityRevision
-from agent.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
+from agent.offline.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
 from scripts.run_dpi01e2_cam03_offline_member_binding import _formal_camera_configuration
 
 

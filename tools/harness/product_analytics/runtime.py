@@ -7,8 +7,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any
 
-from agent.product_interaction_agent_tools import PRODUCT_ANALYTICS_AGENT_TOOLS
-from agent.product_interaction_mcp import (
+from tools.harness.product_analytics.descriptions import PRODUCT_ANALYTICS_AGENT_TOOLS
+from agent.analytics.product_interaction_mcp import (
     ProductAnalyticsMCPTools,
     build_default_product_analytics_mcp_tools,
 )

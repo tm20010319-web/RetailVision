@@ -8,10 +8,10 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
-from agent.behavior_monitor import BehaviorMonitor
-from agent.behavior_vision import load_behavior_camera_configs
-from agent.sam31_behavior_adapter import Sam31BehaviorAdapter
-from agent.sam31_live_behavior import (
+from agent.behavior.behavior_monitor import BehaviorMonitor
+from agent.behavior.behavior_vision import load_behavior_camera_configs
+from agent.behavior.sam31_behavior_adapter import Sam31BehaviorAdapter
+from agent.behavior.sam31_live_behavior import (
     Sam31GlobalTrack,
     Sam31LiveBehaviorBridge,
     parse_observed_at,

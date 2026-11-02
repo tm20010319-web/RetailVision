@@ -1,143 +1,47 @@
-# cam03 New Sample Recording
+# cam03 采集与身份诊断
 
-Current result: September 6's six behavior events remain anonymous. Three current
-member mappings have historical revisions effective September 7, 10:59:25 local.
-Do not record a final acceptance sample until the prerequisites below are checked.
+本页是操作说明；历史 Run 结果见 [当前状态](CURRENT_STATUS.md)，原现场过程见
+[归档索引](repository/ARCHIVE_INDEX.md)。不根据旧日志判断当前监听端口、注册状态或服务状态。
 
-September 7 follow-up: the profile loader and existing Runtime geometry parameter
-wiring have been fixed. See `reports/cam03_20260907_profile_reuse_audit/REUSE_AUDIT.md`.
-Indexed archived calibration is real but cam02-specific; no applicable cam03
-package was located. The transform/association/aggregation/projection algorithms
-already exist and were not rebuilt. Do not interpret a missing profile path as
-an unimplemented identity module. The subsequent minimal CLI integration is now
-implemented and has run against the real inbox: see
-`WORKLOG_20260907_cam03-cli-identity-integration.md` in `docs/worklogs/`.
-Diagnostic collection does not require first completing formal qualification.
+## 采集前
 
-## Before Recording
+1. 检查已有 8081 listener，避免重复接收器；录像全程和结束后的 heartbeat 要有 Push Coverage。
+2. 使用现有会员授权/同步流程，核对当前 mapping 及 Event-Time 历史 revision；不能回填旧视频历史。
+3. 检查有效的 device-store、camera-store、device-camera registration（现场配置 cam03 / store-1）。
+4. 正式非 diagnostic 身份运行需要适用 cam03 profile，通过 `RETAILVISION_CAPABILITY_PROFILE_PATH`
+   或相机配置加载；cam02 校准不能直接冒充 cam03 verified profile。cam03 独立几何验证已存在，
+   不要按早期“没有 profile”的日志重新设计模块，也不能假设旧 profile 适合移动后的相机。
+5. 新视频必须重新做 source-bound product 初始化与 mask review；不复用旧 source 的 confirmation。
 
-1. Start the receiver below in a dedicated PowerShell. The last check found no
-   listener on 8081. Keep it running through the recording and at least one
-   accepted heartbeat after the end. Verify Coverage, not just the presence of
-   individual Recognition records.
-2. Verify member authorization/synchronization in the existing member API and
-   verify the current mapping with the bootstrap command. Reauthorization must
-   use the member's already authorized photo and existing registration workflow.
-3. Establish current effective device-store, camera-store and device-camera
-   registrations using existing registration mechanisms. The confirmed local
-   configuration is cam03 / store-1 / device cam03; current DB registrations are
-   absent. Do not backdate them to the old video.
-4. For initial integration, reuse the saved face coordinates, device capture
-   metadata and original video first. The existing transform accepts different
-   resolutions; do not require cam02's orientation or resolution. The new CLI
-   exports three nearest/support bbox overlays. Request a specific additional
-   image or parameter only if these reveal an unresolved crop/padding/rotation
-   or position problem. No new calibration system or default BackgroundImage
-   recapture is required for diagnostics.
-5. For a qualified (non-diagnostic) run, load the applicable cam03 profile through
-   `RETAILVISION_CAPABILITY_PROFILE_PATH`. Preserve existing formal checks. The
-   cam02 fingerprint script must not be renamed into a verified cam03 profile.
-
-## Receiver Startup
-
-Latest September 7 update: the receiver has started successfully. The user then
-explicitly requested 0.6 for this onsite receiver. Its active restart command is:
-
-```powershell
-& D:/GJJ/work/code/scripts/start_cam03_push_receiver.ps1 -SimilarityThreshold 0.6
-```
-
-Do not run a duplicate while 8081 is listening. The default without the explicit
-parameter remains 0.75. Fresh face preflight uses 0.6 for this test; confirmed
-identity still requires all existing gates. The separate saved-Run identity
-diagnostic policy remains 0.75 until explicitly configured for that future Run.
-This update supersedes the pre-start status and unchanged-threshold instruction
-below for the current test only; see `WORKLOG_20260907_cam03-live-threshold-060.md`.
-
-September 7 onsite preparation: the safe existing-schema receiver launcher is
-ready, but the agent's attempted automatic background start was rejected by tool
-execution policy. Port 8081 was confirmed not listening. Current mappings were
-checked on-device and in immutable history: all three resolve now. Do **not**
-treat the old ignored Recognition as this new member's preflight result.
-
-For this onsite artifact-only task, run this in a dedicated PowerShell and keep
-the window open:
+## 接收器
 
 ```powershell
 & D:/GJJ/work/code/scripts/start_cam03_push_receiver.ps1
 ```
 
-It reuses the persisted cam03 fingerprint without printing the serial or asking
-for credentials, loads the existing camera JSON, and starts the existing member
-API receiver with schema-readiness-only startup. Only inbox/health/Coverage
-writes are allowed in this process; migration and BehaviorEvent writes are
-rejected. It does not modify PEAK_ENTRY_CAMERA_ID. Stop with Ctrl+C after the
-final Coverage heartbeat. This replaces the general-service startup below **for
-this no-migration/no-business-write onsite test**.
+默认阈值 0.75。历史现场曾显式传 `-SimilarityThreshold 0.6`，仅作用于该次进程；
+它不是正式默认值或新的身份资格规则。不要为追求通过而临时放宽身份门槛。
+launcher 复用本地持久 fingerprint，使用当前 camera JSON 与已有 schema；仅允许 inbox/health/Coverage
+写入，禁止 migration 和 BehaviorEvent 写入，不修改 PEAK_ENTRY_CAMERA_ID。结束后 Ctrl+C。
+不要把旧 general-service uvicorn 命令混入这个受限接收流程。
 
-This command changes only this PowerShell process and its child. It does not
-modify PEAK_ENTRY_CAMERA_ID or a global environment. Credentials are prompted,
-not persisted. An empty password is supported. Use the already supplied cam03
-serial/Unique Code at the prompt. Do not paste secrets into shared reports.
-
-```powershell
-Set-Location D:/GJJ/work/code
-$env:DATABASE_URL = 'sqlite:///D:/GJJ/work/code/demo_flow.db'
-$env:RETAILVISION_CAMERA_CONFIG_PATH = 'D:/GJJ/work/code/configs/behavior_cameras.cam03.identity.json'
-$env:BEHAVIOR_CONFIG_PATH = $env:RETAILVISION_CAMERA_CONFIG_PATH
-$env:CAMERA_FACE_DEVICE_ID = 'cam03'
-$env:CAMERA_FACE_BASE_URL = 'http://192.0.2.4'
-$env:CAMERA_FACE_USERNAME = Read-Host 'cam03 device username'
-$secret = Read-Host 'cam03 device password (Enter for empty)' -AsSecureString
-$env:CAMERA_FACE_PASSWORD = [System.Net.NetworkCredential]::new('', $secret).Password
-$env:CAMERA_FACE_UNIQUE_CODE = Read-Host 'Confirmed cam03 Unique Code'
-$env:P6S_DEVICE_SERIAL = $env:CAMERA_FACE_UNIQUE_CODE
-$env:CAMERA_FACE_GROUP_ID = '0'
-$env:CAMERA_FACE_GROUP_UUID = '6f23199d51dc4786bc5fd4893c9fc856'
-$env:P6S_SIMILARITY_THRESHOLD = '0.75'
-& C:/Users/Administrator/miniconda3/envs/agents-py311/python.exe -m uvicorn agent.member_api:app --host 0.0.0.0 --port 8081
-```
-
-Both camera-config variables deliberately select the same file. Existing offline
-loader priority is explicit CLI path, then RETAILVISION_CAMERA_CONFIG_PATH, then
-BEHAVIOR_CONFIG_PATH. Settings uses process environment, not an assumed .env.
-The JSON's source field still identifies the earlier frozen clip; new capture
-uses the explicit `--video` path and must not change old identity runner inputs.
-
-Read-only current member check, in a shell with the device credentials above:
+只读 mapping 检查（device credentials 使用既有安全配置，不写入报告）：
 
 ```powershell
 $check = 'D:/GJJ/work/code/reports/cam03_mapping_check_' + (Get-Date -Format yyyyMMdd_HHmmss) + '.json'
-& C:/Users/Administrator/miniconda3/envs/agents-py311/python.exe D:/GJJ/work/code/scripts/bootstrap_cam03_member_history.py --camera-config D:/GJJ/work/code/configs/behavior_cameras.cam03.identity.json --database D:/GJJ/work/code/demo_flow.db --output $check
+& C:/Users/Administrator/miniconda3/envs/agents-py311/python.exe scripts/bootstrap_cam03_member_history.py --camera-config configs/cam03/behavior_cameras.cam03.identity.json --database runtime/databases/demo_flow.db --output $check
 ```
 
-`--apply-current` is only needed to start a verified missing current revision.
-It has no historical effective-time argument. Existing revisions are preserved.
+`--apply-current` 是显式写操作，只用于开始已核实缺失的当前 revision；不提供历史生效时间。
+Offline loader 优先级：显式 CLI path → RETAILVISION_CAMERA_CONFIG_PATH → BEHAVIOR_CONFIG_PATH。
+Settings 读取进程环境，不假设 `.env` 自动生效；不要改旧 Run 的 video/config 来伪装新样本。
 
-## Record and Analyze
+## 录像与分析
 
-For the first short onsite sample, use **one member only**. First start the
-receiver and have that member face cam03. Confirm a NEW Recognition is accepted
-by the unchanged 0.75 policy and resolves at its Event Time before starting the
-pickup test. If rejected, report the exact acceptance/history reason, do not
-lower the threshold. Then record: face camera -> pick up one product -> hold ->
-put back. Capture the recording start/end OSD and the same device clock/Push
-event identifiers; do not use the filename as clock evidence. Keep at least
-five seconds on either side of the identity event and retain end-heartbeat
-Coverage. Return the new MP4 plus the observed clock reference. Event counts and
-Person IDs come only from the new Run, never from the old six-event sample.
-
-Have members enter separately, face cam03 for recognition, then each pick up,
-hold for several seconds, and replace both guitars in turn. Leave several
-seconds at both recording boundaries. Keep both people visible; do not infer
-that simultaneous people have the same identity. Record the actual displayed
-start clock plus time evidence; the filename is not a trusted start time.
-
-Save the new MP4 and run the existing source-bound two-product initialization
-review for that new file. Do not reuse old masks or mark unseen masks confirmed.
-Once that produces the new source's reviewed config, confirmation and directory,
-the capture entry below saves all observations and events from ONE independent
-Run. Prompts request actual paths, not invented values.
+先用一名会员完成 face camera → pickup → hold → put back；确认 NEW Recognition 在当前批准策略下
+accepted，且能在 Event Time 解析。保留录像起止 OSD、设备时钟和 Push event 关联；文件名不是时钟证据。
+身份事件两侧至少保留 5 秒，录像后保留 Coverage heartbeat。多人样本应分别识别，不能推断同时出现者同身份。
+使用新视频完成 source-bound 商品初始化后，提供实际配置与确认文件路径：
 
 ```powershell
 $video = Read-Host 'New MP4 absolute path'
@@ -163,40 +67,21 @@ PTS corruption; a valid IANA/UTC conversion does not prove device/video clocks
 are synchronized.
 The entry is artifact-only: it does not itself execute identity or publish facts.
 The retained analyzer root is an explicit local dependency; preserve its recorded
-export-only patch. Main-branch product algorithms were not migrated.
+export-only patch. That dependency does not authorize replacing current product algorithms.
 
-## Identity CLI (implemented September 7)
+## 只读身份诊断
 
-Run identity in the main repository's API environment after capture has finished.
-This avoids mixing the isolated two-guitar analyzer's Python imports with the
-current identity runtime. The existing Guarded pass, spatial associator, Track
-aggregator, normalizer and projector are called; no publisher is constructed.
-`--diagnostic` explicitly permits the existing unqualified durable-inbox path,
-not a profile or geometry override. Without this switch a missing profile blocks.
-
-For the completed independent Run of the September 6 video:
+在当前 API 环境运行，避免外部两吉他 analyzer 的 import 混入 identity runtime：
 
 ```powershell
-Set-Location D:/GJJ/work/code
-$runOutput = 'D:/GJJ/work/code/reports/cam03_20260907_cli_integration_run'
+$runOutput = Read-Host 'Completed independent capture Run directory'
 $identityOutput = 'D:/GJJ/work/code/reports/cam03_identity_' + (Get-Date -Format yyyyMMdd_HHmmss)
-& C:/Users/Administrator/miniconda3/envs/agents-py311/python.exe D:/GJJ/work/code/scripts/run_cam03_run_identity.py --run-dir $runOutput --output $identityOutput --database D:/GJJ/work/code/demo_flow.db --camera-config D:/GJJ/work/code/configs/behavior_cameras.cam03.identity.json --diagnostic
+& C:/Users/Administrator/miniconda3/envs/agents-py311/python.exe scripts/run_cam03_run_identity.py --run-dir $runOutput --output $identityOutput --database runtime/databases/demo_flow.db --camera-config configs/cam03/behavior_cameras.cam03.identity.json --diagnostic
 ```
 
-For a new capture, retain its `$runOutput` from the preceding command and use the
-same identity CLI. Outputs are local restricted diagnostics and should not be
-published as face imagery or ordinary business events. No credentials or global
-camera environment changes are needed for durable-inbox read-only access.
-
-Observed September 6 result: complete Coverage, one ignored Recognition below
-the unchanged 0.75 threshold, no accepted identity evidence, both independent
-Tracks unmatched, six anonymous events. The old video still has no Event-Time
-historical mapping; September 7 revisions do not repair that history. The three
-overlays broadly align the face with Track 2's head. Their pixel/dimension
-comparison is diagnostic, not a verified profile. The video OSD at PTS 40s reads
-19:11:38 while the reused absolute start implies 19:11:40; no clock correction or
-best-overlap frame substitution was applied.
-
-Never feed these new snapshots into the hardcoded 12-event DPI-01E runner or
-old six-event replay. This independent Run has its own tokens and six facts.
-Formal scope, time/profile/geometry and publication qualification remain intact.
+`--diagnostic` 允许已有 unqualified durable-inbox 路径，不覆盖 profile/geometry 算法门槛。
+非 diagnostic 模式缺少 profile 会阻断。现有 Guarded pass、spatial associator、Track aggregator、
+normalizer 和 projector 被复用，不构造 publisher。输出是受限诊断，不是公开脸图或正式行为发布。
+每次 Run 有独立 token/facts；不能塞回旧 hardcoded 12-event DPI-01E 或六事件 replay。
+九月六日旧视频的低于阈值/无历史 mapping 结果不会因九月七日 revision 或新 Run confirmed 自动修复。
+合法 IANA/UTC 转换不等于设备与视频时钟同步；OSD 差异不能靠挑 best-overlap frame 隐藏。

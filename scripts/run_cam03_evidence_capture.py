@@ -66,7 +66,7 @@ def source_presentation_frames(video):
 def assess_presentation_frames(rows, stream, *, analysis_fps=5.0):
     # Imported lazily: capture runs this only after selecting its retained
     # analyzer root; identity runs it with the current main-repository rules.
-    from agent.offline_media import AuthoritativePresentationTimeSampler, PresentationFrame
+    from agent.offline.offline_media import AuthoritativePresentationTimeSampler, PresentationFrame
     frames = [PresentationFrame(**r) for r in rows]
     evidence = dict(presentation_timeline_status='unavailable', source_pts_status='unavailable',
                     sampling_gap_count=None, sampling_gaps=[], frame_count=len(frames),
@@ -111,9 +111,9 @@ def run_analyzer(args, run_id, start, stream, pts, end_pts):
     # main branch's generic Golden adapter does not implement its extensions.
     from scripts.probe_dpi01d_cam03_offline import _config_payload, _load_initialization_prompts
     from scripts import run_offline_complete_loop_golden as golden
-    from agent.product_camera_config import load_dpi01c_product_camera_config, validate_formal_replay_readiness
-    from agent.offline_video_models import OfflineVideoAnalysisRequest
-    from agent.product_first_frame_initialization import frame_sha256
+    from agent.behavior.product_camera_config import load_dpi01c_product_camera_config, validate_formal_replay_readiness
+    from agent.offline.offline_video_models import OfflineVideoAnalysisRequest
+    from agent.behavior.product_first_frame_initialization import frame_sha256
     from tools.probe_dpi01c_two_guitars import _decode
     if Path(golden.__file__).resolve().parent.parent != root:
         raise ValueError('mixed_analyzer_import_roots')
@@ -172,7 +172,7 @@ def run_analyzer(args, run_id, start, stream, pts, end_pts):
         analyzer_root=str(root), git_revision=revision,
         source_code_sha256={str(p.relative_to(root)): sha(p) for p in [
             root / 'scripts/probe_dpi01d_cam03_offline.py', Path(golden.__file__),
-            root / 'agent/sam31_realtime_providers.py', root / 'agent/product_interaction.py',
+            root / 'agent/behavior/sam31_realtime_providers.py', root / 'agent/behavior/product_interaction.py',
         ]},
     )
 

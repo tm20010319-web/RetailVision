@@ -17,9 +17,10 @@ ensure_project_root_on_path()
 
 from agent.mcp_server.server import (  # noqa: E402
     ProductAnalyticsMCPServer,
+    build_member_agent_instructions,
     build_default_server,
 )
-from agent.member_behavior import MemberBehaviorError  # noqa: E402
+from agent.analytics.member_behavior import MemberBehaviorError  # noqa: E402
 from agent.models import Base, BehaviorEvent, Member  # noqa: E402
 from agent.store_context import StoreContext  # noqa: E402
 
@@ -49,7 +50,7 @@ class MemberBehaviorMCPServerTests(unittest.TestCase):
 
     def test_tools_list_is_protocol_success_for_all_four_feature_combinations(self):
         for product, member, expected in (
-            (False, False, 0), (True, False, 7), (False, True, 2), (True, True, 9)
+            (False, False, 0), (True, False, 7), (False, True, 3), (True, True, 10)
         ):
             with self.subTest(product=product, member=member):
                 server = self._server(product, member)
@@ -133,7 +134,7 @@ class MemberBehaviorServerCompositionTests(unittest.TestCase):
             path = self._database(Path(raw))
             with patch.dict("os.environ", self._environment(), clear=False):
                 for product, member, count in (
-                    (True, False, 7), (False, True, 2), (True, True, 9),
+                    (True, False, 7), (False, True, 3), (True, True, 10),
                 ):
                     with self.subTest(product=product, member=member):
                         server = build_default_server(
@@ -155,6 +156,117 @@ class MemberBehaviorServerCompositionTests(unittest.TestCase):
                             self.assertEqual(count, len(set(names)))
                         finally:
                             server.close()
+
+    def test_product_and_member_features_use_independent_database_and_scope(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="mb01-dual-source-") as raw:
+            directory = Path(raw)
+            (directory / "product").mkdir()
+            (directory / "member").mkdir()
+            product_path = self._database(directory / "product")
+            member_path = self._database(directory / "member")
+            writer_engine = create_engine(f"sqlite:///{member_path.as_posix()}")
+            sessions = sessionmaker(bind=writer_engine)
+            with sessions() as db:
+                db.add(Member(
+                    id="member-cam03", name="高俊杰", tier="gold", is_active=True,
+                ))
+                at = datetime(2026, 9, 7, 6, 41)
+                db.add(BehaviorEvent(
+                    id="cam03-event", event_key="cam03:event",
+                    event_type="merchandise_pick_up", assessment="confirmed",
+                    camera_id="cam03", customer_track_id=1,
+                    customer_track_token="restricted-track", store_id="store-1",
+                    is_demo=False, member_id="member-cam03",
+                    identity_status="confirmed",
+                    identity_source="offline_track_association",
+                    identity_binding_level="confirmed", occurred_at=at,
+                    started_at=at, ended_at=at,
+                    details={"product_key": "restricted-key", "product_name": "AI 电吉他"},
+                ))
+                db.commit()
+            writer_engine.dispose()
+            environment = {
+                **self._environment(),
+                "RETAILVISION_MEMBER_DATABASE_URL": f"sqlite:///{member_path.as_posix()}",
+                "RETAILVISION_MEMBER_STORE_ID": "store-1",
+                "RETAILVISION_MEMBER_CAMERA_ID": "cam03",
+                "RETAILVISION_MEMBER_ANALYSIS_START_AT": "2026-09-07T14:00:00",
+                "RETAILVISION_MEMBER_ANALYSIS_END_AT": "2026-09-07T15:00:00",
+                "RETAILVISION_MEMBER_TIMEZONE": "Asia/Shanghai",
+            }
+
+            with patch.dict("os.environ", environment, clear=True):
+                server = build_default_server(
+                    database_url=f"sqlite:///{product_path.as_posix()}",
+                    product_enabled=True,
+                    member_enabled=True,
+                )
+            try:
+                server.handle({
+                    "jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {},
+                })
+                listed = server.handle({
+                    "jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {},
+                })
+                self.assertEqual(10, len(listed["result"]["tools"]))
+                response = server.handle({
+                    "jsonrpc": "2.0", "id": 3, "method": "tools/call",
+                    "params": {
+                        "name": "list_recent_member_behaviors", "arguments": {},
+                    },
+                })
+                payload = json.loads(response["result"]["content"][0]["text"])
+                self.assertEqual(1, payload["behavior_summary"]["total_behavior_count"])
+                self.assertEqual("cam03", payload["scope"]["camera_id"])
+                self.assertEqual("2026-09-07T14:41:00+08:00", payload["timeline"][0]["occurred_at"])
+            finally:
+                server.close()
+
+    def test_store_wide_member_instructions_publish_independent_defaults_without_camera_placeholder(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="mb01-store-wide-") as raw:
+            path = self._database(Path(raw))
+            environment = {
+                **self._environment(),
+                "RETAILVISION_MEMBER_STORE_ID": "store-1",
+                "RETAILVISION_MEMBER_CAMERA_ID": "",
+                "RETAILVISION_MEMBER_ANALYSIS_START_AT": "2026-09-07T14:00:00",
+                "RETAILVISION_MEMBER_ANALYSIS_END_AT": "2026-09-07T15:00:00",
+                "RETAILVISION_MEMBER_TIMEZONE": "Asia/Shanghai",
+            }
+            with patch.dict("os.environ", environment, clear=True):
+                server = build_default_server(
+                    database_url=f"sqlite:///{path.as_posix()}",
+                    product_enabled=True, member_enabled=True,
+                )
+            try:
+                initialized = server.handle({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}})
+                member_instructions = initialized["result"]["instructions"].split(
+                    "RetailVision confirmed Offline Member Behavior tools.", 1
+                )[1]
+                self.assertNotIn("camera_id=store-wide", member_instructions)
+                self.assertIn("omit camera_id", member_instructions)
+                self.assertIn("start_at=2026-09-07T14:00:00", member_instructions)
+                self.assertIn("end_at=2026-09-07T15:00:00", member_instructions)
+                # Follow the documented default call through the real protocol and scope policy.
+                response = server.handle({"jsonrpc": "2.0", "id": 2, "method": "tools/call",
+                    "params": {"name": "list_recent_member_behaviors", "arguments": {}}})
+                self.assertFalse(response["result"].get("isError", False))
+                payload = json.loads(response["result"]["content"][0]["text"])
+                self.assertIsNone(payload["scope"]["camera_id"])
+                self.assertEqual("store_all", payload["scope"]["camera_scope"])
+                self.assertTrue(payload["scope"]["start_at"].startswith("2026-09-07T14:00:00"))
+                # Fix the published instructions; never reinterpret invalid IDs or widen a request.
+                for arguments in (
+                    {"camera_id": "store-wide"}, {"camera_id": "cam02"},
+                    {"start_at": environment["RETAILVISION_ANALYSIS_START_AT"],
+                     "end_at": environment["RETAILVISION_ANALYSIS_END_AT"]},
+                ):
+                    denied = server.handle({"jsonrpc": "2.0", "id": 3, "method": "tools/call",
+                        "params": {"name": "list_recent_member_behaviors", "arguments": arguments}})
+                    self.assertTrue(denied["result"]["isError"])
+                    self.assertEqual("scope_out_of_bounds", json.loads(denied["result"]["content"][0]["text"])["error"])
+            finally:
+                server.close()
 
     def test_member_only_does_not_read_product_catalog_or_validate_product(self) -> None:
         with tempfile.TemporaryDirectory(prefix="mb01-member-only-") as raw:
@@ -210,6 +322,37 @@ class MemberBehaviorServerCompositionTests(unittest.TestCase):
                         product_enabled=False,
                         member_enabled=True,
                     )
+
+    def test_development_mode_allows_grounded_interest_analysis_and_advice(self) -> None:
+        context = StoreContext(
+            store_id="store-1", default_camera_id=None,
+            default_start_at=datetime(2026, 9, 1),
+            default_end_at=datetime(2026, 9, 10),
+            business_date=datetime(2026, 9, 9).date(),
+        )
+
+        with patch.dict(
+            "os.environ", {"STORE_STRICT_INFERENCE_BOUNDARY": "false"}, clear=False
+        ):
+            instructions = build_member_agent_instructions(
+                context, "Asia/Shanghai"
+            )
+
+        self.assertIn("互动兴趣或关注度", instructions)
+        self.assertIn("陈列、导购、活动", instructions)
+        self.assertIn("不能声称已经购买或成交", instructions)
+        self.assertIn(
+            "未指定会员的最近、全部或整体会员行为",
+            instructions,
+        )
+        self.assertIn("list_recent_member_behaviors", instructions)
+        self.assertIn("会员商品分析", instructions)
+        self.assertIn("不能用 rank_products 替代", instructions)
+        self.assertIn("完整、综合或全量视觉互动报告必须组合", instructions)
+        self.assertIn("不得因为用户没有明确写出“会员”就省略", instructions)
+        self.assertNotIn(
+            "Do not infer purchases, purchase intent, preferences", instructions
+        )
 
     def test_controlled_fixture_protocol_smoke_is_temporary_and_query_only(self) -> None:
         with tempfile.TemporaryDirectory(prefix="mb01-smoke-") as raw:

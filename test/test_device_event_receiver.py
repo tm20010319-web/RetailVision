@@ -22,13 +22,13 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from agent.schema_evolution import evolve_schema
-from agent.device_capture_store import DeviceCaptureStore
-from agent.device_recognition_intake import (
+from agent.evidence.device_capture_store import DeviceCaptureStore
+from agent.identity.device_recognition_intake import (
     DeviceRecognitionEvent,
     DeviceRecognitionIntake,
 )
-from agent.device_event_receiver import create_device_event_router
-from agent.device_health import DeviceHealthStore
+from agent.identity.device_event_receiver import create_device_event_router
+from agent.identity.device_health import DeviceHealthStore
 from agent.models import (
     DeviceHealthState,
     DeviceMemberMapping,
@@ -250,7 +250,7 @@ class DeviceEventReceiverTests(unittest.TestCase):
             )
         )
 
-        with self.assertLogs("agent.device_event_receiver", level="INFO") as logs:
+        with self.assertLogs("agent.identity.device_event_receiver", level="INFO") as logs:
             response = TestClient(app).post("/api/v1/event/pull", json=HEARTBEAT)
 
         self.assertEqual(response.status_code, 503)
@@ -760,7 +760,7 @@ class DeviceEventReceiverTests(unittest.TestCase):
             )
         )
 
-        with self.assertLogs("agent.device_event_receiver", level="INFO") as logs:
+        with self.assertLogs("agent.identity.device_event_receiver", level="INFO") as logs:
             response = TestClient(app).post("/api/v1/event/pull", json=FACE_RECO)
 
         self.assertEqual(response.status_code, 503)
@@ -834,7 +834,7 @@ class DeviceEventReceiverTests(unittest.TestCase):
             "info": {"eventId": {"secret": "SENTINEL_NESTED_SECRET"}},
         }
 
-        with self.assertLogs("agent.device_event_receiver", level="INFO") as logs:
+        with self.assertLogs("agent.identity.device_event_receiver", level="INFO") as logs:
             malformed_response = self.client.post("/api/v1/event/pull", json=malformed)
             unknown_response = self.client.post("/api/v1/event/pull", json=unknown)
 
@@ -903,7 +903,7 @@ class DeviceEventReceiverTests(unittest.TestCase):
         store = DeviceCaptureStore(self.capture_root, max_bytes=1024, max_pixels=100)
         invalid = base64.b64encode(b"\xff\xd8not-a-decodable-jpeg\xff\xd9").decode("ascii")
 
-        with patch("agent.device_capture_store.cv2.imdecode", return_value=None) as imdecode:
+        with patch("agent.evidence.device_capture_store.cv2.imdecode", return_value=None) as imdecode:
             result = store.save_data_uri(
                 "entrance-1",
                 "invalid-jpeg",
@@ -924,7 +924,7 @@ class DeviceEventReceiverTests(unittest.TestCase):
         )
 
         with patch(
-            "agent.device_capture_store.cv2.imdecode",
+            "agent.evidence.device_capture_store.cv2.imdecode",
             return_value=np.zeros((10, 20, 3), dtype=np.uint8),
         ) as imdecode:
             result = store.save_data_uri("entrance-1", "large", data_uri)
@@ -941,7 +941,7 @@ class DeviceEventReceiverTests(unittest.TestCase):
         ).decode("ascii")
         store = DeviceCaptureStore(self.capture_root, max_bytes=1024, max_pixels=100)
 
-        with patch("agent.device_capture_store.cv2.imdecode", return_value=None) as imdecode:
+        with patch("agent.evidence.device_capture_store.cv2.imdecode", return_value=None) as imdecode:
             result = store.save_data_uri("entrance-1", "png", data_uri)
 
         self.assertIsNone(result)

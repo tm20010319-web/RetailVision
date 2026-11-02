@@ -29,11 +29,11 @@
 | Person/Product association | `behavior/merchandise/association` | association result incl. ambiguous | 不决定 Member |
 | pickup/holding/put_back | `behavior/merchandise/interaction` | temporal assessment | SAM3 单帧不能直接确认 |
 
-## 3. Phase 2D 开发规则
+## 3. 商品行为扩展规则
 
-Phase 2D 开始前必须先有独立 SAM3 PoC 和冻结的 MerchandiseObservation contract。
-然后按顺序实现：tracking Adapter、PersonProductAssociation、Interaction、BehaviorEvent
-integration、read model。不要先改 Schema 或 StoreRuntime。
+SAM3 tracking、PersonProductAssociation、Interaction 和商品 read model 已存在。扩展时
+沿用冻结合同，先验证 observation / association / interaction，再审查 publication/read model；
+不能按旧 Phase 2D 计划重复实现或先改 Schema、StoreRuntime。表内是逻辑能力，物理位置见当前布局。
 
 Product namespace 必须独立：
 
@@ -73,4 +73,3 @@ SAM3 不能补身份、查 Member、创建 Visit、触发 Arrival/Effect 或改�
 8. 测试穿过同一 Interface，覆盖 failure、ambiguity、retry 和 idempotency。
 9. 新事实先确定 Source of Truth，再决定是否需要 projection。
 10. 文档和模块映射随新的 Interface 一起更新。
-

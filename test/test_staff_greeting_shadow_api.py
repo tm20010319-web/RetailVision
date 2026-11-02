@@ -10,7 +10,7 @@ ensure_project_root_on_path()
 
 from fastapi.testclient import TestClient
 
-from agent.member_api import app
+from agent.api.member_api import app
 
 
 class FakeGreetingQuery:
@@ -25,7 +25,7 @@ class StaffGreetingShadowApiTests(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
         self.patch = patch(
-            "agent.member_api.get_staff_greeting_shadow_query",
+            "agent.api.member_api.get_staff_greeting_shadow_query",
             return_value=FakeGreetingQuery(),
         )
         self.patch.start()

@@ -16,18 +16,18 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.behavior_monitor import BehaviorMonitor
-from agent.behavior_vision import (
+from agent.behavior.behavior_monitor import BehaviorMonitor
+from agent.behavior.behavior_vision import (
     BehaviorVisionAdapter,
     PersonRoleResolver,
     PersonTrackDetection,
     VestDetection,
 )
-from agent.staff_greeting_evaluation import (
+from agent.behavior.staff_greeting_evaluation import (
     OfficialGreetingCore,
     _distance_trend_is_decreasing,
 )
-from agent.staff_greeting_offline import OpenCVPTSReader, load_reception_camera_config
+from agent.behavior.staff_greeting_offline import OpenCVPTSReader, load_reception_camera_config
 
 
 def _write_jsonl(path: Path, rows: Iterable[dict[str, Any]]) -> None:
@@ -658,10 +658,10 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--source", type=Path)
     parser.add_argument("--camera-id", default="entrance-1")
-    parser.add_argument("--camera-config", type=Path, default=PROJECT_ROOT / "behavior_cameras.example.json")
-    parser.add_argument("--person-model", type=Path, default=PROJECT_ROOT / "outputs/models/yolo11n.pt")
-    parser.add_argument("--vest-model", type=Path, default=PROJECT_ROOT / "runs/staff_vest/baseline_v1/weights/best.pt")
-    parser.add_argument("--pose-model", type=Path, default=PROJECT_ROOT / "outputs/models/yolo11n-pose.pt")
+    parser.add_argument("--camera-config", type=Path, default=PROJECT_ROOT / "configs/examples/behavior_cameras.example.json")
+    parser.add_argument("--person-model", type=Path, default=PROJECT_ROOT / "data/models/yolo11n.pt")
+    parser.add_argument("--vest-model", type=Path, default=PROJECT_ROOT / "data/models/staff_vest.pt")
+    parser.add_argument("--pose-model", type=Path, default=PROJECT_ROOT / "data/models/yolo11n-pose.pt")
     parser.add_argument("--tracker", default="bytetrack.yaml")
     parser.add_argument("--person-imgsz", type=int)
     parser.add_argument("--device", default="cuda:0")

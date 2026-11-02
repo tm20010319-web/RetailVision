@@ -1,91 +1,36 @@
 # Document Authority Registry
 
-Status: `CURRENT_AUTHORITY`
-Priority: `P0`
-Role: `DOCUMENT_AUTHORITY_REGISTRY`
-Content authority: `ROUTING_ONLY`
+状态：CURRENT_AUTHORITY / ROUTING_ONLY。优先阅读表示导航优先，不表示业务权威高于代码或 ADR。
 
-## Purpose
+## 冲突处理
 
-This is the first-read navigation entry for developers and AI coding agents. It
-maps documents to their intended authority, design, evidence, research, or
-historical role so that readers do not infer authority from file location,
-recency, or filename.
+1. 当前生产 runtime 行为与测试。
+2. [已接受 ADR](../adr/)。
+3. [CONTEXT](../../CONTEXT.md) 与 [当前状态](../CURRENT_STATUS.md)。
+4. [v2 逻辑合同](../architecture/v2/README.md) 和 [当前物理布局](../architecture/CURRENT_MODULE_LAYOUT.md)。
+5. 验证证据。
+6. 历史 / 研究记录。
 
-The Registry does not define or duplicate business rules, database contracts,
-API contracts, MCP contracts, schema behavior, or runtime behavior. Those
-remain in the sources named below.
+Registry 仅导航，不定义数据库、API/MCP 或业务合同。未接受的未来设计不能覆盖上面的当前来源。
+ADR 0007–0018 没有显式 status 元数据；保留原文，不推断 accepted 或 superseded。
 
-## What P0 Means
+## 分类与路由
 
-P0 means first-read navigation priority. It does not mean highest business
-authority and it does not override accepted ADR decisions, `CONTEXT.md`,
-current production behavior/tests, or architecture contracts.
-
-## Authority Resolution Order
-
-When sources disagree, resolve the subject in this order:
-
-1. Current production runtime behavior and tests.
-2. Accepted ADR decisions in [`docs/adr/`](../adr/).
-3. Current business context: [`CONTEXT.md`](../../CONTEXT.md) and the
-   [current handoff](../handoff/RETAILVISION_CURRENT_HANDOFF.md).
-4. Current frozen logical architecture in
-   [`docs/architecture/v2/`](../architecture/v2/).
-5. Approved, phase-gated target design in
-   [`docs/architecture/v3/`](../architecture/v3/).
-6. Validation evidence, which proves results but does not define behavior.
-7. Historical and research documents, which provide context only.
-
-This routing order does not grant the Registry authority over any higher-level
-source.
-
-## Classifications
-
-- `CURRENT_AUTHORITY`: active guidance for a bounded current responsibility.
-- `CURRENT_DESIGN`: approved future design; execution may still be phase-gated.
-- `VALIDATION_EVIDENCE`: proof, baseline, manifest, or execution result; not a
-  business or implementation contract.
-- `HISTORICAL`: superseded handoff, architecture, phase, or validation context.
-- `RESEARCH`: learning or exploratory material; not an implementation rule.
-- `DUPLICATE`: overlapping material with no independent decision value.
-- `UNKNOWN`: not sufficiently understood to rely on safely.
-
-### Conflict status
-
-`CONFLICTING` is not a primary classification. It is a separate risk field.
-Use it only when both conditions hold:
-
-1. The document remains in an active reading path, such as a root/docs index,
-   current handoff, or agent instruction.
-2. It contains executable guidance inconsistent with current authority.
-
-Use `REVIEW_REQUIRED` when a stale or ambiguous document needs owner review but
-the strict active-path conflict test is not proven. Historical age alone is not
-a conflict.
-
-## Domain Routing
-
-| Domain | Authority source |
+| 分类 | 路由 / 用法 |
 | --- | --- |
-| Business context and terminology | [`CONTEXT.md`](../../CONTEXT.md) and current handoff |
-| Accepted decisions | [`docs/adr/`](../adr/) |
-| Repository operating rules | [`AGENTS.md`](../../AGENTS.md) and [`docs/agents/`](../agents/) |
-| Current logical architecture | [`docs/architecture/v2/`](../architecture/v2/) |
-| Approved target/refactor design | [`docs/architecture/v3/`](../architecture/v3/), phase-gated |
-| Product Analytics/MCP implementation | Current production code/tests; [MCP guide](../product_analytics_mcp_server.md) is subordinate and reviewable |
-| Validation and qualification | Historical evidence is archived outside the repository; current qualification state is summarized in the current handoff |
-| Repository governance | [`docs/repository/`](../repository/) |
-| Historical context | External archive `D:\GJJ\work\retailvision_archive\20260826\historical-docs\` |
-| Research | External archive `D:\GJJ\work\retailvision_archive\20260826\historical-docs\` |
+| CANONICAL | [AGENTS](../../AGENTS.md)、CONTEXT、CURRENT_STATUS、当前布局与 v2 核心合同 |
+| ADR | 决策历史长期保留；只有明确后继决定才能标 superseded |
+| ACTIVE_REFERENCE | [模块指南索引](../README.md)；v3 仅 DESIGN_ONLY；Greeting 风险是有界风险参考 |
+| HISTORICAL_WORKLOG / HISTORICAL_HANDOFF | 外部归档；开发过程，不是当前合同 |
+| GENERATED_REPORT | 一次验证记录；长期结论吸收到当前合同后归档，证据不改写 |
+| DUPLICATED_SUPERSEDED | 已过时的阶段/文件映射，按 [归档索引](../repository/ARCHIVE_INDEX.md) 找原文 |
 
-## Non-Authority Boundaries
+当前物理位置不能从老阶段号推断。v2 保留逻辑边界，v3 保留未来设计；实际能力与资格由
+CURRENT_STATUS 和运行代码/测试核对。`CURRENT_AUTHORITY` 只在文档自身责任内有效。
 
-Do not use this Registry as a source for business, database, API, MCP, schema,
-or implementation contracts. Do not copy domain prose into this file. Read the
-routed authority source instead. A phase report or validation artifact may
-prove what happened without authorizing a new implementation or migration.
+## 维护
 
-For the complete physical inventory, classification rationale, conflict review,
-and future consolidation candidates, see
-[`REFACTOR_R4_05_DOCUMENT_AUTHORITY_AUDIT.md`](../repository/REFACTOR_R4_05_DOCUMENT_AUTHORITY_AUDIT.md).
+当前状态更新 CURRENT_STATUS；长期接口与操作说明就地更新；不可逆决策补 ADR。
+完成的工作日志与一次性报告放外部 archive，不新增长期 WORKLOG_INDEX。
+归档必须保存原路径、替代文档、引用、Git 状态、SHA256 和恢复映射。原始证据中的路径和哈希保持不变。
+若活动文档仍指示与当前事实冲突的操作，标 CONFLICTING 并修正；未充分证明的疑点标 REVIEW_REQUIRED。

@@ -10,9 +10,9 @@ import pytest
 from _test_bootstrap import ensure_project_root_on_path
 ensure_project_root_on_path()
 from scripts import run_cam03_run_identity as cli
-from agent.offline_recognition_provider import RecognitionRecordQueryResult, OfflineRecognitionEvidence
-from agent.offline_identity_association import OfflineSpatialGeometry
-from agent.offline_identity import OfflineTrackIdentityAggregator, OfflineEventTrackAssociation
+from agent.offline.offline_recognition_provider import RecognitionRecordQueryResult, OfflineRecognitionEvidence
+from agent.offline.offline_identity_association import OfflineSpatialGeometry
+from agent.offline.offline_identity import OfflineTrackIdentityAggregator, OfflineEventTrackAssociation
 from agent.models import Base
 from sqlalchemy import create_engine, text
 
@@ -63,7 +63,7 @@ def setup_run(tmp_path, monkeypatch):
     database = tmp_path/'test.db'
     engine=create_engine('sqlite:///'+str(database)); Base.metadata.create_all(engine); engine.dispose()
     args=SimpleNamespace(run_dir=root,output=tmp_path/'identity',database=database,
-        camera_config=Path(cli.ROOT/'configs/behavior_cameras.cam03.identity.json'),diagnostic=True)
+        camera_config=Path(cli.ROOT/'configs/cam03/behavior_cameras.cam03.identity.json'),diagnostic=True)
     monkeypatch.setattr(cli,'render_overlays',lambda *args: [])
     return args,manifest,events
 
@@ -213,7 +213,7 @@ def test_readonly_connection_rejects_write(setup_run):
 
 def test_complete_empty_real_inbox_is_unmatched_not_unavailable(setup_run,monkeypatch):
     from sqlalchemy.orm import sessionmaker
-    from agent.push_coverage import PushCoverageStore
+    from agent.identity.push_coverage import PushCoverageStore
     args,manifest,_=setup_run
     engine=create_engine('sqlite:///'+str(args.database))
     store=PushCoverageStore(sessionmaker(bind=engine,expire_on_commit=False))
@@ -284,7 +284,8 @@ def test_invalid_actual_duration_cannot_use_saved_verified_status(setup_run,monk
 def test_existing_receiver_lifespan_no_migration_or_behavior_writes(setup_run,monkeypatch,threshold):
     from sqlalchemy.orm import sessionmaker
     from fastapi.testclient import TestClient
-    from agent import db, member_api
+    from agent import db
+    from agent.api import member_api
     from agent.config import settings
     from scripts.run_cam03_push_receiver import prepare_receiver
     args,_,_=setup_run

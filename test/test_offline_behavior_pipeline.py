@@ -18,26 +18,26 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from agent.models import Base, BehaviorEvent, OfflineBehaviorPublication  # noqa: E402
-from agent.offline_artifacts import (  # noqa: E402
+from agent.offline.offline_artifacts import (  # noqa: E402
     OfflineArtifactManifestCanonicalizerV1,
     OfflineRunArtifactStore,
     StaticArtifactStorageSecurityAdapter,
 )
-from agent.offline_behavior import OfflineBehaviorIdentityProjector, Stage9BehaviorFactAdapter  # noqa: E402
-from agent.offline_publication import OfflineBehaviorTimePublicationGate  # noqa: E402
-from agent.offline_publication import (  # noqa: E402
+from agent.offline.offline_behavior import OfflineBehaviorIdentityProjector, Stage9BehaviorFactAdapter  # noqa: E402
+from agent.offline.offline_publication import OfflineBehaviorTimePublicationGate  # noqa: E402
+from agent.offline.offline_publication import (  # noqa: E402
     OfflineBehaviorPublisher,
     TrustedOfflinePublicationGate,
 )
-from agent.offline_publication_sql import SqlAlchemyOfflinePublicationRepository  # noqa: E402
-from agent.behavior_events import BehaviorEventStore  # noqa: E402
-from agent.offline_source import (  # noqa: E402
+from agent.offline.offline_publication_sql import SqlAlchemyOfflinePublicationRepository  # noqa: E402
+from agent.behavior.behavior_events import BehaviorEventStore  # noqa: E402
+from agent.offline.offline_source import (  # noqa: E402
     HistoricalRegistrationInterval,
     P6SRecordingSource,
     RegistrationScopeValidator,
 )
-from agent.offline_source import TrustedSourceVideoVerifier, TrustedSourceVideoResult  # noqa: E402
-from agent.offline_media import (  # noqa: E402
+from agent.offline.offline_source import TrustedSourceVideoVerifier, TrustedSourceVideoResult  # noqa: E402
+from agent.offline.offline_media import (  # noqa: E402
     CapabilityProfileResolution,
     OfflineRecordingTimeNormalizer,
     P6SCapabilityProfile,
@@ -45,12 +45,12 @@ from agent.offline_media import (  # noqa: E402
     SegmentDurationAssessment,
     assess_segment_duration,
 )
-from agent.offline_video_models import (  # noqa: E402
+from agent.offline.offline_video_models import (  # noqa: E402
     OfflineBehaviorPass,
     OfflineIdentityPassResult,
     OfflineVideoAnalysisRequest,
 )
-from agent.offline_identity import OfflineTrackIdentityAssociation  # noqa: E402
+from agent.offline.offline_identity import OfflineTrackIdentityAssociation  # noqa: E402
 from pipelines.offline_behavior_pipeline import (  # noqa: E402
     OfflineBehaviorPipeline,
     OfflineOverlayRenderResult,

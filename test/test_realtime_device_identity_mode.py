@@ -7,11 +7,11 @@ from unittest.mock import patch
 
 import numpy as np
 
-from agent.detector import Detection
-from agent.device_identity import CustomerSession as DeviceCustomerSession
-from agent.device_identity import StableTrackEvent
+from agent.legacy.detector import Detection
+from agent.identity.device_identity import CustomerSession as DeviceCustomerSession
+from agent.identity.device_identity import StableTrackEvent
 from pipelines import CustomerSession as PublicCustomerSession
-from pipelines.realtime_entry_pipeline import (
+from pipelines.legacy.realtime_entry_pipeline import (
     CustomerSession as PipelineCustomerSession,
     RealtimeEntryPipeline,
     create_realtime_pipeline,
@@ -72,7 +72,7 @@ class RealtimeDeviceIdentityModeTests(unittest.TestCase):
         self.assertEqual(1, len(result["stable_track_events"]))
 
     def test_factory_defaults_to_legacy_mode_without_legacy_dependencies(self):
-        with patch("pipelines.realtime_entry_pipeline.VisionDetector.initialize"):
+        with patch("pipelines.legacy.realtime_entry_pipeline.VisionDetector.initialize"):
             pipeline = create_realtime_pipeline(
                 model_path="stub.pt",
                 camera_id="front-door",
@@ -82,7 +82,7 @@ class RealtimeDeviceIdentityModeTests(unittest.TestCase):
         self.assertIsNone(pipeline.face_recognizer)
 
     def test_factory_explicit_device_api_mode_remains_available(self):
-        with patch("pipelines.realtime_entry_pipeline.VisionDetector.initialize"):
+        with patch("pipelines.legacy.realtime_entry_pipeline.VisionDetector.initialize"):
             pipeline = create_realtime_pipeline(
                 model_path="stub.pt",
                 camera_id="front-door",
@@ -93,7 +93,7 @@ class RealtimeDeviceIdentityModeTests(unittest.TestCase):
 
     def test_factory_with_legacy_recognizer_keeps_compatibility_mode(self):
         recognizer = ExplodingFaceRecognizer()
-        with patch("pipelines.realtime_entry_pipeline.VisionDetector.initialize"):
+        with patch("pipelines.legacy.realtime_entry_pipeline.VisionDetector.initialize"):
             pipeline = create_realtime_pipeline(
                 model_path="stub.pt",
                 face_recognizer=recognizer,
@@ -102,7 +102,7 @@ class RealtimeDeviceIdentityModeTests(unittest.TestCase):
         self.assertEqual("legacy", pipeline.identity_mode)
 
     def test_factory_with_old_new_customer_callback_keeps_legacy_mode(self):
-        with patch("pipelines.realtime_entry_pipeline.VisionDetector.initialize"):
+        with patch("pipelines.legacy.realtime_entry_pipeline.VisionDetector.initialize"):
             pipeline = create_realtime_pipeline(
                 model_path="stub.pt",
                 on_new_customer=lambda *args: None,

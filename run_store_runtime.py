@@ -7,14 +7,14 @@ import signal
 from datetime import datetime
 from typing import Any, Optional
 
-from agent.camera_face_api import CameraFaceApiClient
+from agent.platform.camera_face_api import CameraFaceApiClient
 from agent.config import settings
 from agent.db import get_session_factory, init_db
-from agent.device_capture_store import DeviceCaptureStore
-from agent.device_identity import SqlAlchemyDeviceIdentityRepository
+from agent.evidence.device_capture_store import DeviceCaptureStore
+from agent.identity.device_identity import SqlAlchemyDeviceIdentityRepository
 from pipelines.behavior_runtime import BehaviorCaptureRunner, create_behavior_runtime
 from pipelines.device_identity_runtime import create_device_identity_runtime
-from pipelines.member_business_runtime import create_member_business_runtime
+from pipelines.legacy.member_business_runtime import create_member_business_runtime
 from pipelines.store_runtime import StoreRuntime
 from run_behavior_runtime import validate_runtime_settings as validate_behavior_settings
 from run_device_identity import (

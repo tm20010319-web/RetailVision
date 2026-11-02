@@ -1,5 +1,7 @@
 # Target Module Architecture v3
 
+Current physical paths: [CURRENT_MODULE_LAYOUT](../CURRENT_MODULE_LAYOUT.md). Target columns and proposed tests/ subdirectories are future design, not existing directories. The old Harness shims and router are retired; source history is in the external archive.
+
 Status: `DESIGN_ONLY`. This is a logical target only. It does not authorize
 package moves, ORM splitting, Schema changes, algorithm changes, or changes to
 Behavior/Identity/Offline V1 frozen contracts.
@@ -115,48 +117,47 @@ long-term top-level modules.
 
 ## Existing to target mapping
 
-Existing physical paths remain unchanged.
+The existing column uses the current physical layout; target locations remain proposals.
 
 | Existing path | Target logical location | Notes |
 | --- | --- | --- |
 | `agent/models.py` | `infrastructure/persistence/models` plus capability ownership | Keep whole until final phase |
-| `agent/behavior_events.py` | `behavior/events` | Formal BehaviorEvent rules remain frozen |
-| `agent/behavior_monitor.py` | `behavior/dwell`, `behavior/entry`, `behavior/events` | Split only after tests |
-| `agent/behavior_vision.py` | `behavior/tracking/person` | Preserve detector semantics |
-| `agent/person_product_association.py` | `behavior/interaction/association` | Stage8 is provenance, not package root |
-| `agent/product_interaction.py` | `behavior/interaction` | PICK_UP/HOLDING/PUT_DOWN is frozen |
-| `agent/*product_replay.py` | `behavior/interaction/replay` | Test/tool adapter |
-| `agent/sam31_product_tracking.py` | `behavior/tracking/product` | Model adapter |
-| `agent/sam31_behavior_adapter.py` | `behavior/tracking/person` | Preserve provider contract |
-| `agent/sam31_realtime_providers.py` | `behavior/tracking/providers` | EOF terminal-window contract is frozen |
-| `agent/offline_behavior.py` | `behavior/offline/application` | Offline V1 adapter |
-| `agent/offline_identity*.py` | `identity/track_association` and `identity/recognition` | Confirmed-only projection |
+| `agent/behavior/behavior_events.py` | `behavior/events` | Formal BehaviorEvent rules remain frozen |
+| `agent/behavior/behavior_monitor.py` | `behavior/dwell`, `behavior/entry`, `behavior/events` | Split only after tests |
+| `agent/behavior/behavior_vision.py` | `behavior/tracking/person` | Preserve detector semantics |
+| `agent/behavior/person_product_association.py` | `behavior/interaction/association` | Stage8 is provenance, not package root |
+| `agent/behavior/product_interaction.py` | `behavior/interaction` | PICK_UP/HOLDING/PUT_DOWN is frozen |
+| `tools/replay/*product_replay.py` | `behavior/interaction/replay` | Test/tool adapter |
+| `agent/behavior/sam31_product_tracking.py` | `behavior/tracking/product` | Model adapter |
+| `agent/behavior/sam31_behavior_adapter.py` | `behavior/tracking/person` | Preserve provider contract |
+| `agent/behavior/sam31_realtime_providers.py` | `behavior/tracking/providers` | EOF terminal-window contract is frozen |
+| `agent/offline/offline_behavior.py` | `behavior/offline/application` | Offline V1 adapter |
+| `agent/offline/offline_identity*.py` | `identity/track_association` and `identity/recognition` | Confirmed-only projection |
 | `pipelines/offline_behavior_pipeline.py` | `behavior/offline/application` | Writer dependency remains a narrow port |
 | `pipelines/behavior_runtime.py` | `runtime/application` plus `behavior/application/runtime` | Composition and policy stay separate |
 | `pipelines/store_runtime.py` | `runtime/application` | Composition root only |
 | `agent/models.py:ProductInteractionFact` | Business: `analytics/product`; physical: `infrastructure/persistence/analytics` | Current SQLAlchemy ORM remains in `agent/models.py`; separate pure model/repository is future design only |
-| `agent/product_interaction_analytics.py` | `analytics/product/application/ingest` and `application/query` | Current `ProductInteractionFactWriter` and `ProductAnalyticsQueryService`; no AnalyticsAdmissionService/Fence |
-| `agent/product_interaction_mcp.py` | `integration/mcp/product_analytics` | Delegates to query service |
+| `agent/analytics/product_interaction_analytics.py` | `analytics/product/application/ingest` and `application/query` | Current `ProductInteractionFactWriter` and `ProductAnalyticsQueryService`; no AnalyticsAdmissionService/Fence |
+| `agent/analytics/product_interaction_mcp.py` | `integration/mcp/product_analytics` | Delegates to query service |
 | `agent/mcp_server/schemas.py` | `integration/mcp/protocol` | MCP/JSON-RPC schema only |
 | `agent/mcp_server/transport.py` | `integration/mcp/transport` | stdio boundary |
 | `agent/mcp_server/tools.py` | `integration/mcp/product_analytics` | Dispatch/error translation |
 | `agent/mcp_server/server.py` | `integration/mcp` | No SQL/business aggregation |
 | `tools/harness/product_analytics/*` | `tools/harness/product_analytics` | Current physical Harness location; never production Agent ownership |
 | `demo/product_analytics_agent/run.py` | `demo/product_analytics_agent` | Current physical manual Demo entrypoint |
-| `agent/product_analytics_agent_runtime.py`, `agent/product_analytics_tool_calling.py` | compatibility surface for `tools/harness/product_analytics` | Temporary re-export shims only; no implementation |
-| `agent/track_association_finalization.py` | `identity/binding` | Behavior projection via a port |
-| `agent/camera_track_identity.py` | `identity/track_association` | Frozen statuses/spatial policy |
-| `agent/reusable_visit_resolver.py` | `visit/resolver` | Preserve Visit/Arrival semantics |
-| `agent/visit_merge_service.py` | `visit/merge` | Audit-preserving merge |
-| `agent/customer_entry_visit.py` | `visit/entry` | Visit fact writer |
-| `agent/member_arrival_effects.py` | `effects` | Intent lifecycle only |
-| `agent/device_recordings.py`, evidence modules | `evidence` | Device recordings remain media source of truth |
-| `agent/profile_jobs.py`, `agent/profile_snapshot_store.py` | `profile` | No inbox-to-visit inference |
-| `agent/operations_query_service.py` | `operations/read_model` | Read-only operations surface |
-| `agent/router.py`, `agent/member_api.py` | `api` | No ORM/business policy in routes |
+| `agent/identity/track_association_finalization.py` | `identity/binding` | Behavior projection via a port |
+| `agent/identity/camera_track_identity.py` | `identity/track_association` | Frozen statuses/spatial policy |
+| `agent/visits/reusable_visit_resolver.py` | `visit/resolver` | Preserve Visit/Arrival semantics |
+| `agent/visits/visit_merge_service.py` | `visit/merge` | Audit-preserving merge |
+| `agent/visits/customer_entry_visit.py` | `visit/entry` | Visit fact writer |
+| `agent/visits/member_arrival_effects.py` | `effects` | Intent lifecycle only |
+| `agent/evidence/device_recordings.py`, evidence modules | `evidence` | Device recordings remain media source of truth |
+| `agent/profile/profile_jobs.py`, `agent/profile/profile_snapshot_store.py` | `profile` | No inbox-to-visit inference |
+| `agent/api/operations_query_service.py` | `operations/read_model` | Read-only operations surface |
 | `agent/db.py`, `agent/schema_evolution/`, `agent/config.py` | `infrastructure` | Physical/Schema migration last |
 | demos and camera profile | `demo` | Isolated from production imports |
-| root runners and diagnostics | `tools` | Explicit development commands |
+| root production runners | `runtime/application` | Public startup roots retained |
+| explicit diagnostic commands | `tools` | Review individually; no automatic relocation |
 
 ## ORM ownership mapping
 

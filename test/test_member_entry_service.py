@@ -16,8 +16,8 @@ from sqlalchemy.orm import sessionmaker
 from agent import db as db_module
 from agent.db import configure_sqlite_foreign_keys
 from agent.schema_evolution import evolve_schema
-from agent.member_entry_service import MemberEntryService
-from agent.member_service import MemberService
+from agent.legacy.member_entry_service import MemberEntryService
+from agent.member.member_service import MemberService
 from agent.models import (
     BusinessJob,
     DeviceRecognitionInbox,

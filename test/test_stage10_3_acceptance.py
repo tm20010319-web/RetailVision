@@ -6,7 +6,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.stage10_live_acceptance import evaluate_stage10_3_scenario  # noqa: E402
+from tools.acceptance.stage10_live_acceptance import evaluate_stage10_3_scenario  # noqa: E402
 
 
 def _product(key: str, token: str) -> dict[str, object]:

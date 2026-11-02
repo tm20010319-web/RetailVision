@@ -21,13 +21,13 @@ from _test_bootstrap import install_runtime_stubs
 
 install_runtime_stubs()
 
-from agent.device_identity import StableTrackEvent
+from agent.identity.device_identity import StableTrackEvent
 from agent.models import BusinessJob, Member, MemberEntryEvent, Visit
-from agent.profile_jobs import ProfileJobWorker
-from agent.profile_snapshot_store import ProfileSnapshotStore
-from pipelines.customer_profile_pipeline import CustomerProfilePipeline
-from pipelines.realtime_entry_pipeline import RealtimeEntryPipeline
-from agent.detector import Detection
+from agent.profile.profile_jobs import ProfileJobWorker
+from agent.profile.profile_snapshot_store import ProfileSnapshotStore
+from pipelines.legacy.customer_profile_pipeline import CustomerProfilePipeline
+from pipelines.legacy.realtime_entry_pipeline import RealtimeEntryPipeline
+from agent.legacy.detector import Detection
 
 
 class SpyVisionService:
@@ -109,7 +109,7 @@ class ProfileSnapshotStoreTests(unittest.TestCase):
         self.assertEqual(saved_crop.shape[:2], (70, 50))
 
     def test_capture_rejects_failed_write_without_storing_path(self) -> None:
-        with patch("agent.profile_snapshot_store.cv2.imwrite", return_value=False):
+        with patch("agent.profile.profile_snapshot_store.cv2.imwrite", return_value=False):
             path = self.store.capture(self.event, self.frame)
 
         self.assertIsNone(path)
@@ -130,7 +130,7 @@ class ProfileSnapshotStoreTests(unittest.TestCase):
     def test_failed_replacement_preserves_prior_snapshot(self) -> None:
         first_path = self.store.capture(self.event, self.frame)
 
-        with patch("agent.profile_snapshot_store.cv2.imwrite", return_value=False):
+        with patch("agent.profile.profile_snapshot_store.cv2.imwrite", return_value=False):
             replacement_path = self.store.capture(self.event, self.frame)
 
         self.assertIsNotNone(first_path)
@@ -1119,7 +1119,7 @@ class StableTrackFrameCallbackTests(unittest.TestCase):
             self.assertEqual(result["confirmed_entries"][0]["entry_type"], "identity_pending")
 
     def test_realtime_pipeline_has_no_profile_processing_imports_or_calls(self) -> None:
-        source_path = Path(__file__).resolve().parents[1] / "pipelines" / "realtime_entry_pipeline.py"
+        source_path = Path(__file__).resolve().parents[1] / "pipelines" / "legacy" / "realtime_entry_pipeline.py"
         tree = ast.parse(source_path.read_text(encoding="utf-8"))
         forbidden_names = {
             "analyze_image",

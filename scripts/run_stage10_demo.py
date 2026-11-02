@@ -18,10 +18,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.person_product_association import PersonProductAssociationConfig
-from agent.product_interaction import ProductInteractionConfig
-from agent.sam31_behavior_adapter import Sam31BehaviorAdapter
-from agent.stage10_demo import (
+from agent.behavior.person_product_association import PersonProductAssociationConfig
+from agent.behavior.product_interaction import ProductInteractionConfig
+from agent.behavior.sam31_behavior_adapter import Sam31BehaviorAdapter
+from agent.runtime.stage10_demo import (
     AsyncRtspWindowSource,
     ConsoleEventSink,
     EventStream,
@@ -39,9 +39,9 @@ from agent.stage10_demo import (
     run_rtsp_demo,
     run_windowed_rtsp_demo,
 )
-from agent.sam31_realtime_providers import Sam31RealtimeProviderBundle
-from agent.sam31_product_tracking import ProductDisplaySurface
-from agent.stage10_runtime_readiness import Stage1022AcceptanceRecorder
+from agent.behavior.sam31_realtime_providers import Sam31RealtimeProviderBundle
+from agent.behavior.sam31_product_tracking import ProductDisplaySurface
+from agent.runtime.stage10_runtime_readiness import Stage1022AcceptanceRecorder
 
 
 class _EmptyProductSource:
@@ -335,7 +335,7 @@ def _make_reader(
 
 
 def _load_product_surface() -> ProductDisplaySurface:
-    path = PROJECT_ROOT / "product_cameras.cam02.stage7c.json"
+    path = PROJECT_ROOT / "configs/cam02/product_cameras.cam02.stage7c.json"
     payload = json.loads(path.read_text(encoding="utf-8"))
     if payload.get("frame_size") != [1280, 720]:
         raise ValueError("frozen Product surface config is not 1280x720")
@@ -691,8 +691,8 @@ def parse_args() -> argparse.Namespace:
         metavar="NAME",
         help="Read the RTSP endpoint from an environment variable",
     )
-    parser.add_argument("--stage8-config", type=Path, default=Path("person_product_association.cam02.stage8.json"))
-    parser.add_argument("--stage9-config", type=Path, default=Path("product_interaction.cam02.stage9.json"))
+    parser.add_argument("--stage8-config", type=Path, default=Path("configs/cam02/person_product_association.cam02.stage8.json"))
+    parser.add_argument("--stage9-config", type=Path, default=Path("configs/cam02/product_interaction.cam02.stage9.json"))
     parser.add_argument("--runtime-instance-id", default="stage10-live")
     parser.add_argument("--person-provider", help="module:callable returning Person detector")
     parser.add_argument("--product-provider", help="module:callable returning ProductFrameSource")

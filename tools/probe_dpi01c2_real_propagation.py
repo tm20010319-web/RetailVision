@@ -28,22 +28,22 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.product_camera_config import load_dpi01c_product_camera_config  # noqa: E402
-from agent.product_first_frame_initialization import frame_sha256, mask_sha256  # noqa: E402
-from agent.sam31_product_tracking import (  # noqa: E402
+from agent.behavior.product_camera_config import load_dpi01c_product_camera_config  # noqa: E402
+from agent.behavior.product_first_frame_initialization import frame_sha256, mask_sha256  # noqa: E402
+from agent.behavior.sam31_product_tracking import (  # noqa: E402
     MultiProductTrackRuntime,
     ProductCandidate,
     ProductDisplaySurface,
     ProductTrackStatus,
 )
-from agent.sam31_real_adapter import (  # noqa: E402
+from agent.behavior.sam31_real_adapter import (  # noqa: E402
     Sam31InstancePromptAdapter,
     create_external_sam31_video_session,
 )
 
 
 VIDEO_DEFAULT = Path(r"D:\GJJ\work\video\2026_09_04_18_17_36.mp4")
-CONFIG_DEFAULT = PROJECT_ROOT / "product_cameras.cam03.dpi01c.guitars.stage7c.json"
+CONFIG_DEFAULT = PROJECT_ROOT / "configs/cam03/product_cameras.cam03.dpi01c.guitars.stage7c.json"
 C1_DEFAULT = Path(r"D:\GJJ\work\dpi01c_cam03_guitars_run\two_guitars_final")
 OUTPUT_DEFAULT = Path(r"D:\GJJ\work\dpi01c2_cam03_real_propagation")
 PHYSICAL_TABLETOP_PIXELS = ((520, 454), (952, 452), (968, 526), (521, 531))

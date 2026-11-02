@@ -10,7 +10,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from agent.device_identity import (
+from agent.identity.device_identity import (
     DeviceMemberMappingData,
     DeviceRecognitionCursorData,
     SqlAlchemyDeviceIdentityRepository,

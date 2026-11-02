@@ -10,8 +10,8 @@ $receiverPython = 'C:/Users/Administrator/miniconda3/envs/agents-py311/python.ex
 if (Get-NetTCPConnection -LocalPort 8081 -State Listen -ErrorAction SilentlyContinue) {
     throw 'Port 8081 is already listening; inspect the existing receiver instead of replacing it.'
 }
-$env:DATABASE_URL = 'sqlite:///D:/GJJ/work/code/demo_flow.db'
-$env:RETAILVISION_CAMERA_CONFIG_PATH = 'D:/GJJ/work/code/configs/behavior_cameras.cam03.identity.json'
+$env:DATABASE_URL = 'sqlite:///D:/GJJ/work/code/runtime/databases/demo_flow.db'
+$env:RETAILVISION_CAMERA_CONFIG_PATH = 'D:/GJJ/work/code/configs/cam03/behavior_cameras.cam03.identity.json'
 $env:BEHAVIOR_CONFIG_PATH = $env:RETAILVISION_CAMERA_CONFIG_PATH
 $env:CAMERA_FACE_DEVICE_ID = 'cam03'
 $env:CAMERA_FACE_BASE_URL = 'http://192.0.2.4'
@@ -20,7 +20,7 @@ $env:P6S_SIMILARITY_THRESHOLD = $SimilarityThreshold.ToString([System.Globalizat
 # writing the Unique Code into this script. The receiver does not query faces.
 $serialLookup = @'
 import json, sqlite3
-with sqlite3.connect('file:D:/GJJ/work/code/demo_flow.db?mode=ro',uri=True) as c:
+with sqlite3.connect('file:D:/GJJ/work/code/runtime/databases/demo_flow.db?mode=ro',uri=True) as c:
     row=c.execute("SELECT device_metadata FROM push_coverage_observations WHERE device_id=? AND device_metadata IS NOT NULL ORDER BY observed_at DESC LIMIT 1",('cam03',)).fetchone()
     metadata=json.loads(row[0]) if row else {}
     serial=metadata.get('device_serial',{}).get('normalized_value','')

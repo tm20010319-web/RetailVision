@@ -1,12 +1,12 @@
 import unittest
 from pathlib import Path
 
-from agent.product_camera_config import load_dpi01c_product_camera_config, validate_formal_replay_readiness, ProductCameraConfigError
+from agent.behavior.product_camera_config import load_dpi01c_product_camera_config, validate_formal_replay_readiness, ProductCameraConfigError
 
 
 class ReplayReadinessTests(unittest.TestCase):
     def setUp(self):
-        self.path = Path("product_cameras.cam03.dpi01c.dpi01b_action.stage7c.json")
+        self.path = Path("configs/cam03/product_cameras.cam03.dpi01c.dpi01b_action.stage7c.json")
         self.config = load_dpi01c_product_camera_config(self.path)
 
     def test_confirmed_config_requires_complete_mask_confirmation(self):

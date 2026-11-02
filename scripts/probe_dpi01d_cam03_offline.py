@@ -12,10 +12,10 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.product_camera_config import load_dpi01c_product_camera_config, validate_formal_replay_readiness
-from agent.sam31_product_tracking import ProductDisplaySurface
-from agent.offline_video_models import OfflineVideoAnalysisRequest
-from agent.offline_source import P6SRecordingSource
+from agent.behavior.product_camera_config import load_dpi01c_product_camera_config, validate_formal_replay_readiness
+from agent.behavior.sam31_product_tracking import ProductDisplaySurface
+from agent.offline.offline_video_models import OfflineVideoAnalysisRequest
+from agent.offline.offline_source import P6SRecordingSource
 from scripts.run_offline_complete_loop_golden import GoldenMp4Analyzer, _load_runtime_configs
 
 

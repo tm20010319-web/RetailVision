@@ -352,7 +352,7 @@ class StaffVestTrainingToolTests(unittest.TestCase):
             config.write_text(
                 yaml.safe_dump(
                     {
-                        "model": "fake-yolo11n.pt",
+                        "model": "fake-data/models/yolo11n.pt",
                         "task": "detect",
                         "imgsz": 640,
                         "epochs": 1,

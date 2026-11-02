@@ -17,7 +17,7 @@ from agent.db import configure_sqlite_foreign_keys
 from agent.models import DeviceRecognitionInbox, Member, MemberArrival, Visit
 from agent.schema_evolution import evolve_schema
 from pipelines.device_identity_runtime import DeviceIdentityRuntime, create_device_identity_runtime
-from agent.recognition_association_worker import TrackAssociationCandidate
+from agent.identity.recognition_association_worker import TrackAssociationCandidate
 
 
 class _Client:

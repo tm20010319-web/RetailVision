@@ -12,11 +12,11 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.stage10_live_acceptance import (  # noqa: E402
+from tools.acceptance.stage10_live_acceptance import (  # noqa: E402
     evaluate_stage10_3_artifacts,
     summarize_stage10_3_acceptance,
 )
-from agent.stage10_showcase import (  # noqa: E402
+from tools.acceptance.stage10_showcase import (  # noqa: E402
     apply_recorded_event_banners,
     concatenate_stage10_videos,
     extract_video_keyframes,

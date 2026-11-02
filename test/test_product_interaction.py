@@ -8,8 +8,8 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.person_product_association import PersonProductAssociationStatus
-from agent.product_interaction import (
+from agent.behavior.person_product_association import PersonProductAssociationStatus
+from agent.behavior.product_interaction import (
     ProductInteractionConfig,
     ProductInteractionEventType,
     ProductInteractionObservation,
@@ -17,7 +17,7 @@ from agent.product_interaction import (
     ProductInteractionState,
     ProductMotionState,
 )
-from agent.sam31_product_tracking import ProductDisplayState, ProductTrackStatus
+from agent.behavior.sam31_product_tracking import ProductDisplayState, ProductTrackStatus
 
 
 class ProductInteractionTests(unittest.TestCase):

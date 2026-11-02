@@ -14,13 +14,13 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from agent.db import configure_sqlite_foreign_keys
-from agent.behavior_events import BehaviorEventInput, BehaviorEventStore
-from agent.camera_track_identity import (
+from agent.behavior.behavior_events import BehaviorEventInput, BehaviorEventStore
+from agent.identity.camera_track_identity import (
     CameraTrackIdentityCache,
     TrackSnapshot,
     TrackSnapshotBuffer,
 )
-from agent.identity_runtime_lease import (
+from agent.platform.identity_runtime_lease import (
     IdentityAssociationRuntimeLeaseService,
     RuntimeLeaseUnavailable,
 )
@@ -38,22 +38,22 @@ from agent.models import (
     Visit,
     VisitEntryEvidence,
 )
-from agent.recognition_association_worker import (
+from agent.identity.recognition_association_worker import (
     RecognitionAssociationWorker,
     TrackAssociationCandidate,
 )
-from agent.reusable_visit_resolver import (
+from agent.visits.reusable_visit_resolver import (
     RecognitionAssociationRequest,
     ReusableVisitResolver,
 )
 from agent.schema_evolution import evolve_schema
-from agent.track_association_policy import TrackAssociationAuditService
-from agent.track_association_finalization import (
+from agent.identity.track_association_policy import TrackAssociationAuditService
+from agent.identity.track_association_finalization import (
     BindingLifecycleHeartbeat,
     PersistentFinalizationInvariantViolation,
     TrackAssociationFinalizationWorker,
 )
-from agent.visit_activity import VisitActivity, VisitActivityService
+from agent.visits.visit_activity import VisitActivity, VisitActivityService
 
 
 class _CountingLeaseService:
@@ -351,7 +351,7 @@ class Phase2BFinalizationProducerTests(unittest.TestCase):
             before_effects = db.query(MemberArrivalEffect).count()
             before_jobs = db.query(TrackAssociationFinalizationJob).count()
 
-        with patch("agent.reusable_visit_resolver.logger.warning") as warning:
+        with patch("agent.visits.reusable_visit_resolver.logger.warning") as warning:
             result = self._resolver().resolve(self._request("fenced", evaluation.id))
 
         with self.sessions() as db:

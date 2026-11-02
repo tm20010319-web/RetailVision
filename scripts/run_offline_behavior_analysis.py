@@ -11,19 +11,19 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from agent.offline_artifacts import OfflineRunArtifactStore
-from agent.offline_behavior import OfflineBehaviorIdentityProjector, Stage9BehaviorFactAdapter
+from agent.offline.offline_artifacts import OfflineRunArtifactStore
+from agent.offline.offline_behavior import OfflineBehaviorIdentityProjector, Stage9BehaviorFactAdapter
 from agent.config import Settings
-from agent.product_interaction_analytics import ProductInteractionFactWriter
-from agent.offline_publication import OfflineBehaviorPublisher
-from agent.offline_publication import OfflineBehaviorTimePublicationGate
-from agent.offline_publication_sql import SqlAlchemyOfflinePublicationRepository
-from agent.behavior_events import BehaviorEventStore
-from agent.offline_media import CapabilityProfileResolution, SegmentDurationAssessment
-from agent.offline_source import P6SRecordingSource
-from agent.offline_source import TrustedSourceVideoResult
-from agent.offline_source import RegistrationScopeValidator
-from agent.offline_video_models import OfflineVideoAnalysisRequest
+from agent.analytics.product_interaction_analytics import ProductInteractionFactWriter
+from agent.offline.offline_publication import OfflineBehaviorPublisher
+from agent.offline.offline_publication import OfflineBehaviorTimePublicationGate
+from agent.offline.offline_publication_sql import SqlAlchemyOfflinePublicationRepository
+from agent.behavior.behavior_events import BehaviorEventStore
+from agent.offline.offline_media import CapabilityProfileResolution, SegmentDurationAssessment
+from agent.offline.offline_source import P6SRecordingSource
+from agent.offline.offline_source import TrustedSourceVideoResult
+from agent.offline.offline_source import RegistrationScopeValidator
+from agent.offline.offline_video_models import OfflineVideoAnalysisRequest
 from pipelines.offline_behavior_pipeline import OfflineBehaviorPipeline
 from agent.schema_evolution import evolve_schema
 

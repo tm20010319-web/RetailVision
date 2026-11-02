@@ -40,3 +40,19 @@ secrets/
 *.bundle
 *.pem
 *.key
+
+# Local workspace caches and generated assets.
+.task*-tests/
+.tmp/
+/test/outputs/
+/test/.tmp/
+/data/
+!/data/models/
+!/data/models/README.md
+/outputs/
+/backups/
+/reports/**
+!/reports/**/
+!/reports/**/*.md
+!/reports/**/*.py
+/Ultralytics/

@@ -15,9 +15,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from agent.schema_evolution import evolve_schema
-from agent.device_recognition_intake import DeviceRecognitionIntake
-from agent.device_health import DeviceHealthStore
-from agent.member_entry_service import MemberEntryService
+from agent.identity.device_recognition_intake import DeviceRecognitionIntake
+from agent.identity.device_health import DeviceHealthStore
+from agent.legacy.member_entry_service import MemberEntryService
 from agent.models import (
     DeviceMemberMapping,
     DeviceRecognitionInbox,
@@ -31,7 +31,7 @@ from agent.models import (
 
 try:
     DeviceRecognitionInboxWorker = importlib.import_module(
-        "agent.device_event_worker"
+        "agent.identity.device_event_worker"
     ).DeviceRecognitionInboxWorker
 except (AttributeError, ModuleNotFoundError):
     DeviceRecognitionInboxWorker = None
@@ -499,7 +499,7 @@ class DeviceRecognitionInboxWorkerTests(unittest.TestCase):
                 self.alive = False
 
         worker = self.make_worker()
-        with patch("agent.device_event_worker.threading.Thread", StartThread):
+        with patch("agent.identity.device_event_worker.threading.Thread", StartThread):
             with self.assertRaisesRegex(RuntimeError, "thread start failed"):
                 worker.start()
             self.assertIsNone(worker._thread)
@@ -537,7 +537,7 @@ class DeviceRecognitionInboxWorkerTests(unittest.TestCase):
                 self.alive = False
 
         worker = self.make_worker(processing_timeout_seconds=30)
-        with patch("agent.device_event_worker.threading.Thread", RecordingThread):
+        with patch("agent.identity.device_event_worker.threading.Thread", RecordingThread):
             worker.start()
             worker.start()
             worker.stop()

@@ -38,7 +38,7 @@ class ToyGuitarLiveTests(unittest.TestCase):
             self.assertIsNone(input_color_issue(frame,.5))
 
     def test_different_camera_identity_is_rejected(self):
-        verify_p2p(b"<P2P><DID>REPLACE_WITH_DEVICE_P2P_PREFIX</DID></P2P>","REPLACE_WITH_DEVICE_P2P_PREFIX")
+        verify_p2p(b"<P2P><DID>REPLACE_WITH_DEVICE_P2P_PREFIX-extra</DID></P2P>","REPLACE_WITH_DEVICE_P2P_PREFIX")
         with self.assertRaisesRegex(ValueError,"identity does not match"):
             verify_p2p(b"<P2P><DID>REPLACE_WITH_DEVICE_P2P_PREFIX</DID></P2P>","REPLACE_WITH_DEVICE_P2P_PREFIX")
 

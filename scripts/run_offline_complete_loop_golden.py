@@ -29,31 +29,31 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.offline_artifacts import (  # noqa: E402
+from agent.offline.offline_artifacts import (  # noqa: E402
     OfflineArtifactManifestCanonicalizerV1,
     OfflineArtifactError,
     OfflineCompleteLoopArtifactPolicyV1,
     OfflineRunArtifactStore,
     StaticArtifactStorageSecurityAdapter,
 )
-from agent.offline_behavior import (  # noqa: E402
+from agent.offline.offline_behavior import (  # noqa: E402
     OfflineBehaviorIdentityProjector,
     Stage9BehaviorFactAdapter,
 )
-from agent.offline_media import (  # noqa: E402
+from agent.offline.offline_media import (  # noqa: E402
     AuthoritativePresentationTimeSampler,
     CapabilityProfileResolution,
     PresentationFrame,
     SegmentDurationAssessment,
 )
-from agent.offline_publication import OfflineBehaviorTimePublicationGate  # noqa: E402
-from agent.offline_source import RegistrationScopeValidator, TrustedSourceVideoResult  # noqa: E402
-from agent.offline_video_models import OfflineBehaviorPass, OfflineVideoAnalysisRequest  # noqa: E402
-from agent.person_product_association import PersonProductAssociationConfig  # noqa: E402
-from agent.product_interaction import ProductInteractionConfig  # noqa: E402
-from agent.sam31_behavior_adapter import Sam31BehaviorAdapter  # noqa: E402
-from agent.sam31_realtime_providers import Sam31RealtimeProviderBundle  # noqa: E402
-from agent.stage10_demo import (  # noqa: E402
+from agent.offline.offline_publication import OfflineBehaviorTimePublicationGate  # noqa: E402
+from agent.offline.offline_source import RegistrationScopeValidator, TrustedSourceVideoResult  # noqa: E402
+from agent.offline.offline_video_models import OfflineBehaviorPass, OfflineVideoAnalysisRequest  # noqa: E402
+from agent.behavior.person_product_association import PersonProductAssociationConfig  # noqa: E402
+from agent.behavior.product_interaction import ProductInteractionConfig  # noqa: E402
+from agent.behavior.sam31_behavior_adapter import Sam31BehaviorAdapter  # noqa: E402
+from agent.behavior.sam31_realtime_providers import Sam31RealtimeProviderBundle  # noqa: E402
+from agent.runtime.stage10_demo import (  # noqa: E402
     EventStream,
     RealtimeFrameContext,
     Stage10DemoRuntime,
@@ -78,8 +78,8 @@ OfflineOverlayRenderResult = _OFFLINE_PIPELINE_MODULE.OfflineOverlayRenderResult
 
 
 FIXTURE_EPOCH = datetime(2000, 1, 1)
-STAGE8_CONFIG = PROJECT_ROOT / "person_product_association.cam02.stage8.json"
-STAGE9_CONFIG = PROJECT_ROOT / "product_interaction.cam02.stage9.json"
+STAGE8_CONFIG = PROJECT_ROOT / "configs/cam02/person_product_association.cam02.stage8.json"
+STAGE9_CONFIG = PROJECT_ROOT / "configs/cam02/product_interaction.cam02.stage9.json"
 VIDEO_ROOT = PROJECT_ROOT / "stage10_3_demo_videos"
 ARTIFACT_ROOT = PROJECT_ROOT / "analysis_results"
 STATE_ROOT = PROJECT_ROOT / "offline_v1_complete_loop_acceptance"

@@ -23,9 +23,9 @@ from agent.models import (
     TrackAssociationEvaluation,
     Visit,
 )
-from agent.identity_runtime_lease import IdentityAssociationRuntimeLeaseService
-from agent.identity_runtime_lease import RuntimeLeaseUnavailable
-from agent.reusable_visit_resolver import (
+from agent.platform.identity_runtime_lease import IdentityAssociationRuntimeLeaseService
+from agent.platform.identity_runtime_lease import RuntimeLeaseUnavailable
+from agent.visits.reusable_visit_resolver import (
     RecognitionAssociationRequest,
     ReusableVisitResolver,
 )

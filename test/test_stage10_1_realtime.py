@@ -12,18 +12,18 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.sam31_live_behavior import Sam31GlobalTrack
-from agent.sam31_product_tracking import (
+from agent.behavior.sam31_live_behavior import Sam31GlobalTrack
+from agent.behavior.sam31_product_tracking import (
     ProductCandidate,
     ProductDisplayState,
     ProductDisplaySurface,
     ProductTrackStatus,
 )
-from agent.sam31_realtime_providers import (
+from agent.behavior.sam31_realtime_providers import (
     Sam31RealtimePersonProvider,
     Sam31RealtimeProductProvider,
 )
-from agent.stage10_demo import (
+from agent.runtime.stage10_demo import (
     AsyncRtspWindowSource,
     FatalStage10Error,
     ProviderFrameObservations,
@@ -36,12 +36,12 @@ from agent.stage10_demo import (
     Stage10ProductObservation,
     run_windowed_rtsp_demo,
 )
-from agent.person_product_association import (
+from agent.behavior.person_product_association import (
     PersonProductAssociationConfig,
     ProductAssociationObservation,
 )
-from agent.product_interaction import ProductInteractionConfig
-from agent.sam31_behavior_adapter import Sam31BehaviorAdapter
+from agent.behavior.product_interaction import ProductInteractionConfig
+from agent.behavior.sam31_behavior_adapter import Sam31BehaviorAdapter
 
 
 class _ProductSource:
@@ -442,7 +442,7 @@ class Stage101RealtimeTests(unittest.TestCase):
             capture_factory=_SequenceCapture,
             reconnect_attempts=1,
         )
-        with patch("agent.stage10_demo.time.monotonic", side_effect=(0.0, 0.05, 0.30)):
+        with patch("agent.runtime.stage10_demo.time.monotonic", side_effect=(0.0, 0.05, 0.30)):
             self.assertIsNotNone(sampled_reader.read_sampled(captured_at=self.started))
             self.assertIsNotNone(sampled_reader.read_sampled(captured_at=self.started))
         self.assertEqual((3, 2, 1), (
@@ -463,7 +463,7 @@ class Stage101RealtimeTests(unittest.TestCase):
             warmup_seconds=1.0,
         )
         with patch(
-            "agent.stage10_demo.time.monotonic",
+            "agent.runtime.stage10_demo.time.monotonic",
             side_effect=(0.0, 0.1, 0.2, 1.1),
         ):
             context = reader.read_sampled(captured_at=self.started)

@@ -10,14 +10,14 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.person_product_association import PersonProductAssociationStatus
-from agent.product_interaction import (
+from agent.behavior.person_product_association import PersonProductAssociationStatus
+from agent.behavior.product_interaction import (
     ProductInteractionConfig,
     ProductInteractionEventType,
     ProductInteractionObservation,
     ProductInteractionRuntime,
 )
-from agent.product_interaction_replay import (
+from tools.replay.product_interaction_replay import (
     ProductSourceRecord,
     Stage9ReplayConfig,
     _acceptance_status,
@@ -26,7 +26,7 @@ from agent.product_interaction_replay import (
     read_stage9_inputs,
     replay,
 )
-from agent.sam31_product_tracking import ProductDisplayState, ProductTrackStatus
+from agent.behavior.sam31_product_tracking import ProductDisplayState, ProductTrackStatus
 
 
 class ProductInteractionReplayTests(unittest.TestCase):
@@ -87,7 +87,7 @@ class ProductInteractionReplayTests(unittest.TestCase):
 
     def test_config_loader_keeps_frozen_dimensions_and_thresholds(self):
         config = load_replay_config(
-            Path(__file__).parents[1] / "product_interaction.cam02.stage9.json"
+            Path(__file__).parents[1] / "configs/cam02/product_interaction.cam02.stage9.json"
         )
 
         self.assertEqual("cam02", config.camera_id)

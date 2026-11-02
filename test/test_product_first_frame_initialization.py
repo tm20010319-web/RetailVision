@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 
 import numpy as np
 
-from agent.product_first_frame_initialization import (
+from agent.behavior.product_first_frame_initialization import (
     DenseInitializationPolicy,
     DenseProductInitializationError,
     FakeInstancePromptAdapter,
@@ -20,7 +20,7 @@ from agent.product_first_frame_initialization import (
     mask_sha256,
     restore_roi_mask,
 )
-from agent.sam31_product_tracking import (
+from agent.behavior.sam31_product_tracking import (
     MultiProductTrackRuntime,
     ProductCandidate,
     ProductDisplaySurface,

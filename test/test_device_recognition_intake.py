@@ -15,8 +15,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from agent.schema_evolution import evolve_schema
-from agent.device_capture_store import DeviceCaptureStore
-from agent.device_recognition_intake import (
+from agent.evidence.device_capture_store import DeviceCaptureStore
+from agent.identity.device_recognition_intake import (
     DeviceRecognitionEvent,
     DeviceRecognitionIntake,
     FaceCapture,

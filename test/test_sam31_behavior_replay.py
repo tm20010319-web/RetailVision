@@ -8,8 +8,8 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.behavior_monitor import BehaviorMonitor, BehaviorMonitorConfig, PolygonArea
-from agent.sam31_behavior_adapter import Sam31BehaviorAdapter, Sam31BehaviorReplayRecord
+from agent.behavior.behavior_monitor import BehaviorMonitor, BehaviorMonitorConfig, PolygonArea
+from agent.behavior.sam31_behavior_adapter import Sam31BehaviorAdapter, Sam31BehaviorReplayRecord
 from pipelines.behavior_runtime import BehaviorCameraRuntime
 from scripts.replay_sam31_behavior_csv import replay_records
 

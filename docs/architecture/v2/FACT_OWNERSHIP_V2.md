@@ -29,3 +29,20 @@
 Phase 2C Convergence 可以读取 `TrackAssociationFinalizationJob` 与
 `TrackIdentityBinding` 是否引用参与 Visit。任何引用都会阻断 V1 convergence，且不区分
 Job/application status。Visit 模块没有修改、删除或重定向这些 Identity facts 的权限。
+
+## 当前 Analytics 补充
+
+`ProductInteractionFact` 由 `agent/analytics/product_interaction_analytics.py` 的
+ProductInteractionFactWriter 写入 `product_interaction_facts`（ORM 仍在 agent/models.py）。
+它拥有匿名商品统计投影，按 `(analysis_run_id, interaction_session_id, event_type)` 幂等，
+不替代正式 BehaviorEvent，不推断会员，也不创建 Visit/Arrival。
+MemberBehaviorQueryService 是已有成员与 confirmed 公开行为的只读查询，不创建第二套会员行为事实。
+MCP 通过 analytics 接口读取，不能直接扫描原始 Stage9 产物编造统计。
+
+2026-10-27 新增 `analytics/store_business` 独立经营统计与 `mcp_server/business_server`。
+它只读导入完成的经营 SQLite 快照，拥有指标定义、日期覆盖、可信门店范围和公开查询结果。
+验收预置数据由显式 seeder 写入独立文件；不连接相机，不写原会员/视觉库，不赋予视觉事实成交资格。
+Java Store 从已发现的 MCP schema 选择经营工具，不能自行写库或复制问题目录生成静态答案。
+经营分类阈值由可信部署配置提供，缺配置仅返回事实；模型不得自设高库存或新品阈值。
+报表排序与独立榜单由报表定义所有，零交易需覆盖声明支持；旧快照缺少批次到期证据不得补造日期。
+来源与指标限制见 [MCP 合同](../../product_analytics_mcp_server.md)。

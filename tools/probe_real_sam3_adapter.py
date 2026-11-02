@@ -17,8 +17,8 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.product_first_frame_initialization import frame_sha256, mask_sha256  # noqa: E402
-from agent.sam31_real_adapter import create_external_sam31_adapter  # noqa: E402
+from agent.behavior.product_first_frame_initialization import frame_sha256, mask_sha256  # noqa: E402
+from agent.behavior.sam31_real_adapter import create_external_sam31_adapter  # noqa: E402
 
 
 def _probe_pts(video: Path, source_seq: int) -> tuple[int, int, int]:

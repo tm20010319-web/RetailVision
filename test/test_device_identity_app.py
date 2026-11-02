@@ -21,14 +21,14 @@ from sqlalchemy.orm import sessionmaker
 import agent.config as config_module
 import agent.db as db_module
 from agent.schema_evolution import evolve_schema
-from agent.device_identity import (
+from agent.identity.device_identity import (
     DeviceMemberMappingData,
     InMemoryDeviceIdentityRepository,
     SqlAlchemyDeviceIdentityRepository,
     StableTrackEvent,
 )
-from agent.member_entry_service import MemberEntryResult
-from agent.llm_service import LLMServiceFactory, OllamaVisionLLMService
+from agent.legacy.member_entry_service import MemberEntryResult
+from agent.profile.llm_service import LLMServiceFactory, OllamaVisionLLMService
 from agent.models import (
     BusinessJob,
     DeviceRecognitionInbox,
@@ -36,16 +36,16 @@ from agent.models import (
     MemberEntryEvent,
     Visit,
 )
-from pipelines.member_business_runtime import (
+from pipelines.legacy.member_business_runtime import (
     MemberBusinessRuntime,
     create_member_business_runtime,
 )
-from pipelines.customer_profile_pipeline import create_customer_profile_pipeline
+from pipelines.legacy.customer_profile_pipeline import create_customer_profile_pipeline
 from pipelines.device_identity_runtime import (
     DeviceIdentityRuntime,
     create_device_identity_runtime,
 )
-from pipelines.realtime_entry_pipeline import RealtimeEntryPipeline
+from pipelines.legacy.realtime_entry_pipeline import RealtimeEntryPipeline
 from run_device_identity import (
     build_runtime,
     main,
@@ -207,7 +207,7 @@ class DeviceIdentityApplicationTests(unittest.TestCase):
 
     def test_vision_pipeline_passes_timeout_and_retries_to_factory(self):
         with patch(
-            "pipelines.customer_profile_pipeline.LLMServiceFactory.create_vision_llm"
+            "pipelines.legacy.customer_profile_pipeline.LLMServiceFactory.create_vision_llm"
         ) as create_llm:
             pipeline = create_customer_profile_pipeline(
                 use_mock_llm=False,
@@ -579,7 +579,7 @@ class MemberBusinessRuntimeTests(unittest.TestCase):
         )
 
         with patch(
-            "pipelines.member_business_runtime.threading.Thread",
+            "pipelines.legacy.member_business_runtime.threading.Thread",
             side_effect=lambda **kwargs: RecordingThread(lifecycle, **kwargs),
         ):
             runtime.start()
@@ -662,7 +662,7 @@ class MemberBusinessRuntimeTests(unittest.TestCase):
         )
 
         with patch(
-            "pipelines.member_business_runtime.threading.Thread",
+            "pipelines.legacy.member_business_runtime.threading.Thread",
             side_effect=lambda **kwargs: FailingJoinThread(lifecycle, **kwargs),
         ):
             runtime.start()
@@ -682,7 +682,7 @@ class MemberBusinessRuntimeTests(unittest.TestCase):
         )
 
         with patch(
-            "pipelines.member_business_runtime.threading.Thread",
+            "pipelines.legacy.member_business_runtime.threading.Thread",
             side_effect=lambda **kwargs: StuckThread(lifecycle, **kwargs),
         ):
             runtime.start()
@@ -710,7 +710,7 @@ class MemberBusinessRuntimeTests(unittest.TestCase):
             return thread
 
         with patch(
-            "pipelines.member_business_runtime.threading.Thread",
+            "pipelines.legacy.member_business_runtime.threading.Thread",
             side_effect=build_thread,
         ):
             runtime.start()
@@ -746,7 +746,7 @@ class MemberBusinessRuntimeTests(unittest.TestCase):
             return recovery_thread
 
         with patch(
-            "pipelines.member_business_runtime.threading.Thread",
+            "pipelines.legacy.member_business_runtime.threading.Thread",
             side_effect=build_thread,
         ):
             runtime.start()
@@ -771,13 +771,13 @@ class MemberBusinessRuntimeTests(unittest.TestCase):
             ("disabled", None, False),
         ):
             with self.subTest(mode=mode), patch(
-                "pipelines.member_business_runtime.ProfileSnapshotStore"
+                "pipelines.legacy.member_business_runtime.ProfileSnapshotStore"
             ) as store_type, patch(
-                "pipelines.member_business_runtime.MemberEntryService"
+                "pipelines.legacy.member_business_runtime.MemberEntryService"
             ) as service_type, patch(
-                "pipelines.member_business_runtime.create_customer_profile_pipeline"
+                "pipelines.legacy.member_business_runtime.create_customer_profile_pipeline"
             ) as profile_factory, patch(
-                "pipelines.member_business_runtime.ProfileJobWorker"
+                "pipelines.legacy.member_business_runtime.ProfileJobWorker"
             ) as worker_type:
                 store = store_type.return_value
                 service = service_type.return_value
@@ -1064,7 +1064,7 @@ class DeviceIdentityCompositionTests(unittest.TestCase):
         )
 
         with patch(
-            "pipelines.realtime_entry_pipeline.open_video_capture",
+            "pipelines.legacy.realtime_entry_pipeline.open_video_capture",
             side_effect=[OneFrameCapture(), OneFrameCapture()],
         ):
             first = pipeline.run("first.mp4")
@@ -1109,7 +1109,7 @@ class DeviceIdentityCompositionTests(unittest.TestCase):
             "pipelines.device_identity_runtime.threading.Thread",
             side_effect=lambda **kwargs: RecordingThread(lifecycle, **kwargs),
         ), patch(
-            "pipelines.realtime_entry_pipeline.open_video_capture"
+            "pipelines.legacy.realtime_entry_pipeline.open_video_capture"
         ) as open_capture:
             result = runtime.run("camera-0")
 

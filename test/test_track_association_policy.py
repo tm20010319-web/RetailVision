@@ -14,7 +14,7 @@ from sqlalchemy.pool import StaticPool
 from agent.db import configure_sqlite_foreign_keys
 from agent.models import CameraIdentityBindingPolicy, EvidenceClip, TrackAssociationEvaluation
 from agent.schema_evolution import evolve_schema
-from agent.track_association_policy import CameraIdentityBindingPolicyService, TrackAssociationAuditService
+from agent.identity.track_association_policy import CameraIdentityBindingPolicyService, TrackAssociationAuditService
 
 
 class TrackAssociationPolicyTests(unittest.TestCase):

@@ -11,11 +11,11 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.behavior_events import BehaviorEventInput, EntryEventInput
-from agent.behavior_vision import TrackObservation
-from agent.staff_greeting_evaluation import BehaviorMonitorConfig, GreetingShadowConfig, OfficialGreetingCore
-from agent.behavior_monitor import PolygonArea
-from agent.staff_greeting_offline import (
+from agent.behavior.behavior_events import BehaviorEventInput, EntryEventInput
+from agent.behavior.behavior_vision import TrackObservation
+from agent.behavior.staff_greeting_evaluation import BehaviorMonitorConfig, GreetingShadowConfig, OfficialGreetingCore
+from agent.behavior.behavior_monitor import PolygonArea
+from agent.behavior.staff_greeting_offline import (
     GreetingSummaryBuilder,
     JsonlArtifactCollector,
     OfflineOverlayRenderer,
@@ -24,7 +24,7 @@ from agent.staff_greeting_offline import (
     _atomic_write_json,
     load_reception_camera_config,
 )
-from agent._staff_greeting_shadow import _GreetingShadowEvaluator
+from agent.behavior._staff_greeting_shadow import _GreetingShadowEvaluator
 
 
 class FakeMedia:
@@ -102,7 +102,7 @@ class FakeCore:
 
 
 def _camera():
-    return load_reception_camera_config(Path("behavior_cameras.example.json"), "entrance-1")
+    return load_reception_camera_config(Path("configs/examples/behavior_cameras.example.json"), "entrance-1")
 
 
 class OfflineGreetingTests(unittest.TestCase):
@@ -121,7 +121,7 @@ class OfflineGreetingTests(unittest.TestCase):
             return frame
 
         with patch(
-            "agent.staff_greeting_offline.draw_overlay_texts_bgr",
+            "agent.behavior.staff_greeting_offline.draw_overlay_texts_bgr",
             side_effect=capture,
         ):
             renderer.render(
@@ -175,7 +175,7 @@ class OfflineGreetingTests(unittest.TestCase):
             _atomic_write_json(path, payload)
             self.assertEqual("FINALIZED", json.loads(path.read_text())["status"])
             failed_path = Path(directory) / "failed_manifest.json"
-            with patch("agent.staff_greeting_offline.os.replace", side_effect=OSError("injected")):
+            with patch("agent.behavior.staff_greeting_offline.os.replace", side_effect=OSError("injected")):
                 with self.assertRaises(OSError):
                     _atomic_write_json(failed_path, payload)
             self.assertEqual("FINALIZED", json.loads(path.read_text())["status"])

@@ -9,18 +9,18 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.stage10_presentation import (  # noqa: E402
+from agent.runtime.stage10_presentation import (  # noqa: E402
     chinese_status,
     product_presentation,
     resolve_person_display_identity,
 )
-from agent.product_interaction import (  # noqa: E402
+from agent.behavior.product_interaction import (  # noqa: E402
     ProductInteractionEvent,
     ProductInteractionEventType,
     ProductMotionState,
 )
-from agent.sam31_product_tracking import ProductDisplayState  # noqa: E402
-from agent.stage10_demo import (  # noqa: E402
+from agent.behavior.sam31_product_tracking import ProductDisplayState  # noqa: E402
+from agent.runtime.stage10_demo import (  # noqa: E402
     ConsoleEventSink,
     JsonlEventSink,
     Stage10DemoEvent,

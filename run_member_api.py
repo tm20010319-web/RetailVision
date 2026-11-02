@@ -6,7 +6,7 @@ import logging
 
 import uvicorn
 
-from agent.member_api import app
+from agent.api.member_api import app
 
 
 def main() -> None:

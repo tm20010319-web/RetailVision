@@ -22,27 +22,27 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from agent.camera_face_api import CameraApiTransportError
+from agent.platform.camera_face_api import CameraApiTransportError
 from agent.schema_evolution import evolve_schema
-from agent.device_capture_store import DeviceCaptureStore
-from agent.device_recognition_intake import DeviceRecognitionIntake, source_event_key
-from agent.device_event_receiver import create_device_event_router
-from agent.device_event_worker import DeviceRecognitionInboxWorker
-from agent.device_health import DeviceHealthStore
-from agent.device_identity import (
+from agent.evidence.device_capture_store import DeviceCaptureStore
+from agent.identity.device_recognition_intake import DeviceRecognitionIntake, source_event_key
+from agent.identity.device_event_receiver import create_device_event_router
+from agent.identity.device_event_worker import DeviceRecognitionInboxWorker
+from agent.identity.device_health import DeviceHealthStore
+from agent.identity.device_identity import (
     DeviceMemberMappingData,
     RecognitionRecordPoller,
     SqlAlchemyDeviceIdentityRepository,
 )
-from agent.entry_event_coordinator import EntryEventCoordinator
-from agent.customer_entry_visit import (
+from agent.legacy.entry_event_coordinator import EntryEventCoordinator
+from agent.visits.customer_entry_visit import (
     CustomerEntryObservation,
     CustomerEntryVisit,
 )
-from agent.member_entry_service import MemberEntryService
+from agent.legacy.member_entry_service import MemberEntryService
 from agent.models import BusinessJob, DeviceRecognitionInbox, Member, MemberEntryEvent, Visit
-from agent.profile_jobs import ProfileJobWorker
-from pipelines.member_business_runtime import MemberBusinessRuntime
+from agent.profile.profile_jobs import ProfileJobWorker
+from pipelines.legacy.member_business_runtime import MemberBusinessRuntime
 
 
 class FakePollTransport:
@@ -275,7 +275,7 @@ class DeviceRecognitionEndToEndTests(unittest.TestCase):
             db.close()
 
     def test_smoke_profile_status_verifies_receiver_capture_provenance(self):
-        from scripts.device_recognition_smoke import profile_status_for_job
+        from tools.manual.device_recognition_smoke import profile_status_for_job
 
         capture_path = self.capture_root / "receiver-capture.jpg"
         capture_path.write_bytes(b"receiver-capture")
@@ -294,7 +294,7 @@ class DeviceRecognitionEndToEndTests(unittest.TestCase):
         )
 
     def test_smoke_profile_status_rejects_capture_outside_receiver_root(self):
-        from scripts.device_recognition_smoke import profile_status_for_job
+        from tools.manual.device_recognition_smoke import profile_status_for_job
 
         outside_capture = Path.cwd() / (uuid4().hex + ".jpg")
         outside_capture.write_bytes(b"untrusted-capture")
@@ -311,7 +311,7 @@ class DeviceRecognitionEndToEndTests(unittest.TestCase):
         )
 
     def test_smoke_synthetic_capture_is_accepted_by_receiver_store(self):
-        from scripts.device_recognition_smoke import SYNTHETIC_CAPTURE_DATA_URI
+        from tools.manual.device_recognition_smoke import SYNTHETIC_CAPTURE_DATA_URI
 
         capture = DeviceCaptureStore(self.capture_root, max_bytes=4096).save_data_uri(
             "entrance-1", "smoke-event", SYNTHETIC_CAPTURE_DATA_URI
@@ -321,7 +321,7 @@ class DeviceRecognitionEndToEndTests(unittest.TestCase):
         self.assertTrue(Path(capture.path).is_file())
 
     def test_smoke_wait_stops_when_inbox_visit_and_profile_are_complete(self):
-        from scripts.device_recognition_smoke import EventState, wait_for_event_state
+        from tools.manual.device_recognition_smoke import EventState, wait_for_event_state
 
         states = iter(
             [
@@ -347,7 +347,7 @@ class DeviceRecognitionEndToEndTests(unittest.TestCase):
         self.assertEqual([0.5], sleeps)
 
     def test_smoke_wait_times_out_with_injected_clock(self):
-        from scripts.device_recognition_smoke import EventState, wait_for_event_state
+        from tools.manual.device_recognition_smoke import EventState, wait_for_event_state
 
         elapsed = [0.0]
         sleeps = []
@@ -367,7 +367,7 @@ class DeviceRecognitionEndToEndTests(unittest.TestCase):
         self.assertEqual([0.25, 0.25, 0.25, 0.25], sleeps)
 
     def test_smoke_event_lookup_ignores_other_devices_and_poll_rows(self):
-        from scripts.device_recognition_smoke import event_state_for_source
+        from tools.manual.device_recognition_smoke import event_state_for_source
 
         db = self.sessions()
         try:
@@ -428,7 +428,7 @@ class DeviceRecognitionEndToEndTests(unittest.TestCase):
         self.assertEqual("not_started", state.profile_status)
 
     def test_smoke_capture_mismatch_is_not_complete(self):
-        from scripts.device_recognition_smoke import event_state_for_source
+        from tools.manual.device_recognition_smoke import event_state_for_source
 
         db = self.sessions()
         try:

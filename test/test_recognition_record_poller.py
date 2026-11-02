@@ -5,9 +5,9 @@ install_runtime_stubs()
 import unittest
 from datetime import datetime, timedelta
 
-from agent.camera_face_api import CameraApiAuthenticationError, CameraApiTransportError
-from agent.device_recognition_intake import IntakeReceipt
-from agent.device_identity import (
+from agent.platform.camera_face_api import CameraApiAuthenticationError, CameraApiTransportError
+from agent.identity.device_recognition_intake import IntakeReceipt
+from agent.identity.device_identity import (
     DeviceMemberMappingData,
     InMemoryDeviceIdentityRepository,
     RecognitionRecordPoller,
@@ -285,7 +285,7 @@ class RecognitionRecordPollerTests(unittest.TestCase):
             ingestor=FailingIngestor(),
         )
 
-        with self.assertLogs("agent.device_identity", level="WARNING") as captured:
+        with self.assertLogs("agent.identity.device_identity", level="WARNING") as captured:
             results = poller.poll_once()
 
         self.assertEqual([], results)
@@ -340,7 +340,7 @@ class RecognitionRecordPollerTests(unittest.TestCase):
         client.password = "AUTH-LOG-SECRET"
         poller = self.create_poller(client)
 
-        with self.assertLogs("agent.device_identity", level="WARNING") as captured:
+        with self.assertLogs("agent.identity.device_identity", level="WARNING") as captured:
             poller.poll_once()
             poller.poll_once()
 
@@ -359,7 +359,7 @@ class RecognitionRecordPollerTests(unittest.TestCase):
         )
         poller = self.create_poller(client)
 
-        with self.assertLogs("agent.device_identity", level="WARNING") as captured:
+        with self.assertLogs("agent.identity.device_identity", level="WARNING") as captured:
             for _ in range(4):
                 poller.poll_once()
 
@@ -371,7 +371,7 @@ class RecognitionRecordPollerTests(unittest.TestCase):
     def test_non_camera_failure_log_omits_exception_message(self):
         poller = self.create_poller(FakeClient())
 
-        with self.assertLogs("agent.device_identity", level="WARNING") as captured:
+        with self.assertLogs("agent.identity.device_identity", level="WARNING") as captured:
             poller._record_failure(RuntimeError("DATABASE-LOG-SECRET"))
 
         self.assertIn("RuntimeError", captured.output[0])
@@ -412,7 +412,7 @@ class RecognitionRecordPollerTests(unittest.TestCase):
                 record(11, second=17, person_id=999, unique_id="missing"),
             ]
         }
-        with self.assertLogs("agent.device_identity", level="ERROR") as captured:
+        with self.assertLogs("agent.identity.device_identity", level="ERROR") as captured:
             first_emitted = poller.poll_once()
             second_emitted = poller.poll_once()
 

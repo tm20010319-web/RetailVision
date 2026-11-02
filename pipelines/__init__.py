@@ -1,46 +1,13 @@
-"""RetailVision Pipeline 模块：三条独立业务管线。"""
+"""Lazy compatibility exports; new callers import explicit composition modules."""
+from importlib import import_module
 
-from pipelines.realtime_entry_pipeline import (
-    RealtimeEntryPipeline,
-    CustomerSession,
-    NewCustomerCallback,
-    MemberEntryCallback,
-    AnonymousVisitCallback,
-    create_realtime_pipeline,
-)
-from pipelines.historical_video_pipeline import (
-    HistoricalVideoAnalysisPipeline,
-    create_historical_pipeline,
-)
-from pipelines.customer_profile_pipeline import (
-    CustomerProfilePipeline,
-    create_customer_profile_pipeline,
-)
-from pipelines.device_identity_runtime import (
-    DeviceIdentityRuntime,
-    create_device_identity_runtime,
-)
-from pipelines.member_business_runtime import (
-    MemberBusinessRuntime,
-    create_member_business_runtime,
-)
-from pipelines.store_runtime import StoreRuntime, StoreRuntimeDependencies
+_EXPORTS = {'RealtimeEntryPipeline': 'pipelines.legacy.realtime_entry_pipeline', 'CustomerSession': 'pipelines.legacy.realtime_entry_pipeline', 'NewCustomerCallback': 'pipelines.legacy.realtime_entry_pipeline', 'MemberEntryCallback': 'pipelines.legacy.realtime_entry_pipeline', 'AnonymousVisitCallback': 'pipelines.legacy.realtime_entry_pipeline', 'create_realtime_pipeline': 'pipelines.legacy.realtime_entry_pipeline', 'HistoricalVideoAnalysisPipeline': 'pipelines.legacy.historical_video_pipeline', 'create_historical_pipeline': 'pipelines.legacy.historical_video_pipeline', 'CustomerProfilePipeline': 'pipelines.legacy.customer_profile_pipeline', 'create_customer_profile_pipeline': 'pipelines.legacy.customer_profile_pipeline', 'DeviceIdentityRuntime': 'pipelines.device_identity_runtime', 'create_device_identity_runtime': 'pipelines.device_identity_runtime', 'MemberBusinessRuntime': 'pipelines.legacy.member_business_runtime', 'create_member_business_runtime': 'pipelines.legacy.member_business_runtime', 'StoreRuntime': 'pipelines.store_runtime', 'StoreRuntimeDependencies': 'pipelines.store_runtime'}
+__all__ = list(_EXPORTS)
 
-__all__ = [
-    "RealtimeEntryPipeline",
-    "CustomerSession",
-    "NewCustomerCallback",
-    "MemberEntryCallback",
-    "AnonymousVisitCallback",
-    "create_realtime_pipeline",
-    "HistoricalVideoAnalysisPipeline",
-    "create_historical_pipeline",
-    "CustomerProfilePipeline",
-    "create_customer_profile_pipeline",
-    "DeviceIdentityRuntime",
-    "create_device_identity_runtime",
-    "MemberBusinessRuntime",
-    "create_member_business_runtime",
-    "StoreRuntime",
-    "StoreRuntimeDependencies",
-]
+
+def __getattr__(name):
+    if name not in _EXPORTS:
+        raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+    value = getattr(import_module(_EXPORTS[name]), name)
+    globals()[name] = value
+    return value

@@ -28,7 +28,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from pipelines.realtime_entry_pipeline import create_realtime_pipeline
+from pipelines.legacy.realtime_entry_pipeline import create_realtime_pipeline
 
 
 DEFAULT_SOURCE = "rtsp://admin:@192.0.2.8:554/stream1"
@@ -62,7 +62,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument(
         "--model-path",
-        default="yolov8n.pt",
+        default="data/models/yolov8n.pt",
         help="YOLO weights path",
     )
     parser.add_argument(

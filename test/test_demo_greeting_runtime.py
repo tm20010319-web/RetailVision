@@ -8,8 +8,8 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from demo_greeting.service import DemoGreetingConfig, DemoGreetingRuntime
-from demo_greeting.state import PersonObservation
+from demo.greeting.service import DemoGreetingConfig, DemoGreetingRuntime
+from demo.greeting.state import PersonObservation
 
 
 class _FakeCapture:
@@ -66,7 +66,7 @@ class DemoGreetingRuntimeTests(unittest.TestCase):
             "os.environ",
             {
                 "DEMO_GREETING_CAMERA_ID": "entrance-1",
-                "DEMO_GREETING_CAMERA_CONFIG": "behavior_cameras.example.json",
+                "DEMO_GREETING_CAMERA_CONFIG": "configs/examples/behavior_cameras.example.json",
                 "DEMO_GREETING_VIDEO_SOURCE": "fake://camera",
             },
             clear=False,

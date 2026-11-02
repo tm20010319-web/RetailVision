@@ -7,11 +7,11 @@ from datetime import datetime
 from enum import Enum
 from typing import Any, Callable, Iterable, Optional, Protocol
 
-from agent.offline_artifacts import (
+from agent.offline.offline_artifacts import (
     OfflineArtifactError,
     OfflineRunArtifactStorePort,
 )
-from agent.offline_behavior import (
+from agent.offline.offline_behavior import (
     CustomerOrdinalObservation,
     MemberProfileEnrichment,
     OfflineDisplayIdentity,
@@ -20,21 +20,21 @@ from agent.offline_behavior import (
     OfflineRunCustomerOrdinalRegistry,
     PreparedOfflineBehaviorPublication,
 )
-from agent.offline_identity import OfflineTrackIdentityAggregator, OfflineTrackIdentityAssociation
-from agent.offline_media import CapabilityProfileResolution, SegmentDurationAssessment
-from agent.offline_publication import (
+from agent.offline.offline_identity import OfflineTrackIdentityAggregator, OfflineTrackIdentityAssociation
+from agent.offline.offline_media import CapabilityProfileResolution, SegmentDurationAssessment
+from agent.offline.offline_publication import (
     OfflineBehaviorPublisherPort,
     OfflineBehaviorTimeAuthority,
     OfflinePublicationResult,
     TrustedOfflinePublicationGate,
 )
-from agent.offline_scope import OfflineRunScopeValidator
-from agent.offline_source import (
+from agent.offline.offline_scope import OfflineRunScopeValidator
+from agent.offline.offline_source import (
     HistoricalRegistrationInterval,
     RegistrationScopeValidation,
     TrustedSourceVideoResult,
 )
-from agent.offline_video_models import (
+from agent.offline.offline_video_models import (
     OfflineBehaviorPass,
     OfflineIdentityPassResult,
     OfflineVideoAnalysisRequest,

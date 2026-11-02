@@ -13,9 +13,9 @@ sys.path.insert(0, str(ROOT))
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 from agent.models import DeviceRecognitionInbox, DeviceMemberIdentityRevision, PushCoverageObservation
-from agent.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
-from agent.offline_recognition_provider import DeviceRecognitionAcceptancePolicy, DurablePushInboxRecognitionProvider
-from agent.push_coverage import PushCoverageStore
+from agent.offline.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
+from agent.offline.offline_recognition_provider import DeviceRecognitionAcceptancePolicy, DurablePushInboxRecognitionProvider
+from agent.identity.push_coverage import PushCoverageStore
 from scripts.run_dpi01e2_cam03_offline_member_binding import (
     _formal_camera_configuration, load_configured_profiles as _load_configured_profiles,
     resolve_configured_profile, build_recognition_runtime,
@@ -53,7 +53,7 @@ def main():
     if any(not 0 <= e['source_pts_seconds'] < float(duration) for e in events):
         raise ValueError('event_outside_video_window')
     def connect():
-        c = sqlite3.connect('file:D:/GJJ/work/code/demo_flow.db?mode=ro', uri=True)
+        c = sqlite3.connect('file:D:/GJJ/work/code/runtime/databases/demo_flow.db?mode=ro', uri=True)
         c.execute('PRAGMA query_only=ON')
         return c
     engine = create_engine('sqlite://', creator=connect)

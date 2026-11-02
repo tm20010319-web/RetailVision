@@ -18,11 +18,11 @@ sys.path.insert(0, str(ROOT))
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 from agent.models import DeviceRecognitionInbox, DeviceMemberIdentityRevision
-from agent.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
-from agent.offline_recognition_provider import (
+from agent.offline.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
+from agent.offline.offline_recognition_provider import (
     DeviceRecognitionAcceptancePolicy, DurablePushInboxRecognitionProvider,
 )
-from agent.push_coverage import PushCoverageStore
+from agent.identity.push_coverage import PushCoverageStore
 
 
 def sha(path):
@@ -54,7 +54,7 @@ def main():
     end = start + timedelta(seconds=float(duration))
 
     def connect_read_only():
-        conn = sqlite3.connect('file:D:/GJJ/work/code/demo_flow.db?mode=ro', uri=True)
+        conn = sqlite3.connect('file:D:/GJJ/work/code/runtime/databases/demo_flow.db?mode=ro', uri=True)
         conn.execute('PRAGMA query_only=ON')
         return conn
 

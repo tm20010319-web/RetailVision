@@ -11,7 +11,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.stage10_demo import (  # noqa: E402
+from agent.runtime.stage10_demo import (  # noqa: E402
     AsyncRtspWindowSource,
     RealtimeFrameContext,
     JsonlMetricsWriter,

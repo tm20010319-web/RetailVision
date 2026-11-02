@@ -11,20 +11,20 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.person_product_association import (
+from agent.behavior.person_product_association import (
     PersonProductAssociationConfig,
     PersonProductAssociationStatus,
     ProductAssociationObservation,
 )
-from agent.person_product_replay import (
+from tools.replay.person_product_replay import (
     ProductReplayRecord,
     Stage8ReplayConfig,
     build_summary,
     read_product_records,
     replay_associations,
 )
-from agent.sam31_behavior_adapter import Sam31BehaviorAdapter
-from agent.sam31_product_tracking import ProductDisplayState, ProductTrackStatus
+from agent.behavior.sam31_behavior_adapter import Sam31BehaviorAdapter
+from agent.behavior.sam31_product_tracking import ProductDisplayState, ProductTrackStatus
 
 
 class PersonProductReplayTests(unittest.TestCase):

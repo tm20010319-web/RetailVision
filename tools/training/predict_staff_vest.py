@@ -38,7 +38,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--stats", type=Path)
-    parser.add_argument("--person-model", default="yolov8n.pt")
+    parser.add_argument("--person-model", default="data/models/yolov8n.pt")
     parser.add_argument("--device", default="0")
     parser.add_argument("--imgsz", type=int, default=640)
     parser.add_argument("--confidence", type=float, default=0.25)

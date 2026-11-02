@@ -6,7 +6,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.behavior_vision import (
+from agent.behavior.behavior_vision import (
     PersonRoleResolver,
     PersonTrackDetection,
     VestDetection,

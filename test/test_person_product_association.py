@@ -7,14 +7,14 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.person_product_association import (
+from agent.behavior.person_product_association import (
     PersonAssociationObservation,
     PersonProductAssociationConfig,
     PersonProductAssociationRuntime,
     PersonProductAssociationStatus,
     ProductAssociationObservation,
 )
-from agent.sam31_product_tracking import ProductDisplayState, ProductTrackStatus
+from agent.behavior.sam31_product_tracking import ProductDisplayState, ProductTrackStatus
 
 
 class PersonProductAssociationTests(unittest.TestCase):

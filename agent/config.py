@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 
 from agent.config_values import strict_bool_env
+from agent.paths import default_database_url, resolve_database_url
 
 
 def _csv_env(name: str, default: str) -> tuple[str, ...]:
@@ -25,7 +26,7 @@ class Settings:
     """全局配置项，可通过环境变量覆盖。"""
 
     # YOLO
-    YOLO_MODEL_PATH = os.getenv("YOLO_MODEL_PATH", "yolov8n.pt")
+    YOLO_MODEL_PATH = os.getenv("YOLO_MODEL_PATH", "data/models/yolov8n.pt")
 
     # Ollama 视觉大模型
     OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
@@ -47,7 +48,7 @@ class Settings:
     OUTPUT_DIR = os.getenv("OUTPUT_DIR", "outputs")
 
     # 数据库（MVP 阶段使用 SQLite，生产环境通过环境变量覆盖）
-    DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///retailvision.db")
+    DATABASE_URL = resolve_database_url(os.getenv("DATABASE_URL", default_database_url()))
 
     # Identity association is intentionally unset by default. Production
     # startup must choose exactly one mode through the StoreRuntime root.
@@ -169,15 +170,15 @@ class Settings:
     )
     BEHAVIOR_PERSON_MODEL_PATH = os.getenv(
         "BEHAVIOR_PERSON_MODEL_PATH",
-        BEHAVIOR_VEST_MODEL_PATH or "outputs/models/yolo11n.pt",
+        BEHAVIOR_VEST_MODEL_PATH or "data/models/yolo11n.pt",
     )
     BEHAVIOR_STAFF_VEST_MODEL_PATH = os.getenv(
         "BEHAVIOR_STAFF_VEST_MODEL_PATH",
         BEHAVIOR_VEST_MODEL_PATH
-        or "runs/staff_vest/baseline_v1/weights/best.pt",
+        or "data/models/staff_vest.pt",
     )
     BEHAVIOR_POSE_MODEL_PATH = os.getenv(
-        "BEHAVIOR_POSE_MODEL_PATH", "outputs/models/yolo11n-pose.pt"
+        "BEHAVIOR_POSE_MODEL_PATH", "data/models/yolo11n-pose.pt"
     )
     BEHAVIOR_TRACKER = os.getenv("BEHAVIOR_TRACKER", "bytetrack.yaml")
     BEHAVIOR_DEVICE = os.getenv("BEHAVIOR_DEVICE", "cuda:0")

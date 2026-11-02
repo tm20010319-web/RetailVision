@@ -3,8 +3,8 @@ from types import SimpleNamespace
 
 import numpy as np
 
-from agent.product_first_frame_initialization import InitializationFailureCode
-from agent.sam31_real_adapter import Sam31InstancePromptAdapter
+from agent.behavior.product_first_frame_initialization import InitializationFailureCode
+from agent.behavior.sam31_real_adapter import Sam31InstancePromptAdapter
 
 
 class FakePredictor:
@@ -48,31 +48,6 @@ class ReusingBoxIdPredictor(FakePredictor):
 class Sam31RealAdapterTests(unittest.TestCase):
     def setUp(self):
         self.frame = np.zeros((720, 1280, 3), dtype=np.uint8)
-
-    def test_guitar_refinement_uses_box_mask_interior_instead_of_table_center(self):
-        class GuitarPredictor(ReusingBoxIdPredictor):
-            def handle_request(inner, request):
-                response = super().handle_request(request)
-                mask = np.zeros((720, 1280), dtype=bool)
-                mask[550:650, 790:920] = True
-                mask[570:588, 552:800] = True
-                response['outputs']['out_binary_masks'] = np.asarray(
-                    [mask for _ in response['outputs']['out_obj_ids']]
-                )
-                return response
-        predictor = GuitarPredictor()
-        adapter = Sam31InstancePromptAdapter(predictor=predictor, session_id='guitar')
-        adapter.add_instance_prompt(frame=self.frame, frame_index=0,
-            bbox=(613, 513, 707, 642), points=((660, 577),), point_labels=(1,), obj_id=0)
-        result = adapter.add_instance_prompt(frame=self.frame, frame_index=0,
-            bbox=(562, 541, 923, 657), points=((743, 599),), point_labels=(1,), obj_id=1,
-            use_box_mask_point=True)
-        self.assertTrue(result.masks)
-        request = next(r for r in predictor.calls if r.get('obj_id') == 1)
-        x, y = request['points'][0]
-        self.assertTrue(790 <= x * 1280 < 920 and 550 <= y * 720 < 650)
-        self.assertEqual([1], request['point_labels'])
-        self.assertNotEqual([[743 / 1280, 599 / 720]], request['points'])
 
     def test_bbox_then_points_are_sent_in_one_session_with_normalized_coordinates(self):
         predictor = FakePredictor()

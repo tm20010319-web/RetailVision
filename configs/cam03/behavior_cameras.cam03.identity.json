@@ -1,0 +1,23 @@
+{
+  "cameras": [
+    {
+      "camera_id": "cam03",
+      "camera_role": "customer_behavior",
+      "store_id": "store-1",
+      "source": "file:///D:/GJJ/work/video/2026_09_05_20_33_56.mp4",
+      "interaction_areas": [],
+      "display_areas": [],
+      "recognition": {
+        "device_id": "cam03",
+        "base_url": "http://192.0.2.4",
+        "auth_mode": "none",
+        "evidence_mode": "durable_push_inbox",
+        "capability_profile_id": "p6s_cam03_offline_identity",
+        "capability_profile_path_env": "RETAILVISION_CAPABILITY_PROFILE_PATH",
+        "username_env": "CAMERA_FACE_USERNAME",
+        "password_env": "CAMERA_FACE_PASSWORD",
+        "unique_code_env": "CAMERA_FACE_UNIQUE_CODE"
+      }
+    }
+  ]
+}

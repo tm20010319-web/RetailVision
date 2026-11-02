@@ -11,8 +11,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from agent.offline_video_models import OfflineVideoAnalysisRequest
-from agent.offline_source import P6SRecordingSource
+from agent.offline.offline_video_models import OfflineVideoAnalysisRequest
+from agent.offline.offline_source import P6SRecordingSource
 from scripts.run_offline_complete_loop_golden import (
     GoldenMp4Analyzer,
     _load_runtime_configs,

@@ -1,76 +1,49 @@
-## Agent skills
+# RetailVision 开发导航
 
-### Issue tracker
+RetailVision 分离行为 WHAT、身份 WHO、Visit 与 Effects；匿名行为成立不代表会员身份成立。
+当前物理模块已在 2026-09-18 整理，逻辑所有权仍以 v2 和已接受 ADR 为基线。
 
-Issues and PRDs are tracked in GitHub Issues. See `docs/agents/issue-tracker.md`.
+## 开始工作
 
-### Triage labels
+1. 读 [文档权威注册表](docs/authority/DOCUMENT_AUTHORITY_REGISTRY.md)，理解文档角色。
+2. 读 [当前状态](docs/CURRENT_STATUS.md) 与 [当前模块布局](docs/architecture/CURRENT_MODULE_LAYOUT.md)。
+3. 按任务读取 [CONTEXT](CONTEXT.md)、相关 [ADR](docs/adr/) 和模块指南。
 
-Use the five default triage labels. See `docs/agents/triage-labels.md`.
-
-### Domain docs
-
-This is a single-context repository. See `docs/agents/domain.md`.
-
-### Architecture
-
-The current logical module freeze is Target Architecture v2. Start at
-`docs/architecture/v2/README.md`. It supersedes Phase-status and module-boundary
-statements in the root Target Architecture v1 documents, but does not authorize
-physical package migration.
-
-### Current handoff
-
-Read `docs/handoff/RETAILVISION_CURRENT_HANDOFF.md` for the current business context,
-architecture map, Offline V1 freeze boundaries, test baseline, and P6S
-qualification state. It is the first context document for a new session and
-does not authorize new Offline V1 or Provider A work.
+不要求读取历史工作日志。状态写 CURRENT_STATUS，长期决定写 ADR，模块规则写现有合同；
+一次性工作记录和验收报告在阶段结束后移入外部归档，参见 [归档索引](docs/repository/ARCHIVE_INDEX.md)。
 
 ## Documentation Authority
 
-### Registry First
+来源冲突时保持以下顺序（阅读顺序不是内容权威顺序）：
 
-Before coding, read `docs/authority/DOCUMENT_AUTHORITY_REGISTRY.md` to
-understand where authoritative information lives, how documents are
-classified, and how the routing rules work.
+1. 当前生产 runtime 行为与测试。
+2. 已接受 ADR。
+3. CONTEXT 与 CURRENT_STATUS 中当前业务上下文。
+4. 当前架构：v2 逻辑合同、CURRENT_MODULE_LAYOUT 物理位置。
+5. 验证证据。
+6. 历史与研究文档。
 
-### Authority Order
+Registry 仅导航，不覆盖运行事实、决策和业务合同。v3 为 DESIGN_ONLY；设计和阶段计划不自动授权实施。
+Stage、P6S、Offline 验收报告与工作日志仅证明当时结果，不是新开发指令。
+文档整理不授权启用 Provider A、生产发布、修改 Offline V1、阈值或 Schema。
 
-When sources disagree, follow this order:
+## Current Module Index
 
-1. Current production runtime behavior and tests.
-2. Accepted ADR decisions.
-3. `CONTEXT.md` and the current handoff.
-4. Current architecture documentation.
-5. Validation evidence.
-6. Historical and research documents.
+| 模块 | 当前代码入口 | 文档 |
+| --- | --- | --- |
+| Store / 组件 runtime | `run_store_runtime.py`、`pipelines/` | [布局](docs/architecture/CURRENT_MODULE_LAYOUT.md) |
+| Identity / Member / Visit | `agent/identity/`、`agent/member/`、`agent/visits/` | [领域语言](CONTEXT.md)、[事实所有权](docs/architecture/v2/FACT_OWNERSHIP_V2.md) |
+| Behavior / Offline / Evidence | `agent/behavior/`、`agent/offline/`、`agent/evidence/` | [Offline 运行说明](docs/runbooks/offline-analysis.md) |
+| Greeting | `agent/behavior/staff_greeting_evaluation.py` | [当前合同](docs/domains/staff-greeting.md) |
+| Analytics / MCP | `agent/analytics/`、`agent/mcp_server/` | [MCP 指南](docs/product_analytics_mcp_server.md) |
+| API / 前端 | `run_member_api.py`、`agent/api/`、`frontend/` | [根 README](README.md) |
+| 配置 / 本地资产 | `configs/`、`runtime/databases/`、`data/models/` | 各目录 README |
+| 测试 / 演示 / 工具 | `test/`、`demo/`、`tools/` | 各目录 README |
 
-The Registry is navigation-only. It does not override runtime behavior,
-accepted ADR decisions, `CONTEXT.md`, or business contracts.
+## 项目规则
 
-### Evidence Rule
-
-Validation and evidence documents are proof of completed results and historical
-verification records. They are not implementation instructions, current
-business contracts, or architecture authority. This includes Stage reports,
-P6S reports, and Offline validation reports.
-
-## Development Worklogs
-
-Before starting new development:
-
-1. Read `docs/authority/DOCUMENT_AUTHORITY_REGISTRY.md`.
-2. Read `docs/worklogs/WORKLOG_INDEX.md`.
-3. Read the latest relevant worklog identified by the index.
-
-Do not read all historical worklogs by default. Worklogs are historical
-development records and decision context. They are not business contracts,
-architecture authority, or a replacement for an ADR.
-
-## Video result deliveries
-
-When packaging video recognition results, place the final ZIP and matching
-SHA256 file together under `deliveries/<source-video-filename-without-extension>/`
-relative to the repository root. Keep intermediate runtime files in their existing
-locations. Use versioned archive names to preserve previous deliveries, verify the
-archive checksum, and update `deliveries/README.md` with the download location.
+- 单一领域上下文：[domain.md](docs/agents/domain.md)。
+- Issues / PRD 使用 GitHub Issues：[issue-tracker.md](docs/agents/issue-tracker.md)。
+- 分诊使用五个默认标签：[triage-labels.md](docs/agents/triage-labels.md)。
+- 兼容代码、CLI、migration、动态 adapter 不能因无静态 import 或名字旧而删除。
+- 保存已有未提交工作。源代码重构、数据库变更与文档治理分别处理。

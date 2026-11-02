@@ -13,12 +13,12 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.member_behavior import (  # noqa: E402
+from agent.analytics.member_behavior import (  # noqa: E402
     MemberBehaviorError,
     MemberBehaviorQueryService,
     MemberBehaviorScopePolicy,
 )
-from agent.member_behavior_repository import SqlAlchemyMemberBehaviorReadAdapter  # noqa: E402
+from agent.analytics.member_behavior_repository import SqlAlchemyMemberBehaviorReadAdapter  # noqa: E402
 from agent.models import Base, BehaviorEvent, DeviceMemberMapping, Member, Visit  # noqa: E402
 from agent.store_context import StoreContext  # noqa: E402
 
@@ -136,6 +136,54 @@ class MemberBehaviorQueryServiceTests(unittest.TestCase):
         self.assertEqual("2026-08-27T10:02:00+08:00", result["behavior_summary"]["last_behavior_at"])
         self.assertNotIn("timeline", result)
 
+    def test_recent_member_behaviors_returns_public_timeline_and_member_product_aggregates(self) -> None:
+        with self.sessions() as db:
+            db.add(Member(id="member-b", name="李晓明", tier="silver", is_active=True))
+            db.commit()
+        self._event(
+            "a-pickup", "merchandise_pick_up", datetime(2026, 8, 27, 2),
+            member_id="member-a", product_key="toy-a", product_name="智能熊",
+        )
+        self._event(
+            "b-pickup", "merchandise_pick_up", datetime(2026, 8, 27, 2, 1),
+            member_id="member-b", product_key="toy-b", product_name="智能小象",
+        )
+        self._event(
+            "a-holding", "merchandise_holding", datetime(2026, 8, 27, 2, 2),
+            member_id="member-a", product_key="toy-a", product_name="智能熊",
+            duration_seconds=12.5,
+        )
+
+        result = self.service.list_recent_member_behaviors(limit=100)
+
+        self.assertEqual("ok", result["status"])
+        self.assertFalse(result["has_more"])
+        self.assertEqual(3, result["behavior_summary"]["total_behavior_count"])
+        self.assertEqual(2, len(result["member_summaries"]))
+        self.assertEqual(2, len(result["product_summaries"]))
+        self.assertEqual(
+            ["拿起商品", "拿起商品", "持有商品"],
+            [item["behavior_label"] for item in result["timeline"]],
+        )
+        self.assertEqual(
+            {"高俊杰", "李晓明"},
+            {item["member"]["display_name"] for item in result["member_summaries"]},
+        )
+        bear = next(
+            item for item in result["product_summaries"]
+            if item["product_name"] == "智能熊"
+        )
+        self.assertEqual(2, bear["behavior_count"])
+        self.assertEqual(1, bear["unique_member_count"])
+        self.assertEqual(12.5, bear["total_holding_seconds"])
+        serialized = str(result)
+        for forbidden in (
+            "toy-a", "toy-b", "restricted:a-pickup", "track_token",
+            "identity_status", "identity_source", "details", "phone",
+            "face_encoding",
+        ):
+            self.assertNotIn(forbidden, serialized)
+
     def test_unique_name_empty_result_is_not_member_not_found_and_scope_does_not_expand(self) -> None:
         self._event("other-store", "merchandise_pick_up", datetime(2026, 8, 27, 2), store_id="store-2")
         self._event("other-camera", "merchandise_pick_up", datetime(2026, 8, 27, 2), camera_id="cam03")
@@ -233,6 +281,20 @@ class MemberBehaviorQueryServiceTests(unittest.TestCase):
                 self.assertEqual(expected_total, result["behavior_summary"]["total_holding_seconds"])
                 self.assertEqual(expected_status, result["data_quality"]["holding_duration"])
 
+    def test_public_holding_totals_do_not_expose_floating_point_noise(self) -> None:
+        self._event(
+            "holding-a", "merchandise_holding", datetime(2026, 8, 27, 2),
+            duration_seconds=21.44,
+        )
+        self._event(
+            "holding-b", "merchandise_holding", datetime(2026, 8, 27, 2, 1),
+            duration_seconds=6.4,
+        )
+
+        result = self.service.list_recent_member_behaviors()
+
+        self.assertEqual(27.84, result["behavior_summary"]["total_holding_seconds"])
+
     def test_timeline_is_stable_limited_and_projects_only_allowlisted_fields(self) -> None:
         self._event("b", "merchandise_holding", datetime(2026, 8, 27, 2), duration_seconds=-1)
         self._event("a", "merchandise_pick_up", datetime(2026, 8, 27, 2))
@@ -291,6 +353,44 @@ class MemberBehaviorQueryServiceTests(unittest.TestCase):
                 member_ref="member-a", product_name=value, product_provided=True,
             )
             self.assertEqual(0, empty["behavior_summary"]["total_behavior_count"])
+
+    def test_recent_member_product_filter_applies_before_limit(self) -> None:
+        for index in range(3):
+            self._event(
+                f"recent-other-{index}", "merchandise_pick_up",
+                datetime(2026, 8, 27, 1, index),
+                product_key=f"other-{index}", product_name="其他商品",
+            )
+        self._event(
+            "recent-target", "merchandise_pick_up", datetime(2026, 8, 27, 2),
+            product_key="target", product_name="智能熊",
+        )
+
+        result = self.service.list_recent_member_behaviors(
+            product_name="智能熊", product_provided=True, limit=1,
+        )
+
+        self.assertEqual(1, result["behavior_summary"]["total_behavior_count"])
+        self.assertEqual("智能熊", result["timeline"][0]["product_name"])
+        self.assertFalse(result["has_more"])
+
+    def test_recent_member_limit_selects_newest_events_then_returns_chronologically(self) -> None:
+        for index in range(4):
+            self._event(
+                f"recent-{index}", "merchandise_pick_up",
+                datetime(2026, 8, 27, 1, index),
+            )
+
+        result = self.service.list_recent_member_behaviors(limit=2)
+
+        self.assertTrue(result["has_more"])
+        self.assertEqual(
+            [
+                "2026-08-27T09:02:00+08:00",
+                "2026-08-27T09:03:00+08:00",
+            ],
+            [item["occurred_at"] for item in result["timeline"]],
+        )
 
     def test_limit_rejects_non_json_integers(self) -> None:
         for value in (True, 20.0, "20", None, 0, -1, 51):

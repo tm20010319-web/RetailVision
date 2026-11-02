@@ -9,7 +9,7 @@ from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 
 from agent.schema_evolution import evolve_schema
-from agent.member_entry_service import MemberEntryService
+from agent.legacy.member_entry_service import MemberEntryService
 from agent.models import BusinessJob, Member, MemberEntryEvent, Visit
 
 

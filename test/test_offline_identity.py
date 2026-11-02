@@ -10,10 +10,10 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.camera_face_api import CameraApiTransportError  # noqa: E402
-from agent.camera_track_identity import TrackSnapshot  # noqa: E402
-from agent.face_spatial_evidence import FaceSpatialEvidence  # noqa: E402
-from agent.offline_identity import (  # noqa: E402
+from agent.platform.camera_face_api import CameraApiTransportError  # noqa: E402
+from agent.identity.camera_track_identity import TrackSnapshot  # noqa: E402
+from agent.identity.face_spatial_evidence import FaceSpatialEvidence  # noqa: E402
+from agent.offline.offline_identity import (  # noqa: E402
     HistoricalIdentityIntegrityError,
     HistoricalIdentityResolver,
     HistoricalIdentityRevisionService,
@@ -21,22 +21,22 @@ from agent.offline_identity import (  # noqa: E402
     OfflineEventTrackAssociation,
     OfflineTrackIdentityAggregator,
 )
-from agent.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository  # noqa: E402
-from agent.offline_recognition_provider import (  # noqa: E402
+from agent.offline.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository  # noqa: E402
+from agent.offline.offline_recognition_provider import (  # noqa: E402
     DeviceRecognitionAcceptancePolicy,
     OfflineRecognitionEvidence,
     PaginationCompletionPolicy,
     RecordedCameraRecognitionProvider,
     RecognitionRecordQueryResult,
 )
-from agent.offline_identity_association import (  # noqa: E402
+from agent.offline.offline_identity_association import (  # noqa: E402
     GuardedOfflineIdentityAssociator,
     OfflineSpatialGeometry,
     OfflineSpatialGeometryValidator,
     _coerce_track_snapshot,
     map_face_bbox_to_recording_frame,
 )
-from agent.offline_media import (  # noqa: E402
+from agent.offline.offline_media import (  # noqa: E402
     P6SCapabilityProfile,
     P6SCapabilityProfileResolver,
 )
@@ -289,14 +289,14 @@ class HistoricalIdentityRevisionPersistenceTests(unittest.TestCase):
 
     @staticmethod
     def _mapping(member_id, *, is_enabled=True, sync_status="synced"):
-        from agent.device_identity import DeviceMemberMappingData
+        from agent.identity.device_identity import DeviceMemberMappingData
 
         return DeviceMemberMappingData(
             device_id="device-1", member_id=member_id, group_id=7,
             group_uuid="group-7", person_id=42, unique_id="person-42",
             face_uuid="face-42", sync_status=sync_status, is_enabled=is_enabled,
         )
-from agent.offline_identity_association import (  # noqa: E402
+from agent.offline.offline_identity_association import (  # noqa: E402
     ExactEventSpatialEnricher,
     GuardedOfflineIdentityAssociator,
     InboxSpatialEvidenceRecord,

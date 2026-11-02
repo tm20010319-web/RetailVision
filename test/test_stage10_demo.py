@@ -14,22 +14,22 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.person_product_association import (
+from agent.behavior.person_product_association import (
     PersonAssociationObservation,
     PersonProductAssociationConfig,
     ProductAssociationObservation,
 )
-from agent.product_interaction import ProductInteractionConfig
-from agent.sam31_behavior_adapter import Sam31BehaviorAdapter
-from agent.sam31_product_tracking import (
+from agent.behavior.product_interaction import ProductInteractionConfig
+from agent.behavior.sam31_behavior_adapter import Sam31BehaviorAdapter
+from agent.behavior.sam31_product_tracking import (
     MultiProductTrackRuntime,
     ProductCandidate,
     ProductDisplayState,
     ProductDisplaySurface,
     ProductTrackStatus,
 )
-from agent.sam31_live_behavior import Sam31GlobalTrack
-from agent.stage10_demo import (
+from agent.behavior.sam31_live_behavior import Sam31GlobalTrack
+from agent.runtime.stage10_demo import (
     EventStream,
     JsonlEventSink,
     LatestFrameBuffer,

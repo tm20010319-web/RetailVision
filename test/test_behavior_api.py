@@ -13,7 +13,7 @@ ensure_project_root_on_path()
 
 from fastapi.testclient import TestClient
 
-from agent.member_api import app
+from agent.api.member_api import app
 
 
 class FakeBehaviorQuery:
@@ -76,11 +76,11 @@ class BehaviorApiTests(unittest.TestCase):
         self.query = FakeBehaviorQuery(self.now)
         self.store = FakeClipStore()
         self.patches = [
-            patch("agent.member_api.get_service", return_value=MagicMock()),
-            patch("agent.member_api.get_behavior_query_service", return_value=self.query),
-            patch("agent.member_api.get_evidence_clip_store", return_value=self.store),
-            patch("agent.member_api.get_evidence_clip_processor", return_value=None),
-            patch("agent.member_api.settings.PEAK_ENTRY_CAMERA_ID", "entrance-1"),
+            patch("agent.api.member_api.get_service", return_value=MagicMock()),
+            patch("agent.api.member_api.get_behavior_query_service", return_value=self.query),
+            patch("agent.api.member_api.get_evidence_clip_store", return_value=self.store),
+            patch("agent.api.member_api.get_evidence_clip_processor", return_value=None),
+            patch("agent.api.member_api.settings.PEAK_ENTRY_CAMERA_ID", "entrance-1"),
         ]
         for item in self.patches:
             item.start()
@@ -170,7 +170,7 @@ class BehaviorApiTests(unittest.TestCase):
             outside = Path(other) / "clip.mp4"
             outside.write_bytes(b"video")
             self.store.ready_path_value = str(outside)
-            with patch("agent.member_api.settings.EVIDENCE_CLIP_DIR", root_dir):
+            with patch("agent.api.member_api.settings.EVIDENCE_CLIP_DIR", root_dir):
                 response = self.client.get("/api/evidence/clip-1/video")
 
         self.assertEqual(404, response.status_code)
@@ -180,7 +180,7 @@ class BehaviorApiTests(unittest.TestCase):
             video = Path(root_dir) / "clip-1.mp4"
             video.write_bytes(b"video")
             self.store.ready_path_value = str(video)
-            with patch("agent.member_api.settings.EVIDENCE_CLIP_DIR", root_dir):
+            with patch("agent.api.member_api.settings.EVIDENCE_CLIP_DIR", root_dir):
                 response = self.client.get("/api/evidence/clip-1/video")
 
         self.assertEqual(200, response.status_code)

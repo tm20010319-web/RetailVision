@@ -11,8 +11,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from agent.offline_media import P6SCapabilityProfile, P6SCapabilityProfileResolver
-from agent.offline_recognition_provider import DeviceRecognitionAcceptancePolicy
+from agent.offline.offline_media import P6SCapabilityProfile, P6SCapabilityProfileResolver
+from agent.offline.offline_recognition_provider import DeviceRecognitionAcceptancePolicy
 
 
 DEVICE_ID = "cam02"
@@ -210,7 +210,7 @@ def qualify(database: Path) -> dict:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--database", type=Path, default=Path("demo_flow.db"))
+    parser.add_argument("--database", type=Path, default=Path("runtime/databases/demo_flow.db"))
     parser.add_argument(
         "--output",
         type=Path,

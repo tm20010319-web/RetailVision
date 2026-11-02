@@ -9,27 +9,27 @@ from threading import Event, RLock, Thread, current_thread
 from typing import Any, Callable, Optional
 from uuid import uuid4
 
-from agent.association_projection import AssociationOutcomeProjectionWorker
-from agent.camera_track_identity import (
+from agent.visits.association_projection import AssociationOutcomeProjectionWorker
+from agent.identity.camera_track_identity import (
     CameraTrackIdentityCache,
     SameCameraRecognitionBinder,
     StoreTrackCandidateProvider,
     TrackSnapshotBuffer,
 )
-from agent.camera_runtime_registry import CameraRuntimeRegistry
-from agent.device_camera_registration import DeviceCameraRegistrationService
-from agent.identity_runtime_lease import (
+from agent.identity.camera_runtime_registry import CameraRuntimeRegistry
+from agent.identity.device_camera_registration import DeviceCameraRegistrationService
+from agent.platform.identity_runtime_lease import (
     IdentityAssociationRuntimeLeaseService,
     RuntimeLeaseUnavailable,
 )
-from agent.reusable_visit_resolver import ReusableVisitResolver
-from agent.store_resolution import StoreResolutionService
-from agent.track_association_policy import TrackAssociationAuditService
-from agent.track_association_finalization import (
+from agent.visits.reusable_visit_resolver import ReusableVisitResolver
+from agent.identity.store_resolution import StoreResolutionService
+from agent.identity.track_association_policy import TrackAssociationAuditService
+from agent.identity.track_association_finalization import (
     BindingLifecycleHeartbeat,
     TrackAssociationFinalizationWorker,
 )
-from agent.visit_activity import VisitActivityRefresher, VisitActivityService
+from agent.visits.visit_activity import VisitActivityRefresher, VisitActivityService
 
 
 logger = logging.getLogger(__name__)

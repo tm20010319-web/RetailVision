@@ -24,17 +24,17 @@ from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from agent.behavior_vision import load_behavior_camera_configs
-from agent.offline_behavior import (
+from agent.behavior.behavior_vision import load_behavior_camera_configs
+from agent.offline.offline_behavior import (
     OfflineBehaviorIdentityProjector,
     OfflineNormalizedBehaviorFact,
 )
-from agent.offline_identity import OfflineTrackIdentityAggregator
-from agent.offline_identity_association import GuardedOfflineIdentityPass, OfflineSpatialGeometry
-from agent.offline_media import (
+from agent.offline.offline_identity import OfflineTrackIdentityAggregator
+from agent.offline.offline_identity_association import GuardedOfflineIdentityPass, OfflineSpatialGeometry
+from agent.offline.offline_media import (
     CapabilityProfileResolution, P6SCapabilityProfile, P6SCapabilityProfileResolver,
 )
-from agent.offline_recognition_provider import (
+from agent.offline.offline_recognition_provider import (
     DeviceRecognitionAcceptancePolicy,
     DurablePushInboxRecognitionProvider,
     PaginationCompletionPolicy,
@@ -538,7 +538,7 @@ def build_recognition_runtime(
         require_reco_valid=False,
     )
     if profile.recognition_evidence_mode == "historical_query":
-        from agent.camera_face_api import CameraFaceApiClient
+        from agent.platform.camera_face_api import CameraFaceApiClient
 
         configured = settings
         if configured is None:
@@ -785,8 +785,8 @@ def build_read_only_push_evidence_auditor() -> Any:
     from agent.db import get_session_factory
     from agent.models import DeviceRecognitionInbox
     from agent.models import PushCoverageObservation
-    from agent.offline_media import P6SCapabilityProfileResolver
-    from agent.push_coverage import PushCoverageStore
+    from agent.offline.offline_media import P6SCapabilityProfileResolver
+    from agent.identity.push_coverage import PushCoverageStore
 
     session_factory = get_session_factory()
     coverage_store = PushCoverageStore(session_factory)

@@ -11,7 +11,7 @@ from numbers import Real
 from pathlib import Path
 from typing import Any, Optional
 
-from agent.behavior_vision import load_behavior_camera_configs
+from agent.behavior.behavior_vision import load_behavior_camera_configs
 from agent.config import settings
 from agent.db import get_session_factory, init_db
 from pipelines.behavior_runtime import BehaviorCaptureRunner, create_behavior_runtime

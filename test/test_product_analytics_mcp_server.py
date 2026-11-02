@@ -13,9 +13,9 @@ from _test_bootstrap import ensure_project_root_on_path
 ensure_project_root_on_path()
 
 from agent.models import Base  # noqa: E402
-from agent.offline_behavior import Stage9BehaviorFactAdapter  # noqa: E402
-from agent.product_interaction_analytics import ProductAnalyticsQueryService, ProductInteractionFactWriter  # noqa: E402
-from agent.product_interaction_mcp import ProductAnalyticsMCPTools  # noqa: E402
+from agent.offline.offline_behavior import Stage9BehaviorFactAdapter  # noqa: E402
+from agent.analytics.product_interaction_analytics import ProductAnalyticsQueryService, ProductInteractionFactWriter  # noqa: E402
+from agent.analytics.product_interaction_mcp import ProductAnalyticsMCPTools  # noqa: E402
 from agent.mcp_server.server import (  # noqa: E402
     ProductAnalyticsMCPServer,
     build_agent_instructions,
@@ -29,7 +29,7 @@ from agent.mcp_server.grounding_contract import (  # noqa: E402
 from agent.mcp_server.tools import ProductAnalyticsMCPToolDispatcher  # noqa: E402
 from agent.mcp_server.transport import StdioJsonRpcTransport  # noqa: E402
 from agent.store_context import StoreContext  # noqa: E402
-from agent.product_catalog import ProductCatalog  # noqa: E402
+from agent.analytics.product_catalog import ProductCatalog  # noqa: E402
 
 
 class ProductAnalyticsMCPServerTests(unittest.TestCase):

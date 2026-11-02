@@ -12,19 +12,19 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from agent.db import configure_sqlite_foreign_keys
-from agent.identity_runtime_lease import (
+from agent.platform.identity_runtime_lease import (
     IdentityAssociationRuntimeLeaseService,
     RuntimeLeaseUnavailable,
 )
-from agent.store_mapping_recovery import StoreMappingRecoveryWorker
+from agent.identity.store_mapping_recovery import StoreMappingRecoveryWorker
 from agent.models import (
     CameraStoreRegistration,
     DeviceCameraRegistration,
     DeviceStoreRegistration,
 )
 from agent.schema_evolution import evolve_schema
-from agent.store_resolution import StoreResolutionService
-from agent.device_camera_registration import DeviceCameraRegistrationService
+from agent.identity.store_resolution import StoreResolutionService
+from agent.identity.device_camera_registration import DeviceCameraRegistrationService
 
 
 class IdentityAssociationInfrastructureTests(unittest.TestCase):

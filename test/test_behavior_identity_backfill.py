@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from agent.behavior_events import BehaviorEventInput, BehaviorEventStore
+from agent.behavior.behavior_events import BehaviorEventInput, BehaviorEventStore
 from agent.db import configure_sqlite_foreign_keys
 from agent.models import (
     BehaviorEvent,

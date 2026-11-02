@@ -19,16 +19,16 @@ ensure_project_root_on_path()
 from fastapi.testclient import TestClient
 
 from agent.db import init_db
-from agent.member_api import (
+from agent.api.member_api import (
     app,
     get_device_event_services,
     get_operations_query_service,
     reset_device_event_services,
     reset_service,
 )
-from agent.device_identity import InMemoryDeviceIdentityRepository
-from agent.member_device_sync import MemberDeviceSyncService
-from agent.member_management_service import MemberManagementError, MemberManagementService
+from agent.identity.device_identity import InMemoryDeviceIdentityRepository
+from agent.member.member_device_sync import MemberDeviceSyncService
+from agent.member.member_management_service import MemberManagementError, MemberManagementService
 from agent.models import Base, BusinessJob, Member
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -204,7 +204,7 @@ class TestMemberManagementServiceWithDevice(unittest.TestCase):
 
     def setUp(self):
         self.session_factory, self.engine = _make_session_factory()
-        from agent.device_identity import DeviceMemberMappingData
+        from agent.identity.device_identity import DeviceMemberMappingData
 
         self.mock_sync = MagicMock()
         self.mock_sync.authorize_member.return_value = DeviceMemberMappingData(
@@ -303,7 +303,7 @@ class TestMemberManagementServiceWithDevice(unittest.TestCase):
             device_id="cam01",
         )
         alias = "m-test"
-        with patch("agent.member_device_sync._opaque_alias", return_value=alias):
+        with patch("agent.member.member_device_sync._opaque_alias", return_value=alias):
             service.upload_face("M001", b"fake_photo_bytes", "male")
 
         mapping = repository.resolve_mapping(
@@ -324,7 +324,7 @@ class TestMemberManagementServiceWithDevice(unittest.TestCase):
             self.service.upload_face("M001", b"photo", "other")
 
     def test_revoke_face(self):
-        from agent.camera_face_api import CameraOperationResult
+        from agent.platform.camera_face_api import CameraOperationResult
 
         self.mock_sync.revoke_member.return_value = CameraOperationResult(
             success=True, status_code=0, message=None,
@@ -354,7 +354,7 @@ class TestMemberAPI(unittest.TestCase):
         reset_service()
         app.dependency_overrides = {}
         # Patch get_service to return our test service.
-        self._patch = patch("agent.member_api.get_service", return_value=self.service)
+        self._patch = patch("agent.api.member_api.get_service", return_value=self.service)
         self._patch.start()
         self.client = TestClient(app)
 
@@ -565,7 +565,7 @@ class TestMemberAPI(unittest.TestCase):
         query_service = MagicMock()
         query_service.status.return_value = {"api": {"state": "online"}}
         with patch(
-            "agent.member_api.get_operations_query_service",
+            "agent.api.member_api.get_operations_query_service",
             create=True,
             return_value=query_service,
         ):
@@ -586,7 +586,7 @@ class TestMemberAPI(unittest.TestCase):
         query_service = MagicMock()
         query_service.recent_recognitions.return_value = {"items": []}
         with patch(
-            "agent.member_api.get_operations_query_service",
+            "agent.api.member_api.get_operations_query_service",
             create=True,
             return_value=query_service,
         ):
@@ -703,7 +703,7 @@ class TestMemberAPI(unittest.TestCase):
     def test_device_event_services_are_owned_by_app_state(self):
         sentinel = object()
         with patch(
-            "agent.member_api._build_device_event_services",
+            "agent.api.member_api._build_device_event_services",
             return_value=sentinel,
         ) as builder:
             first = get_device_event_services()

@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from agent.db import configure_sqlite_foreign_keys
-from agent.member_arrival_repair import MemberArrivalRepairService
+from agent.visits.member_arrival_repair import MemberArrivalRepairService
 from agent.models import DeviceRecognitionInbox, Member, MemberArrival, MemberArrivalEffect, Visit
 from agent.schema_evolution import evolve_schema
 

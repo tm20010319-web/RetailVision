@@ -5,10 +5,10 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from agent.product_interaction_analytics import ProductAnalyticsError
-from agent.product_interaction_mcp import ProductAnalyticsMCPTools
-from agent.member_behavior import MemberBehaviorError
-from agent.member_behavior_mcp import MemberBehaviorMCPTools
+from agent.analytics.product_interaction_analytics import ProductAnalyticsError
+from agent.analytics.product_interaction_mcp import ProductAnalyticsMCPTools
+from agent.analytics.member_behavior import MemberBehaviorError
+from agent.analytics.member_behavior_mcp import MemberBehaviorMCPTools
 
 from .schemas import text_result
 

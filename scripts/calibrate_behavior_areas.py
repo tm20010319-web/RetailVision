@@ -13,8 +13,8 @@ from typing import Sequence
 import cv2
 import numpy as np
 
-from agent.behavior_monitor import PolygonArea
-from agent.behavior_vision import BehaviorCameraConfig, draw_behavior_area_overlay
+from agent.behavior.behavior_monitor import PolygonArea
+from agent.behavior.behavior_vision import BehaviorCameraConfig, draw_behavior_area_overlay
 
 
 Point = tuple[int, int]

@@ -12,9 +12,9 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from agent.camera_track_identity import SameCameraRecognitionBinder, TrackSnapshot
-from agent.face_spatial_evidence import FaceSpatialEvidence
-from agent.offline_identity_association import (
+from agent.identity.camera_track_identity import SameCameraRecognitionBinder, TrackSnapshot
+from agent.identity.face_spatial_evidence import FaceSpatialEvidence
+from agent.offline.offline_identity_association import (
     OfflineSpatialGeometry,
     OfflineSpatialGeometryValidator,
     map_face_bbox_to_recording_frame,

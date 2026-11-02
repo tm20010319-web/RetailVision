@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 import unittest
 
-from demo_greeting.state import DemoGreetingStateMachine, PersonObservation
+from demo.greeting.state import DemoGreetingStateMachine, PersonObservation
 
 
 def person(track_id, x, *, staff=False, world_point=None):

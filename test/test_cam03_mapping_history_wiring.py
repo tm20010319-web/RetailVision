@@ -9,10 +9,10 @@ ensure_project_root_on_path()
 import pytest
 from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
-from agent.device_identity import DeviceMemberMappingData, SqlAlchemyDeviceIdentityRepository
-from agent.member_device_sync import MemberDeviceSyncService
+from agent.identity.device_identity import DeviceMemberMappingData, SqlAlchemyDeviceIdentityRepository
+from agent.member.member_device_sync import MemberDeviceSyncService
 from agent.models import Member, DeviceMemberMapping, DeviceMemberIdentityRevision
-from agent.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
+from agent.offline.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
 
 
 @pytest.fixture
@@ -95,7 +95,7 @@ def test_real_sync_pending_then_confirmed_writes_history(wired):
 
 
 def test_member_api_factory_enables_revision_repository(wired):
-    from agent import member_api
+    from agent.api import member_api
     settings = SimpleNamespace(CAMERA_FACE_GROUP_UUID='group', CAMERA_FACE_GROUP_ID=0,
                                CAMERA_FACE_DEVICE_ID='cam03', CAMERA_FACE_BASE_URL='http://device')
     with patch.object(member_api, 'settings', settings), \

@@ -13,7 +13,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.behavior_vision import (
+from agent.behavior.behavior_vision import (
     CameraRole,
     BehaviorVisionAdapter,
     BlueVestDetector,
@@ -25,7 +25,7 @@ from agent.behavior_vision import (
     localize_staff_greeting_overlay_line,
     load_behavior_camera_configs,
 )
-from agent.behavior_monitor import PolygonArea
+from agent.behavior.behavior_monitor import PolygonArea
 from scripts.diagnose_staff_role_integrity import validate_subject_truth
 
 
@@ -459,10 +459,10 @@ class BehaviorVisionAdapterTests(unittest.TestCase):
             return rendered
 
         with patch(
-            "agent.behavior_vision.measure_overlay_text",
+            "agent.behavior.behavior_vision.measure_overlay_text",
             return_value=(120, 30),
         ), patch(
-            "agent.behavior_vision.draw_overlay_texts_bgr",
+            "agent.behavior.behavior_vision.draw_overlay_texts_bgr",
             side_effect=capture,
         ):
             adapter.render_debug_overlay(
@@ -662,7 +662,7 @@ class BehaviorVisionAdapterTests(unittest.TestCase):
         )
         frame = np.zeros((100, 200, 3), dtype=np.uint8)
 
-        with patch("agent.behavior_vision.logger.info") as log:
+        with patch("agent.behavior.behavior_vision.logger.info") as log:
             adapter.process_frame(frame)
             now[0] = 4.99
             adapter.process_frame(frame)

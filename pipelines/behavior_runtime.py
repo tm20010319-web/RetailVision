@@ -9,29 +9,29 @@ from typing import Callable, Mapping, Optional, Protocol
 
 from sqlalchemy.orm import Session
 
-from agent.behavior_events import BehaviorEventStore
-from agent.behavior_monitor import (
+from agent.behavior.behavior_events import BehaviorEventStore
+from agent.behavior.behavior_monitor import (
     BehaviorMonitor,
     BehaviorMonitorConfig,
     TrackObservation,
 )
-from agent.behavior_vision import (
+from agent.behavior.behavior_vision import (
     BehaviorCameraConfig,
     BehaviorVisionAdapter,
     draw_behavior_area_overlay,
 )
-from agent.camera_track_identity import (
+from agent.identity.camera_track_identity import (
     CameraTrackIdentityCache,
     TrackSnapshot,
     TrackSnapshotBuffer,
 )
-from agent.camera_runtime_registry import CameraRuntimeRegistry
-from agent.detector import open_video_capture
-from agent.customer_entry_visit import (
+from agent.identity.camera_runtime_registry import CameraRuntimeRegistry
+from agent.platform.video_capture import open_video_capture
+from agent.visits.customer_entry_visit import (
     CustomerEntryObservation,
     CustomerEntryVisit,
 )
-from agent.staff_greeting_evaluation import (
+from agent.behavior.staff_greeting_evaluation import (
     GreetingShadowConfig,
     StaffGreetingEvaluation,
 )

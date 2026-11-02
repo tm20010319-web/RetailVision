@@ -18,19 +18,19 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from agent.behavior_events import BehaviorEventStore, TrafficQueryService
-from agent.behavior_monitor import (
+from agent.behavior.behavior_events import BehaviorEventStore, TrafficQueryService
+from agent.behavior.behavior_monitor import (
     BehaviorMonitor,
     BehaviorMonitorConfig,
     PolygonArea,
     TrackObservation,
 )
 from agent.config import Settings
-from agent.camera_track_identity import CameraTrackIdentityCache, TrackSnapshotBuffer
-from agent.customer_entry_visit import CustomerEntryVisit
+from agent.identity.camera_track_identity import CameraTrackIdentityCache, TrackSnapshotBuffer
+from agent.visits.customer_entry_visit import CustomerEntryVisit
 from agent.schema_evolution import evolve_schema
 from agent.models import BehaviorEvent, CustomerEntryEvent, GreetingCycle, Visit
-from agent.staff_greeting_evaluation import StaffGreetingEvaluation
+from agent.behavior.staff_greeting_evaluation import StaffGreetingEvaluation
 from pipelines.behavior_runtime import (
     BehaviorCameraRuntime,
     BehaviorCaptureRunner,
@@ -929,12 +929,12 @@ class BehaviorRuntimeTests(unittest.TestCase):
     def test_invalid_staff_vest_confidence_is_rejected(self):
         configured = SimpleNamespace(
             BEHAVIOR_PROJECT_ROOT=".",
-            BEHAVIOR_CONFIG_PATH="behavior_cameras.example.json",
-            BEHAVIOR_PERSON_MODEL_PATH="outputs/models/yolo11n.pt",
+            BEHAVIOR_CONFIG_PATH="configs/examples/behavior_cameras.example.json",
+            BEHAVIOR_PERSON_MODEL_PATH="data/models/yolo11n.pt",
             BEHAVIOR_STAFF_VEST_MODEL_PATH=(
-                "runs/staff_vest/baseline_v1/weights/best.pt"
+                "data/models/staff_vest.pt"
             ),
-            BEHAVIOR_POSE_MODEL_PATH="outputs/models/yolo11n-pose.pt",
+            BEHAVIOR_POSE_MODEL_PATH="data/models/yolo11n-pose.pt",
             BEHAVIOR_TRACKER="bytetrack.yaml",
             BEHAVIOR_DEVICE="cpu",
             BEHAVIOR_CONFIDENCE=0.5,

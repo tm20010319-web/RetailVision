@@ -20,7 +20,7 @@ import logging
 import sys
 import uuid
 
-from agent.camera_face_api import CameraFaceApiClient
+from agent.platform.camera_face_api import CameraFaceApiClient
 from agent.config import settings
 
 logger = logging.getLogger(__name__)

@@ -101,12 +101,12 @@ flowchart LR
 - Phase 2C 修改 Evaluation、Finalization Job、Binding 或 Cache provenance。
 - API route 打开 Session 或查询 ORM。
 - Profile 把 Recognition Inbox 状态当作到店事实。
-- Production import Demo/Legacy。当前 eager import 是债务，不是允许的例外。
+- Production import Demo/Legacy。当前 pipelines 公开导出为 lazy；显式兼容模式仍有消费者，不代表隔离债务全部消失。
 - 新代码使用 `phase2a/phase2b/phase2c/phase2d` 作为业务 package。
 
-## 7. Phase 2D 修改范围
+## 7. 商品行为扩展边界
 
-PoC 合格并冻结合同后，Phase 2D 默认只允许修改：
+现有商品能力已实现；新增或调整能力需明确任务范围，优先限制于以下逻辑职责：
 
 - `behavior/merchandise/*` 及其 tests；
 - Behavior runtime 的 Adapter 注入点；

@@ -20,7 +20,8 @@ def prepare_receiver():
         raise ValueError('cam03_push_configuration_required')
     if os.getenv('CAMERA_FACE_DEVICE_ID') != config.device_id or not os.getenv('P6S_DEVICE_SERIAL'):
         raise ValueError('cam03_process_device_and_serial_required')
-    from agent import db, member_api
+    from agent import db
+    from agent.api import member_api
     from agent.models import Base
     from agent.config import settings
     if settings.CAMERA_FACE_DEVICE_ID != config.device_id or settings.P6S_DEVICE_SERIAL != os.getenv('P6S_DEVICE_SERIAL'):

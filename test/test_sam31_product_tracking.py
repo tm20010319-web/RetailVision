@@ -13,7 +13,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.sam31_product_tracking import (
+from agent.behavior.sam31_product_tracking import (
     ManualInitializationAttemptTracker,
     MultiProductTrackRuntime,
     ProductCandidate,
@@ -26,7 +26,7 @@ from agent.sam31_product_tracking import (
     initialization_candidates,
     pixel_xyxy_to_normalized_xywh,
 )
-from agent.sam31_product_replay import (
+from tools.replay.sam31_product_replay import (
     CDETimeline,
     OfflineVideoWindowSource,
     SingleTextGroundingPerWindow,
@@ -303,7 +303,7 @@ class ProductTrackingTests(unittest.TestCase):
 
     def test_formal_config_has_one_surface_and_no_persisted_manual_bbox(self):
         config = json.loads(
-            (Path(__file__).parents[1] / "product_cameras.cam02.stage7c.json")
+            (Path(__file__).parents[1] / "configs/cam02/product_cameras.cam02.stage7c.json")
             .read_text(encoding="utf-8")
         )
 
@@ -693,7 +693,7 @@ class DualProductTrackingTests(unittest.TestCase):
 
     def test_formal_config_has_one_text_grounding_group_for_two_toy_instances(self):
         config = json.loads(
-            (Path(__file__).parents[1] / "product_cameras.cam02.stage7c.json")
+            (Path(__file__).parents[1] / "configs/cam02/product_cameras.cam02.stage7c.json")
             .read_text(encoding="utf-8")
         )
 

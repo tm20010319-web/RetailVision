@@ -12,13 +12,13 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
 from agent.db import configure_sqlite_foreign_keys
-from agent.camera_track_identity import (
+from agent.identity.camera_track_identity import (
     CameraTrackIdentityCache,
     TrackIdentityBinding,
 )
 from agent.models import Member, MemberArrival, Visit
 from agent.schema_evolution import evolve_schema
-from agent.visit_activity import (
+from agent.visits.visit_activity import (
     VisitActivity,
     VisitActivityRefresher,
     VisitActivityService,

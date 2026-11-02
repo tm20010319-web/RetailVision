@@ -24,7 +24,7 @@ from agent.schema_evolution import (
     evolve_schema,
     require_entry_schema,
 )
-from agent.customer_entry_visit import (
+from agent.visits.customer_entry_visit import (
     CustomerEntryConflict,
     CustomerEntryObservation,
     CustomerEntryVisit,
@@ -32,7 +32,7 @@ from agent.customer_entry_visit import (
     CustomerVisitIdentityConflict,
     CustomerVisitIdentityError,
 )
-from agent.identity_runtime_lease import RuntimeLeaseUnavailable
+from agent.platform.identity_runtime_lease import RuntimeLeaseUnavailable
 from agent.models import (
     CustomerEntryConfirmedEvent,
     IdentityEvidence,

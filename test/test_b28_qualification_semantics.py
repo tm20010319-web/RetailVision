@@ -1,8 +1,8 @@
 import unittest
 import numpy as np
 
-from agent.sam31_realtime_providers import _validate_contexts
-from agent.stage10_demo import RealtimeFrameContext
+from agent.behavior.sam31_realtime_providers import _validate_contexts
+from agent.runtime.stage10_demo import RealtimeFrameContext
 
 
 def _contexts(count):

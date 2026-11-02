@@ -1,7 +1,8 @@
 # RetailVision Project Module Architecture v2
 
-状态：`FROZEN_LOGICAL_ARCHITECTURE`。基线代码：`e93dfdd` 及当前工作树。完整真实
-Phase 2A-2C E2E 尚未完成，因此本文件只冻结逻辑模块和接口，不冻结物理路径。
+状态：`FROZEN_LOGICAL_ARCHITECTURE`。本文为能力所有权与目标接口；真实资格见
+[当前状态](../../CURRENT_STATUS.md)，文件位置见 [当前布局](../CURRENT_MODULE_LAYOUT.md)。
+图中边表示逻辑协作，不承诺所有隔离目标已完成或生产 gate 已打开。
 
 ## 1. 架构中心
 
@@ -21,7 +22,7 @@ Runtime 只组合和监督这些模块。Member 提供独立会员主体。Evide
 | --- | --- | --- |
 | `runtime` | Store Composition Root、Store Lease、`runtime_instance_id`、fatal supervisor、shutdown barrier | Identity policy、Behavior rule、Visit merge |
 | `identity` | Device Recognition、Member Mapping、Store/Camera mapping、Person Track Association、Durable Binding | Person tracking、Visit lifecycle、Effects execution |
-| `behavior` | 视频中的 Person Track、role、Entry visual observation、dwell、reach、greeting、BehaviorEvent；未来 merchandise vision | Member identity decision、MemberArrival、Visit canonicalization |
+| `behavior` | 视频中的 Person Track、role、Entry visual observation、dwell、reach、greeting、BehaviorEvent；商品 tracking/interaction | Member identity decision、MemberArrival、Visit canonicalization |
 | `visit` | Entry facts、Visit lifecycle、Recognition Resolver、Canonical convergence/merge、MemberArrival、VisitActivity | YOLO/SAM3、Binding mutation、external effects |
 | `member` | Member、tier、priority、management、device sync、由 Effective Arrival 派生的统计 | Visit lifecycle 和 Arrival 判定 |
 | `effects` | MemberArrivalEffect Intent、claim/ACK/fail、未来外部 consumer | Recognition acceptance、Visit/Binding decision |
@@ -56,7 +57,7 @@ behavior/
   reach/
   greeting/
   events/
-  merchandise/              Future Phase 2D only
+  merchandise/              Product observation and interaction
     tracking/               MerchandiseObservation and SAM3 adapter
     association/            PersonProductAssociation
     interaction/            pickup_candidate/pickup/holding/put_back
@@ -90,7 +91,7 @@ flowchart TD
     PT["Person Tracking / YOLO + ByteTrack"] --> Rules["Entry / Dwell / Reach / Greeting"]
     PT --> TS["TrackSnapshot publication"]
     Rules --> BE["BehaviorEvent"]
-    MM["Future Merchandise / SAM3"] --> PA["PersonProductAssociation"]
+    MM["Merchandise / SAM3"] --> PA["PersonProductAssociation"]
     PT --> PA
     PA --> MI["Merchandise Interaction"]
     MI --> BE
@@ -134,7 +135,7 @@ flowchart TD
 - Member Identity 的 intake、assessment 和 application 属于 `identity`。
 - Visit 和 MemberArrival 属于 `visit`；只有 Visit application 可以决定或收敛。
 - BehaviorEvent 属于 `behavior/events`，可以匿名，也可附加 exact Binding provenance。
-- SAM3 将来只是 `behavior/merchandise/tracking` 的 Adapter。
+- SAM3 只是 `behavior/merchandise/tracking` 的 Adapter。
 - Person/Product 关联属于 `behavior/merchandise/association`。
 - pickup、holding、put_back 状态机属于 `behavior/merchandise/interaction`。
 
@@ -153,9 +154,9 @@ flowchart TD
 
 ## 7. 当前最大 God Modules
 
-1. `agent/reusable_visit_resolver.py`：一个事务中同时编排 Recognition、Visit、
+1. `agent/visits/reusable_visit_resolver.py`：一个事务中同时编排 Recognition、Visit、
    Phase 2C、Arrival、Effect Intent、Member statistics 和 Finalization Job。
-2. `agent/track_association_finalization.py`：Finalization application、cache projection、
+2. `agent/identity/track_association_finalization.py`：Finalization application、cache projection、
    Behavior backfill orchestration 和 Binding heartbeat 共存。
 3. `pipelines/store_runtime.py`：dependency construction、lease lifecycle、worker ownership、
    fatal supervision 和 shutdown 都在同一实现。
@@ -163,7 +164,7 @@ flowchart TD
    共享 import graph。
 5. `agent/models.py`：所有 capability 的 ORM facts 和 indexes 集中，是最大迁移耦合点。
 
-这些文件未来需要按接口深化后拆分，当前不得物理移动。
+这些文件仍可评估接口深化。既有物理移动已完成，不代表事务和 ORM 已拆分。
 
 ## 8. v1 结论状态
 
@@ -176,7 +177,7 @@ flowchart TD
 | Binding 属于 Track Association 的 future seam | `SUPERSEDED` | v2 将 durable application 明确为 `identity/binding` |
 | CustomerEntryVisit 只写匿名 Visit | `SUPERSEDED_NARROWLY` | ADR 0005/0020 允许 exact confirmed Cache 复用既有 Member Visit |
 | VisitActivity 为 reserved Phase 2B | `SUPERSEDED` | Step 4 已实现且由 StoreRuntime 组合 |
-| Stage D/E 物理拆分 | `NEEDS_UPDATE` | 仍被 E2E 阻塞，且必须纳入 Phase 2B/2C 新依赖 |
+| Stage D/E 物理拆分 | `NEEDS_UPDATE` | 旧阶段迁移表已退出当前导航；物理位置见 CURRENT_MODULE_LAYOUT |
 
 ## 9. 为什么 Phase 不是 Module
 
@@ -184,4 +185,3 @@ Phase 是交付时间线；Module 是长期稳定的业务决策所有权。Phas
 Identity Binding、Behavior Backfill、Runtime supervision 和 VisitActivity。如果建立
 `phase2b/`，同一个业务事实会按开发日期被拆散，后续调用者必须理解历史计划而不是
 接口。v2 只把 Phase 保留为 provenance 和测试分组，不作为 package 名称。
-

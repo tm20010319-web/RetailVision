@@ -10,9 +10,9 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from agent.behavior_vision import BehaviorVisionAdapter
-from agent.staff_greeting_evaluation import OfficialGreetingCore
-from agent.staff_greeting_offline import (
+from agent.behavior.behavior_vision import BehaviorVisionAdapter
+from agent.behavior.staff_greeting_evaluation import OfficialGreetingCore
+from agent.behavior.staff_greeting_offline import (
     OfflineStaffGreetingRunner,
     OpenCVPTSReader,
     load_reception_camera_config,
@@ -25,9 +25,9 @@ def main() -> int:
     parser.add_argument("--camera-id", required=True)
     parser.add_argument("--camera-config", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
-    parser.add_argument("--person-model", type=Path, default=PROJECT_ROOT / "outputs/models/yolo11n.pt")
-    parser.add_argument("--vest-model", type=Path, default=PROJECT_ROOT / "runs/staff_vest/baseline_v1/weights/best.pt")
-    parser.add_argument("--pose-model", type=Path, default=PROJECT_ROOT / "outputs/models/yolo11n-pose.pt")
+    parser.add_argument("--person-model", type=Path, default=PROJECT_ROOT / "data/models/yolo11n.pt")
+    parser.add_argument("--vest-model", type=Path, default=PROJECT_ROOT / "data/models/staff_vest.pt")
+    parser.add_argument("--pose-model", type=Path, default=PROJECT_ROOT / "data/models/yolo11n-pose.pt")
     parser.add_argument("--person-imgsz", type=int, default=1280)
     parser.add_argument("--device", default="cuda:0")
     parser.add_argument(

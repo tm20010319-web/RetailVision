@@ -1,14 +1,70 @@
 # RetailVision Product Analytics MCP Server
 
+## 独立经营数据 MCP（2026-10-27）
+
+`python -m agent.mcp_server.business_server` 为门店经营100问提供独立只读入口；
+实现位于 `agent/analytics/store_business/`。原商品互动和会员行为工具保留。
+问题目录来自用户提供的100问表；目录只存问题及分类，答案由持久化经营统计计算。
+目录的 `domain` 显式关联工具，题目位置和每类题数不决定路由；`question_id` 仍为稳定报表 ID。
+第59题“顾客流失预警”归 `customers`，不按表格位置归 `feedback`；发现的工具schema是调用合同，
+消费方不能缓存“每十题一个领域”或旧题目归属。题号及统计口径保持不变。
+目前是用户知情的综合零售预置数据验收阶段，未连接真实POS、ERP、人事或摄像头。
+
+2026-10-28 审查修复（已用于云端独立候选，正式入口未替换）：
+
+- 云端候选问答发现未配置阈值时仍出现“最像压货”等变相分类。经营 MCP 将事实限制以
+  `Public fact interpretation contract:` 单行前缀声明；Java 最终回答器单独保留这些可信说明，
+  不导入工具路由文字。分类限制同时用于直接回答与最终合成：不借库龄分桶、查询区间或近义词
+  自设高库存/新品标准。自然语言遵守情况须经真实模型复核，提示约束不等于确定性语义校验。
+  最新候选仍有未配置新品标准时的近义分类和跨商品比较错误；已记录CURRENT_STATUS，语义发布验收未通过。
+
+- `RETAILVISION_BUSINESS_HIGH_STOCK_DAYS` 与 `RETAILVISION_BUSINESS_NEW_PRODUCT_DAYS` 为可选正整数；
+  默认空，不采用隐含90/30天标准。`classification.status=not_configured` 时返回事实明细，不能自行分类。
+- 第20题 `rankings.refund_rate`、`rankings.exchange_rate` 各自按比例降序计算，独立报告返回范围；
+  预算裁剪保留两榜各自第一行。第73题按坪效排序，第11题TOP10上限归报表定义所有。
+- 在覆盖完整、明确 `absence_means_zero` 且该指标支持相应维度时，分组缺少交易记录可表示零。
+  缺覆盖、缺快照和不支持的维度不能补零；有库存且零销量单列关注项，可售天数仍不可计算。
+- 新seeder将临期库存按批次写入 `expiring_stock` 的 `batch_id`、`expires_on` 维度，合计数量与原规则一致。
+  第28/99题的 `expiry_details` 提供查询期末基准、到期日和剩余天数。批次不完整或旧快照缺日期时
+  返回unavailable，不从数量推断期限。不更改原数据库表结构，不自动回填或覆盖已有快照。
+- Java混合目录保留全部真实schema；成功经营查询不会再被旧视觉关键词补偿覆盖。
+  原视觉补偿仅用于没有成功经营查询的路径，仍是既有兼容逻辑，并未宣称全面移除关键词判断。
+
+- 数据库包含数据集元信息、门店、实体、按日期及业务维度记录的统计分子/分母和覆盖记录。
+  `synthetic_acceptance`、生成器指纹、批次及日期范围保留。普通回答不重复模式标签；
+  来源/真实性被询问时如实说明。不得把预置数据写入原会员/视觉事实库。
+- `RETAILVISION_BUSINESS_MCP_ENABLED` 默认false；启用必须提供 `RETAILVISION_BUSINESS_DATABASE_PATH`、
+  `RETAILVISION_BUSINESS_ALLOWED_STORES` 和 `RETAILVISION_BUSINESS_DEFAULT_STORE`。
+  SQLite 用 `mode=ro` 与 `query_only=ON`，启动与查询不迁移、不创建、不写库。
+- `query_business_customers/sales/inventory/finance/staff/feedback/marketing/operations/market/procurement`
+  共10个工具覆盖1–100题；本模块负责参数、门店白名单、日期、统计口径及错误代码。
+  Java 使用实际发现的schema，不复制100题路由或预写答案。额外参数和任意SQL均拒绝。
+- 日期是门店 `Asia/Shanghai` 日历日，查询末日包含在内，最长366天。
+  月度同比/环比按同日进度比较；完整月份比较完整月份。数据覆盖不足返回unavailable。
+- 销售与利润使用分为单位的金额统计，比例使用汇总后的分子/分母；库存取期末快照、期初库存取期初，
+  不把多日库存相加。会员和活动人数按标识去重。零分母不当零。
+- 查询结果含时间窗、截止日期、公开口径、对比、解释限制。`rows_limited` 表示明细只展示部分行，
+  `returned_rows/total_rows` 明示范围；非空 `totals` 是所选门店与日期内的独立汇总，不由显示行外推。
+  新品、低库存等筛选子集不提供 `totals`，避免用全店总量代替筛选结果。
+  `truncated` 保留给 Java 长度预算造成的证据正文截断；两者语义不同。服务先减少明细行并保持完整JSON，
+  不能去除真实截断标记或从已显示的部分行推算缺失事实。
+- 增量营收、LTV、员工责任和未来收益等需要额外依据；当前数据可回答相关统计与受限建议，
+  不因覆盖100个问题就声称验证了因果、预测或真实经营结论。
+
+独立生成与回归入口：`python -m agent.analytics.store_business.seed --output <新文件> --end-date YYYY-MM-DD`；
+`python -m unittest discover -s test -p test_store_business.py -v`。
+真实模型/云端验收与确定性统计回归分别记录，不能把后者当成已上线证明。
+
+会员initialize说明必须发布自己的时间窗。默认全店查询以省略 `camera_id` 表示；`store-wide` 是范围概念，不能作为相机ID传入，也不能沿用匿名商品工具的camera/time。未指定更窄范围时，recent会员工具可用空参数让服务应用可信默认值；用户明确给出的越界范围仍拒绝，不自动换成默认窗口。
+
 The production boundary is:
 
 ```text
 mewcode-java Agent
   -> mewcode MCP Client
   -> RetailVision MCP Server (stdio)
-  -> ProductAnalyticsMCPTools
-  -> ProductAnalyticsQueryService
-  -> product_interaction_facts
+  -> ProductAnalyticsMCPTools -> ProductAnalyticsQueryService -> product_interaction_facts
+  -> MemberBehaviorMCPTools -> MemberBehaviorQueryService -> members + behavior_events
 ```
 
 The Python `ProductAnalyticsAgentRuntime` remains a local Tool Calling
@@ -47,7 +103,14 @@ $env:RETAILVISION_CAMERA_ID = "cam02"
 $env:RETAILVISION_ANALYSIS_START_AT = "2026-08-20T13:00:00"
 $env:RETAILVISION_ANALYSIS_END_AT = "2026-08-20T14:00:00"
 $env:RETAILVISION_PRODUCT_CATALOG_PROFILE = "stage10_smart_toys_v1"
-python -m agent.mcp_server.server --database-url "sqlite:///D:/GJJ/work/code/retailvision.db"
+$env:RETAILVISION_MEMBER_BEHAVIOR_MCP_ENABLED = "true"
+$env:RETAILVISION_MEMBER_DATABASE_URL = "sqlite:///D:/GJJ/work/code/runtime/databases/demo_flow.db"
+$env:RETAILVISION_MEMBER_STORE_ID = "store-1"
+$env:RETAILVISION_MEMBER_CAMERA_ID = "" # blank means all cameras in the trusted store
+$env:RETAILVISION_MEMBER_ANALYSIS_START_AT = "2026-09-01T00:00:00"
+$env:RETAILVISION_MEMBER_ANALYSIS_END_AT = "2026-09-11T00:00:00"
+$env:RETAILVISION_MEMBER_TIMEZONE = "Asia/Shanghai"
+python -m agent.mcp_server.server --database-url "sqlite:///D:/GJJ/work/code/runtime/databases/retailvision.db"
 ```
 
 `RETAILVISION_PRODUCT_ANALYTICS_MCP_ENABLED` is `false` by default. Invalid
@@ -59,7 +122,7 @@ Disabled composition does not construct a database engine, inspect schema, or
 create/modify a database file. This makes the MCP flag a database-safe kill
 switch as well as a tool-discovery switch.
 
-The server uses MCP stdio because `mewcode-java (3)` already provides
+The integration uses MCP stdio; the historical mewcode-java integration provides
 `StdioClientTransport`; protocol messages are newline-delimited JSON-RPC on
 stdin/stdout and diagnostics go to stderr.
 
@@ -68,7 +131,17 @@ The database configuration is resolved in this order:
 1. `--database-url` command-line argument
 2. `RETAILVISION_DATABASE_URL`
 3. `DATABASE_URL`
-4. local fallback `sqlite:///retailvision.db`
+4. local fallback `sqlite:///runtime/databases/retailvision.db`
+
+Member Behavior independently resolves `--member-database-url`, then
+`RETAILVISION_MEMBER_DATABASE_URL`, and finally the Product Analytics database
+for backwards compatibility. Its preferred scope variables are
+`RETAILVISION_MEMBER_STORE_ID`, `RETAILVISION_MEMBER_CAMERA_ID`,
+`RETAILVISION_MEMBER_ANALYSIS_START_AT`,
+`RETAILVISION_MEMBER_ANALYSIS_END_AT`, and `RETAILVISION_MEMBER_TIMEZONE`.
+When none of the member scope variables are configured, the legacy unprefixed
+scope remains supported. This permits Product Analytics to keep its cam02
+window while Member Behavior reads a separate store-wide database.
 
 The fallback is for a pre-migrated local RetailVision runtime. It is not
 created automatically. An actual production database is selected by the
@@ -95,10 +168,17 @@ mcp_servers:
       RETAILVISION_ANALYSIS_START_AT: "2026-08-20T13:00:00"
       RETAILVISION_ANALYSIS_END_AT: "2026-08-20T14:00:00"
       RETAILVISION_PRODUCT_CATALOG_PROFILE: "stage10_smart_toys_v1"
+      RETAILVISION_MEMBER_BEHAVIOR_MCP_ENABLED: "true"
+      RETAILVISION_MEMBER_DATABASE_URL: ${RETAILVISION_MEMBER_DATABASE_URL}
+      RETAILVISION_MEMBER_STORE_ID: "store-1"
+      RETAILVISION_MEMBER_CAMERA_ID: ""
+      RETAILVISION_MEMBER_ANALYSIS_START_AT: "2026-09-01T00:00:00"
+      RETAILVISION_MEMBER_ANALYSIS_END_AT: "2026-09-11T00:00:00"
+      RETAILVISION_MEMBER_TIMEZONE: "Asia/Shanghai"
 ```
 
 Use a deployment-owned window appropriate for the canary; the values above
-are the qualified Event 804/local analytics window, not a global default.
+are historical sample scopes, not global defaults or proof of formal Event 804 publication.
 `PYTHONUTF8=1` is required for Windows stdio so product display names and
 aliases remain intact. The catalog profile maps the established canary names
 `smart_toy_a`/`smart_toy_b` without asking the user or LLM to invent keys.
@@ -143,7 +223,7 @@ LLM in mewcode selects a tool; no Python keyword router is involved.
 
 ## Product catalog boundary
 
-`agent/product_catalog.py` is the single product-key resolver used by the MCP
+`agent/analytics/product_catalog.py` is the single product-key resolver used by the MCP
 adapter. Deployment configuration supplies public aliases and canonical keys.
 Every tool path accepting `product_key` or `second_product_key` resolves the
 value before calling `ProductAnalyticsQueryService`. Canonical keys remain
@@ -170,10 +250,25 @@ catalog profile is copied into the generic mewcode Java Agent.
   anomaly rule and expose only returned trigger metrics.
 - `suggest_product_display`: return increase, maintain, or decrease display
   priority from returned metrics; it cannot recommend a physical location.
+- `get_member_behavior_summary`: summarize one named active member's confirmed
+  public product interactions.
+- `list_member_behavior_timeline`: return one member's chronological public
+  pickup, holding, and put-down timeline.
+- `list_recent_member_behaviors`: require no member reference and return the
+  recent public timeline plus overall, per-member, and per-product aggregates;
+  `limit` defaults to 100 and supports 1 through 200.
 
 The two display tools are deliberately distinct: "推荐重点陈列哪些商品" routes
 to `recommend_hot_products`; "商品应该怎样调整陈列" routes to
 `suggest_product_display`.
+
+仅有视觉数据源时，“完整报告”“综合门店报告”或同义请求是组合查询，不是单一 Product
+Analytics 查询。Store Agent 必须在同一个请求中取得 `rank_products` 和
+`list_recent_member_behaviors`，分别呈现匿名商品整体互动与已确认会员行为。
+两者可以使用不同的可信时间窗和摄像头范围，报告必须分别标注，不能把匿名
+商品指标归到某位会员名下。
+
+另启用经营数据源后，财务、库存和综合经营报告使用所需经营工具；明确的视觉互动报告仍分别标注匿名及会员来源范围。
 
 ## Tool schemas
 
@@ -182,10 +277,10 @@ The server's `tools/list` response is projected from
 description, and a JSON Schema `inputSchema`; the server does not maintain a
 second schema catalogue.
 
-All schemas reject unknown properties. Timestamp fields use naive ISO-8601
-local time, without a timezone suffix. `limit` fields accept integers from 1
-through 100 and default to 10 where present. Query windows may not exceed 31
-days. The configured `StoreContext` rejects an explicit foreign store and, when
+All schemas reject unknown properties. Product timestamp fields use naive ISO-8601
+local time, without a timezone suffix. Product `limit` fields accept integers from 1
+through 100 and default to 10 where present; `list_recent_member_behaviors` defaults
+to 100 and accepts 1 through 200. Query windows may not exceed 31 days. The configured `StoreContext` rejects an explicit foreign store and, when
 a default camera is configured, rejects an explicit foreign camera.
 
 The projection writer has an independent default-off switch:
@@ -248,8 +343,8 @@ The seven real Agent scenarios are run separately and emit sanitized evidence:
 python scripts/run_store_intelligence_agent_acceptance.py `
   --java-repo "D:\path\to\mewcode-java" `
   --provider-config "D:\path\to\mewcode-java\.mewcode\config.yaml" `
-  --output-dir "reports\r5_03_1_3_agent_acceptance_20260825_retry1" `
-  --test-summary-source "reports\r5_03_1_2_test_summary_source.json"
+  --output-dir "D:\path\to\new-acceptance-output" `
+  --test-summary-source "D:\path\to\verified-test-summary.json"
 ```
 
 Provider credentials and temporary database configuration are used only in a
@@ -260,29 +355,27 @@ reports a number or structured code absent from tool results; or contradicts a
 structured recommendation. If forbidden data is detected, stored arguments
 are cleared and the answer is replaced with a fixed redaction marker.
 
-R5-03.1.3 formal evidence is written to
-`D:\GJJ\work\retailvision_archive\20260826\reports\reports\r5_03_1_3_agent_acceptance_20260825_retry3\` with checker
-`r5-03-1-2-grounding-v3`. The checker also rejects unsupported attention,
-engagement scale/depth/quality, interest, attractiveness, and deep-experience
-claims while allowing explicit negated boundary statements. The prior
-R5-03.1.2, R5-03.1.1, and R5-03.1 evidence directories are
-historical/superseded and are not current acceptance proof. The runner refuses
-non-empty output directories and verifies that the real-agent test summary
-matches the emitted manifest, so historical evidence cannot be overwritten or
-relabeled as a pass.
+Historical acceptance directories, scores and checker revisions are retained byte-for-byte
+outside the repository; see [archive index](repository/ARCHIVE_INDEX.md).
+The acceptance runner refuses non-empty output directories and verifies its summary/manifest;
+do not overwrite or relabel old results. R5-04.2 remains ACCEPTANCE_BLOCKED, as summarized
+in [current status](CURRENT_STATUS.md). Historical Java behavior below is an integration
+contract/reference; this documentation task did not inspect or qualify an external checkout.
 
 ## Agent grounding contract
 
 `agent/mcp_server/grounding_contract.py` separates the contract into four
 layers: `FACT_LABELS`, `HARD_GROUNDING_BOUNDARY`,
 `SAFE_DERIVED_INTERPRETATIONS`, and `GLOBAL_PRESENTATION_GUIDANCE`. The server
-instructions publish all four layers; each tool description publishes only its
-own routing, supported conclusions, and specific limits. The hard boundary
-still forbids commerce, identity/people, subjective interest, and physical
-placement inference. Safe deterministic comparisons, interaction-heat ranking,
-trend direction, and display-priority conclusions are allowed when they follow
-returned facts. The Agent should lead with a concise conclusion and only expand
-to all raw fields when explicitly requested.
+instructions publish all four layers in strict mode; each tool description
+publishes only its own routing, supported conclusions, and specific limits.
+With `STORE_STRICT_INFERENCE_BOUNDARY=false`, development mode may label
+interaction interest/attention judgments and propose display, staff, or
+campaign experiments when they follow returned facts. It must still separate
+observations, analysis, and advice; it may not fabricate values or state that
+pickup/holding/put-down proves a purchase, transaction, sale, revenue, or
+conversion. The Agent should lead with a concise conclusion and only expand to
+all public fields when explicitly requested.
 
 The acceptance checker remains a fact-consistency checker: it verifies returned
 numbers, product/metric binding, safe comparison direction, recommendation and
@@ -319,38 +412,13 @@ per question and no retries:
 python scripts/run_store_intelligence_business_answer_stability.py `
   --java-repo "D:\path\to\mewcode-java" `
   --provider-config "D:\path\to\mewcode-java\.mewcode\config.yaml" `
-  --output-dir "reports\r5_03_2_autonomous_mcp_baseline_20260826_final" `
+  --output-dir "D:\path\to\new-stability-output" `
   --batches 3
 ```
 
-It is observation evidence, not a Java routing or answer-enforcement
-mechanism. The current autonomous observation is `19/21` (batches `7/7`,
-`7/7`, `5/7`) with zero retries. R5-03.2.1 and its 21/21 deterministic evidence
-are rejected/superseded architectural history and are not current production
-qualification evidence.
-
-R5-04 supersedes that observation with provider-level diagnostics and a generic
-OpenAI-compatible stream lifecycle fix. Usage-only streaming chunks no longer
-end Agent consumption before pending tool calls are flushed. Structured Print
-and Remote events expose only sanitized counts, finish reason, answer presence,
-and failure classification; they never expose prompts, credentials, raw
-Provider configuration, or MCP child environment values.
-
-The final R5-04 evidence is
-`D:\GJJ\work\retailvision_archive\20260826\reports\reports\r5_04_autonomous_mcp_canary_20260826_final3\`: batches `7/7`, `6/7`, and
-`7/7`, or `20/21`, with 21 invocations, 27 successful MCP calls, zero retries,
-zero forbidden-field failures, zero missed tools, and one retained grounding
-failure. This supports bounded internal Canary operation, not production
-enablement.
-
-R5-04.1 supersedes the semantic qualification state, without rewriting the
-R5-04 evidence. Its final evidence is
-`D:\GJJ\work\retailvision_archive\20260826\reports\reports\r5_04_1_autonomous_mcp_semantic_integrity_20260826_final8\`: batches
-`7/7`, `6/7`, and `4/7`, or a recorded `17/21`, with `21/21` protocol,
-`19/21` grounding, `19/21` presentation, 26 MCP calls, 21 invocations, zero
-retries, zero stream/argument failures, and zero unknown product keys. One
-batch 2 grounding failure is a checker false positive fixed after the run;
-three batch 3 answer failures remain real. Production enablement is blocked.
+It is observation evidence, not a Java routing or answer-enforcement mechanism.
+Historical batch scores belong in the external archive. A passing Python tool boundary
+does not by itself prove autonomous Agent answer acceptance or production readiness.
 
 R5-03.2 manual business-answer smoke runs the seven specified questions once
 per isolated fixture and never retries a failed scenario:
@@ -359,7 +427,7 @@ per isolated fixture and never retries a failed scenario:
 python scripts/run_store_intelligence_business_answer_smoke.py `
   --java-repo "D:\path\to\mewcode-java" `
   --provider-config "D:\path\to\mewcode-java\.mewcode\config.yaml" `
-  --output-dir "reports\r5_03_2_business_answer_smoke_20260825"
+  --output-dir "D:\path\to\new-smoke-output"
 ```
 
 `RETAILVISION_ACCEPTANCE_REQUIRED` is strict: only exact lowercase `true` or
@@ -368,3 +436,18 @@ to a skippable focused test. After a successful connection, a disabled server
 returns the stable Java result `product_analytics_mcp_disabled:<safe-server>`
 for `tools/call`; SDK exception text and local deployment details remain out of
 Agent context.
+
+## Historical validation lessons retained as current reference
+
+Member Behavior queries may compose related read-only tools when the response remains grounded in
+their returned facts and respects each tool's scope. A controlled fixture's obsolete exact-single-tool
+check is not the business contract. MB-01 run8's original BLOCKED result and its separate policy-review
+PASS remain distinct historical evidence; neither proves real-member production acceptance.
+
+R5-04.2 recovery batches contain different unresolved grounding, presentation and MCP-call failures.
+Their original manifests/JSONL remain available locally; newer partial results do not silently close old failures.
+The pre-recovery all-process-failed batch was traced to Windows JDK AF_UNIX socket initialization,
+before Provider/MCP traffic. If that same `UnixDomainSockets` / `Invalid argument: connect` failure recurs,
+inspect the JDK socket directory; historical recovery used an explicit `-Djdk.net.unixdomain.tmpdir`
+outside the problematic Temp tree. Changing only `java.io.tmpdir` did not address that JDK path.
+This is external deployment troubleshooting context, not a reason to alter RetailVision routing or credentials.

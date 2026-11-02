@@ -7,7 +7,7 @@ from datetime import datetime
 from unittest.mock import Mock
 from xml.etree import ElementTree as ET
 
-from agent.camera_face_api import (
+from agent.platform.camera_face_api import (
     CameraApiAuthenticationError,
     CameraApiProtocolError,
     CameraFaceApiClient,

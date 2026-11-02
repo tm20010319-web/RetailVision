@@ -1,0 +1,802 @@
+[
+  {
+    "id": 1,
+    "category": "一、客流量与顾客分析",
+    "question": "今天/本周/本月的进店客流量是多少？与上周/上月同期相比变化幅度如何？",
+    "question_type": "对比分析",
+    "suggested_source": "POS系统/客流计数器",
+    "domain": "customers"
+  },
+  {
+    "id": 2,
+    "category": "一、客流量与顾客分析",
+    "question": "不同时段（上午/下午/晚上）的客流量分布如何？哪个时段是高峰？",
+    "question_type": "趋势分析",
+    "suggested_source": "POS系统/客流计数器",
+    "domain": "customers"
+  },
+  {
+    "id": 3,
+    "category": "一、客流量与顾客分析",
+    "question": "新客与老客的比例是多少？老客复购率趋势如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "会员系统",
+    "domain": "customers"
+  },
+  {
+    "id": 4,
+    "category": "一、客流量与顾客分析",
+    "question": "顾客的平均消费金额（客单价）是多少？与上月相比有何变化？",
+    "question_type": "趋势分析",
+    "suggested_source": "POS系统",
+    "domain": "customers"
+  },
+  {
+    "id": 5,
+    "category": "一、客流量与顾客分析",
+    "question": "不同年龄段顾客的消费偏好有什么区别？",
+    "question_type": "对比分析",
+    "suggested_source": "会员系统/POS系统",
+    "domain": "customers"
+  },
+  {
+    "id": 6,
+    "category": "一、客流量与顾客分析",
+    "question": "本周/本月新增会员数量是多少？会员活跃度如何？",
+    "question_type": "数据查询",
+    "suggested_source": "会员系统",
+    "domain": "customers"
+  },
+  {
+    "id": 7,
+    "category": "一、客流量与顾客分析",
+    "question": "哪些顾客超过30天未到店？是否需要触发召回营销？",
+    "question_type": "异常预警",
+    "suggested_source": "会员系统",
+    "domain": "customers"
+  },
+  {
+    "id": 8,
+    "category": "一、客流量与顾客分析",
+    "question": "顾客平均停留时长是多少？与上月相比有何变化？",
+    "question_type": "趋势分析",
+    "suggested_source": "门店监控/WiFi探针",
+    "domain": "customers"
+  },
+  {
+    "id": 9,
+    "category": "一、客流量与顾客分析",
+    "question": "不同渠道（线上/线下）带来的客流量占比如何？",
+    "question_type": "对比分析",
+    "suggested_source": "POS系统/线上平台",
+    "domain": "customers"
+  },
+  {
+    "id": 10,
+    "category": "一、客流量与顾客分析",
+    "question": "雨天/晴天/节假日等天气因素对客流量的影响有多大？",
+    "question_type": "预测分析",
+    "suggested_source": "POS系统/气象数据",
+    "domain": "customers"
+  },
+  {
+    "id": 11,
+    "category": "二、产品销售分析",
+    "question": "本月销售额最高的TOP10商品是哪些？贡献占比多少？",
+    "question_type": "数据查询",
+    "suggested_source": "POS系统/ERP",
+    "domain": "sales"
+  },
+  {
+    "id": 12,
+    "category": "二、产品销售分析",
+    "question": "哪些商品销量环比下滑超过20%？是否需要促销清库存？",
+    "question_type": "异常预警",
+    "suggested_source": "POS系统/ERP",
+    "domain": "sales"
+  },
+  {
+    "id": 13,
+    "category": "二、产品销售分析",
+    "question": "各产品品类的销售占比和增长趋势如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "POS系统",
+    "domain": "sales"
+  },
+  {
+    "id": 14,
+    "category": "二、产品销售分析",
+    "question": "新品上市后的销售表现如何？是否达到预期目标？",
+    "question_type": "对比分析",
+    "suggested_source": "POS系统",
+    "domain": "sales"
+  },
+  {
+    "id": 15,
+    "category": "二、产品销售分析",
+    "question": "哪些商品存在高库存低销量的情况？是否需要调整采购策略？",
+    "question_type": "异常预警",
+    "suggested_source": "库存系统/POS系统",
+    "domain": "sales"
+  },
+  {
+    "id": 16,
+    "category": "二、产品销售分析",
+    "question": "不同价格区间的商品销售表现如何？是否存在价格带空白？",
+    "question_type": "对比分析",
+    "suggested_source": "POS系统",
+    "domain": "sales"
+  },
+  {
+    "id": 17,
+    "category": "二、产品销售分析",
+    "question": "关联销售数据如何？哪些商品经常被一起购买？",
+    "question_type": "数据查询",
+    "suggested_source": "POS系统",
+    "domain": "sales"
+  },
+  {
+    "id": 18,
+    "category": "二、产品销售分析",
+    "question": "各门店/各区域的销售额排名如何？差距有多大？",
+    "question_type": "对比分析",
+    "suggested_source": "POS系统/ERP",
+    "domain": "sales"
+  },
+  {
+    "id": 19,
+    "category": "二、产品销售分析",
+    "question": "季节性商品的销售趋势是否符合预期？何时需要提前备货？",
+    "question_type": "预测分析",
+    "suggested_source": "POS系统/气象数据",
+    "domain": "sales"
+  },
+  {
+    "id": 20,
+    "category": "二、产品销售分析",
+    "question": "退货率和换货率最高的商品是哪些？是否存在质量问题？",
+    "question_type": "异常预警",
+    "suggested_source": "POS系统/客服系统",
+    "domain": "sales"
+  },
+  {
+    "id": 21,
+    "category": "三、库存管理",
+    "question": "当前库存总量是多少？库存周转天数是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "库存管理系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 22,
+    "category": "三、库存管理",
+    "question": "哪些商品库存低于安全库存线？是否需要紧急补货？",
+    "question_type": "异常预警",
+    "suggested_source": "库存管理系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 23,
+    "category": "三、库存管理",
+    "question": "哪些商品库存积压超过90天？是否需要促销处理？",
+    "question_type": "异常预警",
+    "suggested_source": "库存管理系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 24,
+    "category": "三、库存管理",
+    "question": "库存损耗率（破损/过期/丢失）是多少？趋势如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "库存管理系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 25,
+    "category": "三、库存管理",
+    "question": "各品类的库存占比是否合理？是否存在结构性积压？",
+    "question_type": "对比分析",
+    "suggested_source": "库存管理系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 26,
+    "category": "三、库存管理",
+    "question": "近期到货及时率是多少？供应商交货是否准时？",
+    "question_type": "数据查询",
+    "suggested_source": "采购系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 27,
+    "category": "三、库存管理",
+    "question": "库存成本占销售额的比例是多少？是否在可控范围内？",
+    "question_type": "对比分析",
+    "suggested_source": "财务系统/库存系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 28,
+    "category": "三、库存管理",
+    "question": "哪些商品将在7天内过期？需要在多长时间内处理？",
+    "question_type": "异常预警",
+    "suggested_source": "库存管理系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 29,
+    "category": "三、库存管理",
+    "question": "安全库存预警覆盖率是多少？是否所有商品都设置了预警？",
+    "question_type": "数据查询",
+    "suggested_source": "库存管理系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 30,
+    "category": "三、库存管理",
+    "question": "盘点差异率是多少？是否存在管理漏洞？",
+    "question_type": "异常预警",
+    "suggested_source": "库存管理系统",
+    "domain": "inventory"
+  },
+  {
+    "id": 31,
+    "category": "四、财务与营收",
+    "question": "本月营业收入是多少？与目标/上月/去年同期的对比如何？",
+    "question_type": "对比分析",
+    "suggested_source": "财务系统",
+    "domain": "finance"
+  },
+  {
+    "id": 32,
+    "category": "四、财务与营收",
+    "question": "各项成本（租金/人工/水电/物料）占营收比例是多少？",
+    "question_type": "对比分析",
+    "suggested_source": "财务系统",
+    "domain": "finance"
+  },
+  {
+    "id": 33,
+    "category": "四、财务与营收",
+    "question": "门店毛利率和净利率分别是多少？趋势如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "财务系统",
+    "domain": "finance"
+  },
+  {
+    "id": 34,
+    "category": "四、财务与营收",
+    "question": "日均营业额是多少？是否达到盈亏平衡点？",
+    "question_type": "数据查询",
+    "suggested_source": "POS系统/财务系统",
+    "domain": "finance"
+  },
+  {
+    "id": 35,
+    "category": "四、财务与营收",
+    "question": "哪些时段的营业额最高？是否合理分配了人力成本？",
+    "question_type": "对比分析",
+    "suggested_source": "POS系统/人力资源系统",
+    "domain": "finance"
+  },
+  {
+    "id": 36,
+    "category": "四、财务与营收",
+    "question": "现金支付与电子支付的比例是多少？是否存在收银异常？",
+    "question_type": "数据查询",
+    "suggested_source": "POS系统/支付平台",
+    "domain": "finance"
+  },
+  {
+    "id": 37,
+    "category": "四、财务与营收",
+    "question": "各类优惠券/满减活动的实际核销率和带来的增量营收是多少？",
+    "question_type": "对比分析",
+    "suggested_source": "营销系统/POS系统",
+    "domain": "finance"
+  },
+  {
+    "id": 38,
+    "category": "四、财务与营收",
+    "question": "应收账款和应付账款的周转情况如何？",
+    "question_type": "数据查询",
+    "suggested_source": "财务系统",
+    "domain": "finance"
+  },
+  {
+    "id": 39,
+    "category": "四、财务与营收",
+    "question": "门店各项费用的环比变化趋势如何？是否有异常增长项？",
+    "question_type": "异常预警",
+    "suggested_source": "财务系统",
+    "domain": "finance"
+  },
+  {
+    "id": 40,
+    "category": "四、财务与营收",
+    "question": "单店投资回报率（ROI）是多少？是否需要调整经营策略？",
+    "question_type": "预测分析",
+    "suggested_source": "财务系统",
+    "domain": "finance"
+  },
+  {
+    "id": 41,
+    "category": "五、员工管理",
+    "question": "本月员工出勤率和迟到早退率分别是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "人力资源系统",
+    "domain": "staff"
+  },
+  {
+    "id": 42,
+    "category": "五、员工管理",
+    "question": "各员工的销售额排名如何？人均效能趋势如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "POS系统/人力资源系统",
+    "domain": "staff"
+  },
+  {
+    "id": 43,
+    "category": "五、员工管理",
+    "question": "员工的销售转化率（接待顾客数vs成交数）是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "POS系统",
+    "domain": "staff"
+  },
+  {
+    "id": 44,
+    "category": "五、员工管理",
+    "question": "哪些员工存在客诉记录？是否需要加强培训？",
+    "question_type": "异常预警",
+    "suggested_source": "客服系统/人力资源系统",
+    "domain": "staff"
+  },
+  {
+    "id": 45,
+    "category": "五、员工管理",
+    "question": "员工排班与客流高峰的匹配度如何？是否存在人力浪费或不足？",
+    "question_type": "对比分析",
+    "suggested_source": "排班系统/POS系统",
+    "domain": "staff"
+  },
+  {
+    "id": 46,
+    "category": "五、员工管理",
+    "question": "员工培训完成率和新员工上手周期是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "人力资源系统",
+    "domain": "staff"
+  },
+  {
+    "id": 47,
+    "category": "五、员工管理",
+    "question": "各岗位的员工流失率是多少？是否存在招聘困难？",
+    "question_type": "趋势分析",
+    "suggested_source": "人力资源系统",
+    "domain": "staff"
+  },
+  {
+    "id": 48,
+    "category": "五、员工管理",
+    "question": "员工建议/投诉的数量和主要问题是什么？",
+    "question_type": "数据查询",
+    "suggested_source": "内部反馈系统",
+    "domain": "staff"
+  },
+  {
+    "id": 49,
+    "category": "五、员工管理",
+    "question": "加班工时占比是多少？是否存在过度加班的情况？",
+    "question_type": "异常预警",
+    "suggested_source": "人力资源系统",
+    "domain": "staff"
+  },
+  {
+    "id": 50,
+    "category": "五、员工管理",
+    "question": "员工满意度调查结果如何？哪些因素影响员工积极性？",
+    "question_type": "趋势分析",
+    "suggested_source": "满意度调查系统",
+    "domain": "staff"
+  },
+  {
+    "id": 51,
+    "category": "六、顾客满意度与反馈",
+    "question": "本月顾客满意度评分是多少？与上月相比变化如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "满意度调查系统",
+    "domain": "feedback"
+  },
+  {
+    "id": 52,
+    "category": "六、顾客满意度与反馈",
+    "question": "顾客投诉的主要类型和数量是多少？处理及时率如何？",
+    "question_type": "数据查询",
+    "suggested_source": "客服系统",
+    "domain": "feedback"
+  },
+  {
+    "id": 53,
+    "category": "六、顾客满意度与反馈",
+    "question": "线上平台（大众点评/美团/外卖平台）的评分和评价数量如何？",
+    "question_type": "数据查询",
+    "suggested_source": "第三方平台",
+    "domain": "feedback"
+  },
+  {
+    "id": 54,
+    "category": "六、顾客满意度与反馈",
+    "question": "正面评价和负面评价的关键关键词是什么？",
+    "question_type": "数据查询",
+    "suggested_source": "舆情监控工具",
+    "domain": "feedback"
+  },
+  {
+    "id": 55,
+    "category": "六、顾客满意度与反馈",
+    "question": "顾客推荐率（NPS）是多少？哪些因素影响推荐意愿？",
+    "question_type": "趋势分析",
+    "suggested_source": "会员系统/调查系统",
+    "domain": "feedback"
+  },
+  {
+    "id": 56,
+    "category": "六、顾客满意度与反馈",
+    "question": "顾客等待时间（排队/等餐）的平均时长是多少？是否影响满意度？",
+    "question_type": "趋势分析",
+    "suggested_source": "POS系统/监控",
+    "domain": "feedback"
+  },
+  {
+    "id": 57,
+    "category": "六、顾客满意度与反馈",
+    "question": "不同渠道（到店/外卖/小程序）的顾客满意度是否有差异？",
+    "question_type": "对比分析",
+    "suggested_source": "客服系统/各渠道后台",
+    "domain": "feedback"
+  },
+  {
+    "id": 58,
+    "category": "六、顾客满意度与反馈",
+    "question": "顾客投诉的处理闭环率是多少？重复投诉率如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "客服系统",
+    "domain": "feedback"
+  },
+  {
+    "id": 59,
+    "category": "六、顾客满意度与反馈",
+    "question": "顾客流失预警信号有哪些？哪些顾客面临流失风险？",
+    "question_type": "预测分析",
+    "suggested_source": "会员系统/数据分析平台",
+    "domain": "customers"
+  },
+  {
+    "id": 60,
+    "category": "六、顾客满意度与反馈",
+    "question": "社交媒体上关于门店的提及量和情感倾向如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "舆情监控工具",
+    "domain": "feedback"
+  },
+  {
+    "id": 61,
+    "category": "七、营销活动效果",
+    "question": "本月开展了哪些营销活动？参与人数和转化率分别是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "营销系统",
+    "domain": "marketing"
+  },
+  {
+    "id": 62,
+    "category": "七、营销活动效果",
+    "question": "各渠道（微信/抖音/小红书/线下）营销活动的ROI对比如何？",
+    "question_type": "对比分析",
+    "suggested_source": "各营销平台后台",
+    "domain": "marketing"
+  },
+  {
+    "id": 63,
+    "category": "七、营销活动效果",
+    "question": "优惠券/满减活动的核销率和带来的额外销售额是多少？",
+    "question_type": "对比分析",
+    "suggested_source": "POS系统/营销系统",
+    "domain": "marketing"
+  },
+  {
+    "id": 64,
+    "category": "七、营销活动效果",
+    "question": "会员专属活动的参与率和复购提升效果如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "会员系统/POS系统",
+    "domain": "marketing"
+  },
+  {
+    "id": 65,
+    "category": "七、营销活动效果",
+    "question": "节假日/促销节点的活动效果是否达到预期？",
+    "question_type": "对比分析",
+    "suggested_source": "营销系统/POS系统",
+    "domain": "marketing"
+  },
+  {
+    "id": 66,
+    "category": "七、营销活动效果",
+    "question": "新客获取成本（CAC）是多少？与LTV的比值是否健康？",
+    "question_type": "对比分析",
+    "suggested_source": "营销系统/财务系统",
+    "domain": "marketing"
+  },
+  {
+    "id": 67,
+    "category": "七、营销活动效果",
+    "question": "营销活动对客单价的提升效果如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "POS系统/营销系统",
+    "domain": "marketing"
+  },
+  {
+    "id": 68,
+    "category": "七、营销活动效果",
+    "question": "哪些营销渠道带来的顾客质量最高（复购率/客单价）？",
+    "question_type": "对比分析",
+    "suggested_source": "会员系统/POS系统",
+    "domain": "marketing"
+  },
+  {
+    "id": 69,
+    "category": "七、营销活动效果",
+    "question": "活动期间的客流量和平时相比增幅是多少？",
+    "question_type": "对比分析",
+    "suggested_source": "POS系统/客流计数器",
+    "domain": "marketing"
+  },
+  {
+    "id": 70,
+    "category": "七、营销活动效果",
+    "question": "社群/私域流量的活跃度和转化率趋势如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "微信后台/CRM系统",
+    "domain": "marketing"
+  },
+  {
+    "id": 71,
+    "category": "八、门店运营效率",
+    "question": "门店营业时长利用率是多少？是否存在空档期浪费？",
+    "question_type": "数据查询",
+    "suggested_source": "POS系统/安防系统",
+    "domain": "operations"
+  },
+  {
+    "id": 72,
+    "category": "八、门店运营效率",
+    "question": "收银平均处理时长是多少？是否存在排队拥堵？",
+    "question_type": "数据查询",
+    "suggested_source": "POS系统",
+    "domain": "operations"
+  },
+  {
+    "id": 73,
+    "category": "八、门店运营效率",
+    "question": "各区域的坪效（每平方米销售额）排名如何？",
+    "question_type": "对比分析",
+    "suggested_source": "POS系统/物业数据",
+    "domain": "operations"
+  },
+  {
+    "id": 74,
+    "category": "八、门店运营效率",
+    "question": "能源消耗（水电燃气）占营收比例是否合理？",
+    "question_type": "趋势分析",
+    "suggested_source": "能源管理系统",
+    "domain": "operations"
+  },
+  {
+    "id": 75,
+    "category": "八、门店运营效率",
+    "question": "设备故障率和维修响应时间是多少？是否影响营业？",
+    "question_type": "异常预警",
+    "suggested_source": "设备管理系统",
+    "domain": "operations"
+  },
+  {
+    "id": 76,
+    "category": "八、门店运营效率",
+    "question": "卫生检查评分和整改完成率是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "巡检系统",
+    "domain": "operations"
+  },
+  {
+    "id": 77,
+    "category": "八、门店运营效率",
+    "question": "门店安全事件（事故/纠纷）发生频率和类型是什么？",
+    "question_type": "数据查询",
+    "suggested_source": "安防系统/事件记录",
+    "domain": "operations"
+  },
+  {
+    "id": 78,
+    "category": "八、门店运营效率",
+    "question": "外卖平台的出餐准时率和差评率是多少？",
+    "question_type": "趋势分析",
+    "suggested_source": "外卖平台后台",
+    "domain": "operations"
+  },
+  {
+    "id": 79,
+    "category": "八、门店运营效率",
+    "question": "门店各项SOP的执行达标率是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "巡检系统/督导系统",
+    "domain": "operations"
+  },
+  {
+    "id": 80,
+    "category": "八、门店运营效率",
+    "question": "高峰期顾客流失率是多少？瓶颈环节在哪里？",
+    "question_type": "异常预警",
+    "suggested_source": "POS系统/监控",
+    "domain": "operations"
+  },
+  {
+    "id": 81,
+    "category": "九、竞品与市场",
+    "question": "周边3公里内竞品门店数量和主要竞争对手是谁？",
+    "question_type": "数据查询",
+    "suggested_source": "市场调研/地图数据",
+    "domain": "market"
+  },
+  {
+    "id": 82,
+    "category": "九、竞品与市场",
+    "question": "本店市场份额与主要竞品相比如何？趋势如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "市场调研/行业报告",
+    "domain": "market"
+  },
+  {
+    "id": 83,
+    "category": "九、竞品与市场",
+    "question": "竞品的价格策略与我们相比有何差异？是否影响客流？",
+    "question_type": "对比分析",
+    "suggested_source": "竞品监测工具",
+    "domain": "market"
+  },
+  {
+    "id": 84,
+    "category": "九、竞品与市场",
+    "question": "竞品近期有哪些营销活动？效果如何？我们应该如何应对？",
+    "question_type": "对比分析",
+    "suggested_source": "竞品监测/舆情工具",
+    "domain": "market"
+  },
+  {
+    "id": 85,
+    "category": "九、竞品与市场",
+    "question": "周边商圈的人流量变化趋势如何？是否受外部因素影响？",
+    "question_type": "趋势分析",
+    "suggested_source": "商圈数据/地图平台",
+    "domain": "market"
+  },
+  {
+    "id": 86,
+    "category": "九、竞品与市场",
+    "question": "行业最新趋势和消费者偏好变化有哪些？",
+    "question_type": "预测分析",
+    "suggested_source": "行业报告/调研数据",
+    "domain": "market"
+  },
+  {
+    "id": 87,
+    "category": "九、竞品与市场",
+    "question": "本店在本地生活平台（美团/大众点评）的排名和曝光量如何？",
+    "question_type": "数据查询",
+    "suggested_source": "平台后台",
+    "domain": "market"
+  },
+  {
+    "id": 88,
+    "category": "九、竞品与市场",
+    "question": "周边新开业的门店有哪些？对我们的影响评估如何？",
+    "question_type": "异常预警",
+    "suggested_source": "商圈监测/地图数据",
+    "domain": "market"
+  },
+  {
+    "id": 89,
+    "category": "九、竞品与市场",
+    "question": "消费者对本品牌的美誉度和认知度如何？",
+    "question_type": "趋势分析",
+    "suggested_source": "品牌调研/舆情工具",
+    "domain": "market"
+  },
+  {
+    "id": 90,
+    "category": "九、竞品与市场",
+    "question": "是否有新的市场机会（新渠道/新模式/新人群）值得探索？",
+    "question_type": "预测分析",
+    "suggested_source": "市场调研/数据分析",
+    "domain": "market"
+  },
+  {
+    "id": 91,
+    "category": "十、供应链与采购",
+    "question": "本月采购总金额是多少？与上月/去年同期对比如何？",
+    "question_type": "对比分析",
+    "suggested_source": "采购系统/财务系统",
+    "domain": "procurement"
+  },
+  {
+    "id": 92,
+    "category": "十、供应链与采购",
+    "question": "各供应商的交货准时率和合格率分别是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "采购系统/质检系统",
+    "domain": "procurement"
+  },
+  {
+    "id": 93,
+    "category": "十、供应链与采购",
+    "question": "采购价格与市场均价的偏差是多少？是否存在溢价采购？",
+    "question_type": "对比分析",
+    "suggested_source": "采购系统/市场行情",
+    "domain": "procurement"
+  },
+  {
+    "id": 94,
+    "category": "十、供应链与采购",
+    "question": "主要原材料的价格波动趋势如何？是否需要调整采购策略？",
+    "question_type": "趋势分析",
+    "suggested_source": "采购系统/市场行情",
+    "domain": "procurement"
+  },
+  {
+    "id": 95,
+    "category": "十、供应链与采购",
+    "question": "是否存在单一供应商依赖风险？是否有备选方案？",
+    "question_type": "异常预警",
+    "suggested_source": "采购系统",
+    "domain": "procurement"
+  },
+  {
+    "id": 96,
+    "category": "十、供应链与采购",
+    "question": "采购订单的履约率和缺货率分别是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "采购系统/库存系统",
+    "domain": "procurement"
+  },
+  {
+    "id": 97,
+    "category": "十、供应链与采购",
+    "question": "冷链/温控商品的运输质量达标率是多少？",
+    "question_type": "数据查询",
+    "suggested_source": "物流监控系统",
+    "domain": "procurement"
+  },
+  {
+    "id": 98,
+    "category": "十、供应链与采购",
+    "question": "采购周期（从下单到到货）的平均时长是多少？",
+    "question_type": "趋势分析",
+    "suggested_source": "采购系统",
+    "domain": "procurement"
+  },
+  {
+    "id": 99,
+    "category": "十、供应链与采购",
+    "question": "是否存在临期/过期采购物料？损耗金额是多少？",
+    "question_type": "异常预警",
+    "suggested_source": "库存管理系统",
+    "domain": "procurement"
+  },
+  {
+    "id": 100,
+    "category": "十、供应链与采购",
+    "question": "供应商评估评分排名如何？是否需要调整合作策略？",
+    "question_type": "对比分析",
+    "suggested_source": "供应商管理系统",
+    "domain": "procurement"
+  }
+]

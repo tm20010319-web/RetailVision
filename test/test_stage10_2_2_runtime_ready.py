@@ -9,8 +9,8 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.stage10_demo import Stage10PerformanceRecorder  # noqa: E402
-from agent.stage10_runtime_readiness import (  # noqa: E402
+from agent.runtime.stage10_demo import Stage10PerformanceRecorder  # noqa: E402
+from agent.runtime.stage10_runtime_readiness import (  # noqa: E402
     PersonLatencyProfileRecorder,
     RuntimeReadinessController,
     RuntimeState,

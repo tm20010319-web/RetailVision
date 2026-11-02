@@ -8,7 +8,7 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.camera_track_identity import (
+from agent.identity.camera_track_identity import (
     CacheProjectionInvariantViolation,
     CameraTrackIdentityCache,
     FaceSpatialEvidence,

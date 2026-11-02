@@ -170,7 +170,7 @@ class ProductAnalyticsMCPSchemaReadinessTests(unittest.TestCase):
             )
         try:
             listed = server.handle({"jsonrpc": "2.0", "id": 1, "method": "initialize", "params": {}})
-            self.assertEqual(2, len(server.handle({"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}})["result"]["tools"]))
+            self.assertEqual(3, len(server.handle({"jsonrpc": "2.0", "id": 2, "method": "tools/list", "params": {}})["result"]["tools"]))
             self.assertNotIn("Product Analytics", listed["result"].get("instructions", ""))
         finally:
             server.close()

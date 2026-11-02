@@ -7,8 +7,8 @@ from _test_bootstrap import ensure_project_root_on_path
 
 ensure_project_root_on_path()
 
-from agent.sam31_behavior_adapter import Sam31BehaviorAdapter
-from agent.sam31_live_behavior import Sam31GlobalTrack, Sam31LiveBehaviorBridge
+from agent.behavior.sam31_behavior_adapter import Sam31BehaviorAdapter
+from agent.behavior.sam31_live_behavior import Sam31GlobalTrack, Sam31LiveBehaviorBridge
 
 
 class FakeRuntime:

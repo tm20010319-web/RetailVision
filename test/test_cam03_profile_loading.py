@@ -12,8 +12,8 @@ from scripts.qualify_p6s_device_fingerprint import _profile
 from scripts.run_dpi01e2_cam03_offline_member_binding import (
     _formal_camera_configuration, resolve_configured_profile, build_recognition_runtime,
 )
-from agent.offline_recognition_provider import DurablePushInboxRecognitionProvider
-from agent.offline_identity_association import OfflineSpatialGeometry
+from agent.offline.offline_recognition_provider import DurablePushInboxRecognitionProvider
+from agent.offline.offline_identity_association import OfflineSpatialGeometry
 
 
 def test_configured_existing_profile_is_actually_loaded(tmp_path):

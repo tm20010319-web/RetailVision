@@ -11,7 +11,7 @@ from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from agent.behavior_events import (
+from agent.behavior.behavior_events import (
     BehaviorEventConflictError,
     BehaviorEventError,
     BehaviorEventInput,
@@ -19,7 +19,7 @@ from agent.behavior_events import (
     TrafficQueryService,
 )
 from agent.schema_evolution import evolve_schema
-from agent.customer_entry_visit import (
+from agent.visits.customer_entry_visit import (
     CustomerEntryObservation,
     CustomerEntryVisit,
     CustomerVisitResult,

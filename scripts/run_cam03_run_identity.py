@@ -21,14 +21,14 @@ sys.path.insert(0, str(ROOT))
 
 from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
-from agent.camera_track_identity import SameCameraRecognitionBinder
-from agent.face_spatial_evidence import FaceSpatialEvidence
+from agent.identity.camera_track_identity import SameCameraRecognitionBinder
+from agent.identity.face_spatial_evidence import FaceSpatialEvidence
 from agent.models import DeviceMemberIdentityRevision, DeviceRecognitionInbox, PushCoverageObservation
-from agent.offline_behavior import Stage9BehaviorFactAdapter, OfflineBehaviorIdentityProjector
-from agent.offline_identity_association import GuardedOfflineIdentityPass, _coerce_track_snapshot
-from agent.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
-from agent.offline_recognition_provider import DeviceRecognitionAcceptancePolicy, DurablePushInboxRecognitionProvider
-from agent.push_coverage import PushCoverageStore
+from agent.offline.offline_behavior import Stage9BehaviorFactAdapter, OfflineBehaviorIdentityProjector
+from agent.offline.offline_identity_association import GuardedOfflineIdentityPass, _coerce_track_snapshot
+from agent.offline.offline_identity_sql import SqlAlchemyHistoricalIdentityRepository
+from agent.offline.offline_recognition_provider import DeviceRecognitionAcceptancePolicy, DurablePushInboxRecognitionProvider
+from agent.identity.push_coverage import PushCoverageStore
 from scripts.run_cam03_evidence_capture import sha, json_value, source_timeline, confirmed_window, assess_presentation_frames
 from scripts.run_dpi01e2_cam03_offline_member_binding import (
     _formal_camera_configuration, resolve_configured_profile, build_recognition_runtime,
@@ -223,8 +223,8 @@ def render_overlays(run, rows, output, geometry):
     """
     import cv2
     from scripts.diagnose_event_804_spatial_identity import _rect
-    from agent.offline_identity_association import map_face_bbox_to_recording_frame
-    from agent.offline_identity_association import OfflineSpatialGeometryValidator
+    from agent.offline.offline_identity_association import map_face_bbox_to_recording_frame
+    from agent.offline.offline_identity_association import OfflineSpatialGeometryValidator
     frames = {}
     panels = []
     for row in rows[:3]:
