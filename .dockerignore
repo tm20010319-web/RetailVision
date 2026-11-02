@@ -1,0 +1,22 @@
+# MCP-only context: no camera media, database, legacy runtime or tools.
+**
+!agent/
+!agent/__init__.py
+!agent/config.py
+!agent/config_values.py
+!agent/paths.py
+!agent/db.py
+!agent/models.py
+!agent/store_context.py
+!agent/analytics/
+!agent/analytics/*.py
+!agent/analytics/store_business/
+!agent/analytics/store_business/*.py
+!agent/analytics/store_business/questions.json
+!agent/member/
+!agent/member/__init__.py
+!agent/member/member_priority.py
+!agent/mcp_server/
+!agent/mcp_server/*.py
+!agent/schema_evolution/
+!agent/schema_evolution/*.py

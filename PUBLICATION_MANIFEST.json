@@ -3,6 +3,11 @@
   "scope": "RetailVision full current source snapshot with bundled dependency sources",
   "files": [
     {
+      "path": ".dockerignore",
+      "sha256": "eb296671bb86b868bfcbe00e734ec6a27763596e03ec5887a399c9ea2c7cbab9",
+      "bytes": 540
+    },
+    {
       "path": ".gitattributes",
       "sha256": "f87b7e4bab54f1c2118a8243fefdf7d24f74be28e6e886a5f39f4550d7ed0046",
       "bytes": 77
@@ -39,8 +44,8 @@
     },
     {
       "path": "PUBLIC_VALIDATION.json",
-      "sha256": "4cbbc659e086eff06aaed99a8f7795a9790f3e47dc9ed4ef1d42de30b83d406a",
-      "bytes": 1818
+      "sha256": "9bddca6ebdddfaf5a6fbd4a4721f98e6969c00a75c11193638417be18d8c6f4a",
+      "bytes": 1888
     },
     {
       "path": "README.md",
@@ -956,6 +961,31 @@
       "path": "agent/router.py",
       "sha256": "14836941696f9ae01f0e5e5dbafc05a01627d80effb8f08e139395ca6c2bbb2b",
       "bytes": 4151
+    },
+    {
+      "path": "agent/runtime/__init__.py",
+      "sha256": "8fafb2d646a640af3c82d5ebd349ac397d634244aa361c8e43331ef750919046",
+      "bytes": 36
+    },
+    {
+      "path": "agent/runtime/stage10_demo.py",
+      "sha256": "f73b974afb8148b4da17e721a3caa69a4878f3813a83d7ef78d43c1ea6f32dbe",
+      "bytes": 118526
+    },
+    {
+      "path": "agent/runtime/stage10_presentation.py",
+      "sha256": "e625594175437571fabe349f306b095528486dac480ff8885d80bc5aaaacbfa8",
+      "bytes": 3969
+    },
+    {
+      "path": "agent/runtime/stage10_product_profile.py",
+      "sha256": "a3b89559250c4db2caed1c34247bda8a2f4f8386dcbd38fb09c384d6e6237702",
+      "bytes": 11565
+    },
+    {
+      "path": "agent/runtime/stage10_runtime_readiness.py",
+      "sha256": "497fc71b2c0588ac2c6e515bd634aa436d662428e7e18174785b4fc233427d9e",
+      "bytes": 25898
     },
     {
       "path": "agent/sam31_behavior_adapter.py",
@@ -6453,6 +6483,11 @@
       "bytes": 888
     },
     {
+      "path": "docs/repository/cleanup_20260918/source_moves.json",
+      "sha256": "7b081bd2b6a061075df1fbbff5affef6a2bcc2d82ba4f7cb32ac8ef51afa5340",
+      "bytes": 21866
+    },
+    {
       "path": "docs/runbooks/offline-analysis.md",
       "sha256": "5b45c563762a78a123b402b03e92ce97c3f6efdc75dfd96366d63a03e5df69a2",
       "bytes": 2229
@@ -6918,6 +6953,11 @@
       "bytes": 65442
     },
     {
+      "path": "frontend/.env.example",
+      "sha256": "d2dd81c02c24f18faf23b0b8b17d0204f830adf021ea23a69a0b678f4d43d1f6",
+      "bytes": 417
+    },
+    {
       "path": "frontend/index.html",
       "sha256": "8def7abe9fa9b01982bae5bb9382c52387db3eca29e3291d254a6fd16ec2808d",
       "bytes": 370
@@ -7093,6 +7133,11 @@
       "bytes": 1639
     },
     {
+      "path": "frontend/src/data/operationsDemo.js",
+      "sha256": "cd73817dfbd535da6e295c62ac191bc13459ef056eab83b4cac8062f1e9ccf16",
+      "bytes": 9841
+    },
+    {
       "path": "frontend/src/features/customer-display/CustomerDisplayPage.jsx",
       "sha256": "fde4ee64d6b6b858326e63b882542ead403b2de026b39f5ec440681d9b0ad306",
       "bytes": 3448
@@ -7146,6 +7191,11 @@
       "path": "frontend/src/features/customer-display/components/WelcomeHeadline.jsx",
       "sha256": "24141186d5f01a20230819c24a0e2b9ee1cdaf166cb601935d76ab7d515c3fa5",
       "bytes": 588
+    },
+    {
+      "path": "frontend/src/features/customer-display/data/memberDisplayData.js",
+      "sha256": "c08efae110402aaa8cfd689ab51e6b9d495a08f2d6ee3882604537c3964aa43e",
+      "bytes": 3102
     },
     {
       "path": "frontend/src/features/customer-display/memberArrivalController.js",
@@ -9251,7 +9301,8 @@
           "Public-only deployment placeholders or reviewed public asset/document adaptation"
         ]
       }
-    ]
+    ],
+    "source_directory_handling": "Include agent/runtime and frontend source data directories; exclude only generated root runtime/data artifacts"
   },
   "previous_snapshot_date": "2026-10-29",
   "manifest_hash_scope": "Current tracked working files excluding this self-referential manifest"

@@ -21,7 +21,7 @@
   "source_sync_20261102": {
     "date": "2026-11-02",
     "tests": {
-      "passed": 95,
+      "passed": 126,
       "failed": 0,
       "subtests_passed": 105,
       "warning": "pre-existing SQLAlchemy declarative_base deprecation"
@@ -33,9 +33,11 @@
       "test_vlx_acceptance_export",
       "test_vlx_refinement_replay",
       "test_vlx_interaction_recovery",
-      "test_vlx_occluded_interactions"
+      "test_vlx_occluded_interactions",
+      "test_stage10_demo",
+      "test_stage10_2_2_runtime_ready"
     ],
-    "changed_python_parse_files": 295,
+    "changed_python_parse_files": 300,
     "changed_json_parse": "passed",
     "changed_file_secret_scan": "no private-key, GitHub/API token, private deployment IP or original device identifier patterns found; synthetic test credentials retained",
     "scope": "source publication checks; no full business suite, clean install, model inference, camera access or production service execution"
